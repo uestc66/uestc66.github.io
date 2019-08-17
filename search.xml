@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[hexo & github page 搭建博客]]></title>
+    <url>%2F2019%2F08%2F17%2F%E5%85%B6%E4%BB%96%2Fhexo%20%26%20github%20page%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%2F</url>
+    <content type="text"></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Python]]></title>
     <url>%2F2019%2F08%2F15%2FPython%2FPython%2F</url>
     <content type="text"></content>
