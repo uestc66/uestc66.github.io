@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://uestc66.github.io/2019/08/17/%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF/</loc>
+    <loc>https://uestc66.github.io/2019/08/15/WebAssembly/WebAssembly/</loc>
     
-    <lastmod>2019-08-17T10:24:20.715Z</lastmod>
+    <lastmod>2019-08-17T10:33:04.781Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://uestc66.github.io/2019/08/15/Python/Python/</loc>
+    
+    <lastmod>2019-08-17T10:32:58.231Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/react%20hooks/</loc>
+    
+    <lastmod>2019-08-17T10:32:03.703Z</lastmod>
     
   </url>
   
@@ -26,13 +40,6 @@
     <loc>https://uestc66.github.io/about/index.html</loc>
     
     <lastmod>2019-08-17T10:18:19.882Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://uestc66.github.io/2019/08/15/react%20hooks/</loc>
-    
-    <lastmod>2019-08-17T10:17:13.684Z</lastmod>
     
   </url>
   

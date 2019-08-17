@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[[object Object]]]></title>
-    <url>%2F2019%2F08%2F17%2F%E5%89%8D%E7%AB%AF%2F%E5%89%8D%E7%AB%AF%2F</url>
-    <content type="text"><![CDATA[测试 大 小 中 测试测试]]></content>
+    <title><![CDATA[Python]]></title>
+    <url>%2F2019%2F08%2F15%2FPython%2FPython%2F</url>
+    <content type="text"></content>
       <categories>
         <category>Python</category>
       </categories>
@@ -12,14 +12,25 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[react hooks]]></title>
-    <url>%2F2019%2F08%2F15%2Freact%20hooks%2F</url>
-    <content type="text"><![CDATA[测试 大 小 中 测试测试]]></content>
+    <title><![CDATA[WebAssembly]]></title>
+    <url>%2F2019%2F08%2F15%2FWebAssembly%2FWebAssembly%2F</url>
+    <content type="text"></content>
       <categories>
-        <category>前端</category>
+        <category>WebAssembly</category>
       </categories>
       <tags>
-        <tag>前端</tag>
+        <tag>WebAssembly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[react hooks]]></title>
+    <url>%2F2019%2F08%2F15%2FWeb%E5%89%8D%E7%AB%AF%2Freact%20hooks%2F</url>
+    <content type="text"><![CDATA[测试 大 小 中 测试测试]]></content>
+      <categories>
+        <category>Web前端</category>
+      </categories>
+      <tags>
+        <tag>Web前端</tag>
       </tags>
   </entry>
 </search>
