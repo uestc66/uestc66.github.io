@@ -2,30 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://uestc66.github.io/about/index.html</loc>
-    
-    <lastmod>2019-08-15T17:48:03.749Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://uestc66.github.io/tags/index.html</loc>
     
-    <lastmod>2019-08-15T17:47:55.392Z</lastmod>
+    <lastmod>2019-08-17T10:19:32.016Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://uestc66.github.io/categories/index.html</loc>
     
-    <lastmod>2019-08-15T17:47:44.309Z</lastmod>
+    <lastmod>2019-08-17T10:19:20.752Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://uestc66.github.io/about/index.html</loc>
+    
+    <lastmod>2019-08-17T10:18:19.882Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://uestc66.github.io/2019/08/17/%E5%89%8D%E7%AB%AF/</loc>
+    
+    <lastmod>2019-08-17T10:17:21.330Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://uestc66.github.io/2019/08/15/react%20hooks/</loc>
     
-    <lastmod>2019-08-15T12:10:13.334Z</lastmod>
+    <lastmod>2019-08-17T10:17:13.684Z</lastmod>
     
   </url>
   
