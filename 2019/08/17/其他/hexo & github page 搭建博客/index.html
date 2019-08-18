@@ -87,15 +87,18 @@
 
 
 
+<meta name="description" content="Hexo搭建的GitHub博客搭建搭建过程参考这篇文章：手把手教你使用 Hexo + Github Pages 搭建个人独立博客 Hexo 主题配置建议设置为 next 主题 克隆仓库 12// git clone命令将Next仓库克隆到hexo目录下的themes/nextgit clone https://github.com/theme-next/hexo-theme-next.git th">
 <meta name="keywords" content="其他">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo &amp; github page 搭建博客">
 <meta property="og:url" content="https://uestc66.github.io/2019/08/17/其他/hexo & github page 搭建博客/index.html">
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="Hexo搭建的GitHub博客搭建搭建过程参考这篇文章：手把手教你使用 Hexo + Github Pages 搭建个人独立博客 Hexo 主题配置建议设置为 next 主题 克隆仓库 12// git clone命令将Next仓库克隆到hexo目录下的themes/nextgit clone https://github.com/theme-next/hexo-theme-next.git th">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-17T15:31:43.871Z">
+<meta property="og:updated_time" content="2019-08-18T13:04:51.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo &amp; github page 搭建博客">
+<meta name="twitter:description" content="Hexo搭建的GitHub博客搭建搭建过程参考这篇文章：手把手教你使用 Hexo + Github Pages 搭建个人独立博客 Hexo 主题配置建议设置为 next 主题 克隆仓库 12// git clone命令将Next仓库克隆到hexo目录下的themes/nextgit clone https://github.com/theme-next/hexo-theme-next.git th">
 
 
 
@@ -408,7 +411,53 @@
       
 
       
-        
+        <h3 id="Hexo搭建的GitHub博客"><a href="#Hexo搭建的GitHub博客" class="headerlink" title="Hexo搭建的GitHub博客"></a>Hexo搭建的GitHub博客</h3><h4 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h4><p>搭建过程参考这篇文章：<a href="https://juejin.im/entry/57144e7179bc44005fa66b9a" target="_blank" rel="noopener">手把手教你使用 Hexo + Github Pages 搭建个人独立博客</a></p>
+<h5 id="Hexo-主题配置建议设置为-next-主题"><a href="#Hexo-主题配置建议设置为-next-主题" class="headerlink" title="Hexo 主题配置建议设置为 next 主题"></a>Hexo 主题配置建议设置为 next 主题</h5><ul>
+<li><p>克隆仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// git clone命令将Next仓库克隆到hexo目录下的themes/next</span><br><span class="line">git clone https://github.com/theme-next/hexo-theme-next.git themes/next</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>设置Next主题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 在站点根目录下，设置以下代码：</span><br><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: hexo-theme-next   #此处填入你在themes目录下的next主题文件名</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h4 id="个性化设置"><a href="#个性化设置" class="headerlink" title="个性化设置"></a>个性化设置</h4><p>大致设置过程参见这篇文章： <a href="https://zhuanlan.zhihu.com/p/33616481" target="_blank" rel="noopener">Hexo搭建的GitHub博客之优化大全</a></p>
+<h5 id="文章阅读次数功能"><a href="#文章阅读次数功能" class="headerlink" title="文章阅读次数功能"></a>文章阅读次数功能</h5><ul>
+<li><p>第一种方法：LeanCloud (参考这篇文章：<a href="https://www.jianshu.com/p/702a7aec4d00" target="_blank" rel="noopener">https://www.jianshu.com/p/702a7aec4d00</a>)</p>
+<ul>
+<li><p>去 <a href="https://leancloud.cn/dashboard/applist.html#/apps" target="_blank" rel="noopener">LeanCloud </a> ，创建新应用，创建 Counter 类</p>
+</li>
+<li><p>修改主题文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">leancloud_visitors:</span><br><span class="line">  enable: true #将原来的false改为true</span><br><span class="line">  app_id: #&lt;app_id&gt;</span><br><span class="line">  app_key: #&lt;app_key&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>第二种方法： 开启不蒜子统计功能</p>
+<ul>
+<li><p>在主题配置文件中 _config.yml ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Show Views/Visitors of the website/page with busuanzi.</span><br><span class="line"># Get more information on http://ibruce.info/2015/04/04/busuanzi/</span><br><span class="line">busuanzi_count:</span><br><span class="line">  enable: true</span><br><span class="line">  site_uv: true #total visitors</span><br><span class="line">  site_uv_icon:  #user-circle</span><br><span class="line">  site_uv_header: 你是来访的第</span><br><span class="line">  site_uv_footer: 位小伙伴</span><br><span class="line">  site_pv: false #total views</span><br><span class="line">  site_pv_icon: eye</span><br><span class="line">  site_pv_header: 访问次数：</span><br><span class="line">  site_pv_footer: 次</span><br><span class="line">  post_views: false</span><br><span class="line">  post_views_icon: eye</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不过因为域名过期问题，next 默认集成的 valine 脚本无法访问，解决办法参见：<a href="https://www.jianshu.com/p/fd3accaa2ae0" target="_blank" rel="noopener">hexo博客解决不蒜子统计无法显示问题</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="开启-valine-评论功能"><a href="#开启-valine-评论功能" class="headerlink" title="开启 valine 评论功能"></a>开启 valine 评论功能</h5><p>大致设置过程参考这篇文章： <a href="https://www.jianshu.com/p/f4658df66a15" target="_blank" rel="noopener">Hexo博客使用valine评论系统无效果及终极解决方案</a></p>
+<p><strong>需要特别注意的是：</strong></p>
+<p>valine评论和文章阅读次数功能均基于LeanCloud，两者有冲突。解决的办法是：<strong>基于LeanCloud开启 valine 评论，基于不蒜子开启文章统计功能</strong>。</p>
+
       
     </div>
     
@@ -529,8 +578,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -614,6 +672,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo搭建的GitHub博客"><span class="nav-number">1.</span> <span class="nav-text">Hexo搭建的GitHub博客</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#搭建"><span class="nav-number">1.1.</span> <span class="nav-text">搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Hexo-主题配置建议设置为-next-主题"><span class="nav-number">1.1.1.</span> <span class="nav-text">Hexo 主题配置建议设置为 next 主题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#个性化设置"><span class="nav-number">1.2.</span> <span class="nav-text">个性化设置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#文章阅读次数功能"><span class="nav-number">1.2.1.</span> <span class="nav-text">文章阅读次数功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开启-valine-评论功能"><span class="nav-number">1.2.2.</span> <span class="nav-text">开启 valine 评论功能</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
