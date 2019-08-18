@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/react%20hooks/</loc>
+    
+    <lastmod>2019-08-18T17:04:45.533Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://uestc66.github.io/2019/08/18/Web%E5%89%8D%E7%AB%AF/js%20%E5%BC%95%E6%93%8E(%E4%B8%80)/</loc>
     
     <lastmod>2019-08-18T13:39:38.129Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>https://uestc66.github.io/2019/08/15/Python/Python/</loc>
     
     <lastmod>2019-08-17T10:32:58.231Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/react%20hooks/</loc>
-    
-    <lastmod>2019-08-17T10:32:03.703Z</lastmod>
     
   </url>
   
