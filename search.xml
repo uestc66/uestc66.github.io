@@ -23,17 +23,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Python]]></title>
-    <url>%2F2019%2F08%2F15%2FPython%2FPython%2F</url>
-    <content type="text"></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[WebAssembly]]></title>
     <url>%2F2019%2F08%2F15%2FWebAssembly%2FWebAssembly%2F</url>
     <content type="text"></content>
@@ -42,6 +31,17 @@
       </categories>
       <tags>
         <tag>WebAssembly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Python]]></title>
+    <url>%2F2019%2F08%2F15%2FPython%2FPython%2F</url>
+    <content type="text"></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
