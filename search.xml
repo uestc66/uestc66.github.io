@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[js 引擎(一)]]></title>
+    <title><![CDATA[前端传送门]]></title>
     <url>%2F2019%2F09%2F06%2FWeb%E5%89%8D%E7%AB%AF%2F%E5%89%8D%E7%AB%AF%E4%BC%A0%E9%80%81%E9%97%A8%2F</url>
     <content type="text"><![CDATA[JavaScript 面试题集 33 Concepts Every JavaScript Developer Should Know React react 官网 大牛们的思考沉淀 阿里9年，我总结的前端架构演进3大阶段及团队管理心法]]></content>
       <categories>
@@ -23,7 +23,7 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Node.js]]></title>
+    <title><![CDATA[Node.js 传送门]]></title>
     <url>%2F2019%2F09%2F01%2FNode.js%2FNode.js%20%E4%BC%A0%E9%80%81%E9%97%A8%2F</url>
     <content type="text"><![CDATA[如何学习 Node.js 【知乎Live】狼叔：如何正确的学习Node.js]]></content>
       <categories>
@@ -61,7 +61,7 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Python]]></title>
+    <title><![CDATA[Python 传送门]]></title>
     <url>%2F2019%2F08%2F15%2FPython%2FPython%20%E4%BC%A0%E9%80%81%E9%97%A8%2F</url>
     <content type="text"><![CDATA[基础语法 Python 官网 Python Cookbook Python 从新手到大师 github 资料 数据分析oj 练习平台 pythontip]]></content>
       <categories>
@@ -72,7 +72,7 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[WebAssembly]]></title>
+    <title><![CDATA[WebAssembly 传送门]]></title>
     <url>%2F2019%2F08%2F15%2FWebAssembly%2FWebAssembly%20%E4%BC%A0%E9%80%81%E9%97%A8%2F</url>
     <content type="text"><![CDATA[Web端H.265播放器研发解密: https://mp.weixin.qq.com/s/ajLFM8q-4-2hxj-M_ChGdg]]></content>
       <categories>
