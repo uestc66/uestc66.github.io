@@ -94,12 +94,12 @@
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
 <meta property="og:description" content="1234title: 深入浅出 Python 模块机制date: 2019-09-01 17:56:24tags: Pythoncategories: Python  Python 模块 模块是包括 Python 定义和声明的文件，文件名就是模块名加上 .py  后缀，模块名可以由全局变量 __name__ 得到。 Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Pytho">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://uestc66.github.io/Users/jerry/Documents/GitHub/jerry.zmf-blog/source/images/module-import.jpg">
-<meta property="og:updated_time" content="2019-09-05T16:04:10.546Z">
+<meta property="og:image" content="https://uestc66.github.io/2019/08/27/Python/深入浅出%20Python%20模块机制/images/module-import.jpg">
+<meta property="og:updated_time" content="2019-09-05T16:07:34.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jerry.zmf&#39;s Blog">
 <meta name="twitter:description" content="1234title: 深入浅出 Python 模块机制date: 2019-09-01 17:56:24tags: Pythoncategories: Python  Python 模块 模块是包括 Python 定义和声明的文件，文件名就是模块名加上 .py  后缀，模块名可以由全局变量 __name__ 得到。 Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Pytho">
-<meta name="twitter:image" content="https://uestc66.github.io/Users/jerry/Documents/GitHub/jerry.zmf-blog/source/images/module-import.jpg">
+<meta name="twitter:image" content="https://uestc66.github.io/2019/08/27/Python/深入浅出%20Python%20模块机制/images/module-import.jpg">
 
 
 
@@ -434,7 +434,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; python fibo.py </span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
 
 <p>可以看到模块里的代码会被执行，就好像已导入模块一样。</p>
-<h4 id="模块加载机制"><a href="#模块加载机制" class="headerlink" title="模块加载机制"></a>模块加载机制</h4><p><img src="/Users/jerry/Documents/GitHub/jerry.zmf-blog/source/images/module-import.jpg" alt></p>
+<h4 id="模块加载机制"><a href="#模块加载机制" class="headerlink" title="模块加载机制"></a>模块加载机制</h4><p><img src="images/module-import.jpg" alt></p>
 <h5 id="动态加载模块"><a href="#动态加载模块" class="headerlink" title="动态加载模块"></a>动态加载模块</h5><p><strong>但是import只能够加载固定名称模块，不能加载动态比如字符串名称模块</strong>，比如</p>
 <p><strong>str = ‘tools’import str</strong></p>
 <p>好了，现在解决了动态加载随意模块的问题了，但是距离成功还有一步之遥，在python里面，加载模块是有缓存的，意思就是说，加载tools.py之后，就算tools.py内容发生改变了，都不会重新加载，还是无法满足我们实时更新加载模块的需求。这里有个比较简单的办法，可以使得模块有需要的时候重新加载，回想之前我们说过，python加载后的模块都会保存在sys.modules里面，我们只需要在重新加载模块之前，把模块从sys.modules里面删除即可。</p>
