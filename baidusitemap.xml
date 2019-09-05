@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/react%20hooks/</loc>
-    <lastmod>2019-08-18</lastmod>
+    <loc>https://uestc66.github.io/2019/08/27/Python/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%20Python%20%E6%A8%A1%E5%9D%97%E6%9C%BA%E5%88%B6/</loc>
+    <lastmod>2019-09-05</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/15/Python/Python%20%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-09-05</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/31/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks/</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/15/WebAssembly/WebAssembly%20%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-09-01</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/01/Node.js/Node.js%20%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-09-01</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/21/Python/pandas%20%E7%9A%84%20excel%20%E5%BA%94%E7%94%A8/</loc>
+    <lastmod>2019-08-28</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/08/17/%E5%85%B6%E4%BB%96/hexo%20&%20github%20page%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2019-08-18</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/08/18/Web%E5%89%8D%E7%AB%AF/js%20%E5%BC%95%E6%93%8E(%E4%B8%80)/</loc>
     <lastmod>2019-08-18</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2019/08/15/WebAssembly/WebAssembly/</loc>
-    <lastmod>2019-08-17</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2019/08/15/Python/Python/</loc>
-    <lastmod>2019-08-17</lastmod>
   </url>
 </urlset>

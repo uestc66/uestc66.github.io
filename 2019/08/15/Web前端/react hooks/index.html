@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="what Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。  官方文档：Hook 简介 why react hooks 主要解决以下三个主要的问题：  代码重用：在 hooks 出来之前，常见的代码重用方式是 HOC 和 render props，这两种方式带来的问题是： 你需要解构自己的组件，非常的笨重，同时">
+<meta name="description" content="what Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。  why react hooks 主要解决以下三个主要的问题：  代码重用：在 hooks 出来之前，常见的代码重用方式是 HOC 和 render props，这两种方式带来的问题是： 你需要解构自己的组件，非常的笨重，同时会带来很深的组件嵌套。 难">
 <meta name="keywords" content="Web前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="react hooks">
-<meta property="og:url" content="https://uestc66.github.io/2019/08/15/Web前端/react hooks/index.html">
+<meta property="og:title" content="React Hooks">
+<meta property="og:url" content="https://uestc66.github.io/2019/08/15/Web前端/React Hooks/index.html">
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
-<meta property="og:description" content="what Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。  官方文档：Hook 简介 why react hooks 主要解决以下三个主要的问题：  代码重用：在 hooks 出来之前，常见的代码重用方式是 HOC 和 render props，这两种方式带来的问题是： 你需要解构自己的组件，非常的笨重，同时">
+<meta property="og:description" content="what Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。  why react hooks 主要解决以下三个主要的问题：  代码重用：在 hooks 出来之前，常见的代码重用方式是 HOC 和 render props，这两种方式带来的问题是： 你需要解构自己的组件，非常的笨重，同时会带来很深的组件嵌套。 难">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-18T17:08:33.917Z">
+<meta property="og:updated_time" content="2019-09-04T02:00:56.549Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="react hooks">
-<meta name="twitter:description" content="what Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。  官方文档：Hook 简介 why react hooks 主要解决以下三个主要的问题：  代码重用：在 hooks 出来之前，常见的代码重用方式是 HOC 和 render props，这两种方式带来的问题是： 你需要解构自己的组件，非常的笨重，同时">
+<meta name="twitter:title" content="React Hooks">
+<meta name="twitter:description" content="what Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。  why react hooks 主要解决以下三个主要的问题：  代码重用：在 hooks 出来之前，常见的代码重用方式是 HOC 和 render props，这两种方式带来的问题是： 你需要解构自己的组件，非常的笨重，同时会带来很深的组件嵌套。 难">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="https://uestc66.github.io/2019/08/15/Web前端/react hooks/">
+  <link rel="canonical" href="https://uestc66.github.io/2019/08/15/Web前端/React Hooks/">
 
 
 
 
 
-  <title>react hooks | jerry.zmf's Blog</title>
+  <title>React Hooks | jerry.zmf's Blog</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/08/15/Web前端/react hooks/">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/08/15/Web前端/React Hooks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jerry.zmf">
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">react hooks</h1>
+          <h1 class="post-title" itemprop="name headline">React Hooks</h1>
         
 
         <div class="post-meta">
@@ -377,8 +377,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/15/Web前端/react hooks/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/15/Web前端/react hooks/" itemprop="commentCount"></span>
+                <a href="/2019/08/15/Web前端/React Hooks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/15/Web前端/React Hooks/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -412,9 +412,8 @@
 
       
         <h3 id="what"><a href="#what" class="headerlink" title="what"></a>what</h3><blockquote>
-<p><em>Hook</em> 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。</p>
+<p><a href="https://zh-hans.reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener"><em>Hook</em></a> 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。</p>
 </blockquote>
-<p>官方文档：<a href="https://zh-hans.reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener">Hook 简介</a></p>
 <h3 id="why"><a href="#why" class="headerlink" title="why"></a>why</h3><blockquote>
 <p>react hooks 主要解决以下三个主要的问题：</p>
 <ul>
@@ -431,8 +430,7 @@
 </li>
 </ul>
 </blockquote>
-<p>另外还可以参考一下这个回答：<a href="https://www.zhihu.com/question/300049718/answer/518641446" target="_blank" rel="noopener">如何评价 React v16.7.0-alpha 提出的 Hooks API？</a></p>
-<p>官方文档： <a href="https://zh-hans.reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener">动机</a></p>
+<p>具体可以参考官方文档中对 hooks 引入 <a href="https://zh-hans.reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener">动机</a> 的解释，另外还可以参考一下知乎上<a href="https://www.zhihu.com/question/300049718/answer/518641446" target="_blank" rel="noopener">如何评价 React v16.7.0-alpha 提出的 Hooks API？</a>  这个问题网友的回答。</p>
 <h3 id="how"><a href="#how" class="headerlink" title="how"></a>how</h3><ul>
 <li><p>useState(0) 返回是个数组形式，useState(0) 代表 count 的初始值是 0，useState 现阶段只能传入一个初始值。useState 类似 setState，你可以看做是异步的，但 useState 必须保证执行顺序一一致，React 为每一次的 useState 调用分配一个空间，通过 useState 调用顺序辨别各个空间。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const Counter = () =&gt; &#123;</span><br><span class="line">  const [count, setCount] = useState(0);</span><br><span class="line">  const increment = () =&gt; setCount(count + 1);</span><br><span class="line">  return (</span><br><span class="line">   &lt;&gt;</span><br><span class="line">     &lt;h1&gt;&#123;count&#125;&lt;/h1&gt;</span><br><span class="line">     &lt;button onClick=&#123;increment&#125;&gt;+&lt;/button&gt;</span><br><span class="line">   &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -484,11 +482,12 @@
 <ul>
 <li><p>useRef：在函数组件中获取组件或DOM节点的引用。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function App() &#123;</span><br><span class="line">    const inputRef = useRef(null);</span><br><span class="line"></span><br><span class="line">    return &lt;div&gt;</span><br><span class="line">        &lt;input type=&quot;text&quot; ref=&#123;inputRef&#125;/&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; inputRef.current.focus()&#125;&gt;focus&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
+</li>
+<li><p>useContext：<a href="https://reactjs.org/docs/context.html" target="_blank" rel="noopener">Context</a> 的作用就是对它所包含的组件树提供全局共享数据的一种技术。useReducer 结合useContext，通过 context 把 dispatch 函数提供给组件树中的所有组件使用 ，而不用通过 props 添加回调函数的方式一层层传递。</p>
 </li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">// 定义初始化值</span><br><span class="line">const initState = &#123;</span><br><span class="line">    name: &apos;&apos;,</span><br><span class="line">    pwd: &apos;&apos;,</span><br><span class="line">    isLoading: false,</span><br><span class="line">    error: &apos;&apos;,</span><br><span class="line">    isLoggedIn: false,</span><br><span class="line">&#125;</span><br><span class="line">// 定义state[业务]处理逻辑 reducer函数</span><br><span class="line">function loginReducer(state, action) &#123;</span><br><span class="line">    switch(action.type) &#123;</span><br><span class="line">        case &apos;login&apos;:</span><br><span class="line">            return &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                isLoading: true,</span><br><span class="line">                error: &apos;&apos;,</span><br><span class="line">            &#125;</span><br><span class="line">        case &apos;success&apos;:</span><br><span class="line">            return &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                isLoggedIn: true,</span><br><span class="line">                isLoading: false,</span><br><span class="line">            &#125;</span><br><span class="line">        case &apos;error&apos;:</span><br><span class="line">            return &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                error: action.payload.error,</span><br><span class="line">                name: &apos;&apos;,</span><br><span class="line">                pwd: &apos;&apos;,</span><br><span class="line">                isLoading: false,</span><br><span class="line">            &#125;</span><br><span class="line">        default: </span><br><span class="line">            return state;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 定义 context函数</span><br><span class="line">const LoginContext = React.createContext();</span><br><span class="line">function LoginPage() &#123;</span><br><span class="line">    const [state, dispatch] = useReducer(loginReducer, initState);</span><br><span class="line">    const &#123; name, pwd, isLoading, error, isLoggedIn &#125; = state;</span><br><span class="line">    const login = (event) =&gt; &#123;</span><br><span class="line">        event.preventDefault();</span><br><span class="line">        dispatch(&#123; type: &apos;login&apos; &#125;);</span><br><span class="line">        login(&#123; name, pwd &#125;)</span><br><span class="line">            .then(() =&gt; &#123;</span><br><span class="line">                dispatch(&#123; type: &apos;success&apos; &#125;);</span><br><span class="line">            &#125;)</span><br><span class="line">            .catch((error) =&gt; &#123;</span><br><span class="line">                dispatch(&#123;</span><br><span class="line">                    type: &apos;error&apos;</span><br><span class="line">                    payload: &#123; error: error.message &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    // 利用 context 共享dispatch</span><br><span class="line">    return ( </span><br><span class="line">        &lt;LoginContext.Provider value=&#123;dispatch&#125;&gt;</span><br><span class="line">            &lt;...&gt;</span><br><span class="line">            &lt;LoginButton /&gt;</span><br><span class="line">        &lt;/LoginContext.Provider&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line">function LoginButton() &#123;</span><br><span class="line">    // 子组件中直接通过context拿到dispatch，出发reducer操作state</span><br><span class="line">    const dispatch = useContext(LoginContext);</span><br><span class="line">    const click = () =&gt; &#123;</span><br><span class="line">        if (error) &#123;</span><br><span class="line">            // 子组件可以直接 dispatch action</span><br><span class="line">            dispatch(&#123;</span><br><span class="line">                type: &apos;error&apos;</span><br><span class="line">                payload: &#123; error: error.message &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="自定义-hooks"><a href="#自定义-hooks" class="headerlink" title="自定义 hooks"></a>自定义 hooks</h3><h4 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h4><p>custom Hooks 自定义监听窗口大小组件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 一个显示目前窗口大小的组件</span><br><span class="line">function responsiveComponent()&#123;</span><br><span class="line">   // custom hooks</span><br><span class="line">   const width = useWindowWidth(); </span><br><span class="line">   return (</span><br><span class="line">       &lt;p&gt;当前窗口的宽度是 &#123;width&#125;&lt;/p&gt;</span><br><span class="line">   )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -515,6 +514,7 @@
 <li><a href="https://cloud.tencent.com/developer/article/1360473" target="_blank" rel="noopener">理解 React Hooks</a></li>
 <li><a href="http://react-china.org/t/react-hooks/27122" target="_blank" rel="noopener">译: React hooks: 不是魔法只是数组</a></li>
 <li><a href="https://www.robinwieruch.de/react-hooks-fetch-data/" target="_blank" rel="noopener">How to fetch data with React Hooks</a></li>
+<li><a href="https://www.infoq.cn/article/k1Zb7ahbRmlrwDmkb6wY" target="_blank" rel="noopener">React Hooks 是不能替代 Redux 的</a></li>
 </ul>
 
       
@@ -536,7 +536,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://uestc66.github.io/2019/08/15/Web前端/react hooks/" title="react hooks">https://uestc66.github.io/2019/08/15/Web前端/react hooks/</a>
+    <a href="https://uestc66.github.io/2019/08/15/Web前端/React Hooks/" title="React Hooks">https://uestc66.github.io/2019/08/15/Web前端/React Hooks/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -580,7 +580,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/15/WebAssembly/WebAssembly/" rel="prev" title="WebAssembly">
+              <a href="/2019/08/15/WebAssembly/WebAssembly 传送门/" rel="prev" title="WebAssembly">
                 WebAssembly <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -664,7 +664,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
