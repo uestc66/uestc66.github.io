@@ -76,7 +76,7 @@
 
 
 
-  <meta name="keywords" content="Node.js,">
+  <meta name="keywords" content="Python,">
 
 
 
@@ -87,18 +87,20 @@
 
 
 
-<meta name="description" content="如何学习 Node.js 【知乎Live】狼叔：如何正确的学习Node.js">
-<meta name="keywords" content="Node.js">
+<meta name="description" content="Python 模块 模块是包括 Python 定义和声明的文件，文件名就是模块名加上 .py  后缀，模块名可以由全局变量 __name__ 得到。 Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Python、C 还是别的语言实现。  什么是 Python 模块简单来说，一个 Python 模块就是一个以 .py 为后缀的文件 ，模块中能定义内容包括：变量、函数、类和可执">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Node.js">
-<meta property="og:url" content="https://uestc66.github.io/2019/09/01/Node.js/Node.js 传送门/index.html">
+<meta property="og:title" content="深入浅出 Python 模块机制">
+<meta property="og:url" content="https://uestc66.github.io/2019/09/01/Python/深入浅出 Python 模块机制/index.html">
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
-<meta property="og:description" content="如何学习 Node.js 【知乎Live】狼叔：如何正确的学习Node.js">
+<meta property="og:description" content="Python 模块 模块是包括 Python 定义和声明的文件，文件名就是模块名加上 .py  后缀，模块名可以由全局变量 __name__ 得到。 Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Python、C 还是别的语言实现。  什么是 Python 模块简单来说，一个 Python 模块就是一个以 .py 为后缀的文件 ，模块中能定义内容包括：变量、函数、类和可执">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-05T16:11:44.515Z">
+<meta property="og:image" content="https://uestc66.github.io/2019/09/01/Python/images/module-import.jpg">
+<meta property="og:updated_time" content="2019-09-05T16:14:20.891Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Node.js">
-<meta name="twitter:description" content="如何学习 Node.js 【知乎Live】狼叔：如何正确的学习Node.js">
+<meta name="twitter:title" content="深入浅出 Python 模块机制">
+<meta name="twitter:description" content="Python 模块 模块是包括 Python 定义和声明的文件，文件名就是模块名加上 .py  后缀，模块名可以由全局变量 __name__ 得到。 Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Python、C 还是别的语言实现。  什么是 Python 模块简单来说，一个 Python 模块就是一个以 .py 为后缀的文件 ，模块中能定义内容包括：变量、函数、类和可执">
+<meta name="twitter:image" content="https://uestc66.github.io/2019/09/01/Python/images/module-import.jpg">
 
 
 
@@ -128,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="https://uestc66.github.io/2019/09/01/Node.js/Node.js 传送门/">
+  <link rel="canonical" href="https://uestc66.github.io/2019/09/01/Python/深入浅出 Python 模块机制/">
 
 
 
 
 
-  <title>Node.js | jerry.zmf's Blog</title>
+  <title>深入浅出 Python 模块机制 | jerry.zmf's Blog</title>
   
 
 
@@ -307,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/01/Node.js/Node.js 传送门/">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/01/Python/深入浅出 Python 模块机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jerry.zmf">
@@ -324,7 +326,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Node.js</h1>
+          <h1 class="post-title" itemprop="name headline">深入浅出 Python 模块机制</h1>
         
 
         <div class="post-meta">
@@ -336,7 +338,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-01T14:46:24+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-01T17:56:24+08:00">
                 2019-09-01
               </time>
             
@@ -359,8 +361,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Node-js/" itemprop="url" rel="index">
-                    <span itemprop="name">Node.js</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -377,8 +379,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/01/Node.js/Node.js 传送门/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/01/Node.js/Node.js 传送门/" itemprop="commentCount"></span>
+                <a href="/2019/09/01/Python/深入浅出 Python 模块机制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/01/Python/深入浅出 Python 模块机制/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -411,8 +413,76 @@
       
 
       
-        <h3 id="如何学习-Node-js"><a href="#如何学习-Node-js" class="headerlink" title="如何学习 Node.js"></a>如何学习 Node.js</h3><ul>
-<li><a href="https://i5ting.github.io/How-to-learn-node-correctly/?utm_medium=email&utm_source=gank.io#10308" target="_blank" rel="noopener">【知乎Live】狼叔：如何正确的学习Node.js</a></li>
+        <h3 id="Python-模块"><a href="#Python-模块" class="headerlink" title="Python 模块"></a>Python 模块</h3><blockquote>
+<p>模块是包括 Python 定义和声明的文件，文件名就是模块名加上 <code>.py</code>  后缀，模块名可以由全局变量 <code>__name__</code> 得到。</p>
+<p>Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Python、C 还是别的语言实现。</p>
+</blockquote>
+<h4 id="什么是-Python-模块"><a href="#什么是-Python-模块" class="headerlink" title="什么是 Python 模块"></a>什么是 Python 模块</h4><p>简单来说，一个 Python 模块就是一个以 .py 为后缀的文件 ，模块中能定义内容包括：变量、函数、类和可执行代码。</p>
+<p>模块类型大致有以下 3 种：</p>
+<ul>
+<li><p>Python 内置的模块，即标准库。</p>
+<p>Python 带有一个标准模块库，并发布有独立的文档，名为 Python 库参考手册。有一些模块内置于解释器之中，这些操作的访问接口不是语言内核的一部分，但是已经内置于解释器了。这既是为了提高效率，也是为了给系统调用等操作系统原生访问提供接口。</p>
+</li>
+<li><p>第三方模块，即通过 <code>pip install</code> 的模块。</p>
+</li>
+<li><p>自定义模块，即用户自己编写的模块。</p>
+</li>
+</ul>
+<h4 id="举个-🌰"><a href="#举个-🌰" class="headerlink" title="举个 🌰"></a>举个 🌰</h4><p>我们写一个模块 fibo.py ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># write Fibonacci series up to n</span><br><span class="line">def fib(n):   </span><br><span class="line">    a, b = 0, 1</span><br><span class="line">    while a &lt; n:</span><br><span class="line">        print(a)</span><br><span class="line">        a, b = b, a+b</span><br><span class="line"></span><br><span class="line"># return Fibonacci series up to n</span><br><span class="line">def fib2(n): </span><br><span class="line">    result = []</span><br><span class="line">    a, b = 0, 1</span><br><span class="line">    while a &lt; n:</span><br><span class="line">        result.append(a)</span><br><span class="line">        a, b = b, a+b</span><br></pre></td></tr></table></figure>
+
+<h4 id="模块导入"><a href="#模块导入" class="headerlink" title="模块导入"></a>模块导入</h4><p>导入模块的方式有以下 2 种：</p>
+<ul>
+<li><strong>import module</strong> </li>
+</ul>
+<p>这是模块 <strong>完全引入</strong> 的方式。 比如 import os 会把 os 下面的所有的变量、函数、类全部引入，通过 os 可以访问模块中的变量或函数，如 os.listdir()。</p>
+<p>当然也可以通过 <strong>import module as xx</strong> 的方式，为模块起一个<strong>别名</strong>。</p>
+<ul>
+<li><strong>from module import func1, func2</strong> </li>
+</ul>
+<p>这是模块 <strong>部分引入</strong> 的方式。按需引入需要模块中定义的函数，另一个好处是可以直接在脚本中使用复制后的变量名。</p>
+<h5 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h5><p>现在进入 Python 解释器，导入该模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import fibo</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到当前没有任何输出，因为导入模块的操作，只是进入到模块名 <code>fibo</code> 中，并不会直接进入到定义在 <code>fibo</code> 函数内。可以用模块名访问这些函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import fibo</span><br><span class="line">&gt;&gt;&gt; fibo.fib(10)</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
+
+<h4 id="模块执行"><a href="#模块执行" class="headerlink" title="模块执行"></a>模块执行</h4><p>如果需要让一个 <code>.py</code> 文件既当作脚本又能当作模块用，可以使用 <code>__name__</code> 这个属性。只有当文件被当作脚本执行的时候， <code>__name__</code> 的值才会是 <code>&#39;__main__&#39;</code>，而模块导入时不会。</p>
+<p>下面，我们改造一下上述 fibo  模块，在末尾添加一段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># write Fibonacci series up to n</span><br><span class="line">def fib(n):   </span><br><span class="line">    a, b = 0, 1</span><br><span class="line">    while a &lt; n:</span><br><span class="line">        print(a)</span><br><span class="line">        a, b = b, a+b</span><br><span class="line"></span><br><span class="line"># return Fibonacci series up to n</span><br><span class="line">def fib2(n): </span><br><span class="line">    result = []</span><br><span class="line">    a, b = 0, 1</span><br><span class="line">    while a &lt; n:</span><br><span class="line">        result.append(a)</span><br><span class="line">        a, b = b, a+b</span><br><span class="line"></span><br><span class="line"># 作为脚本来执行模块</span><br><span class="line">if __name__ == &apos;__main__&apos; : </span><br><span class="line">  fib(10)</span><br></pre></td></tr></table></figure>
+
+<p>然后运行 Python 模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; python fibo.py </span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
+
+<p>可以看到模块里的代码会被执行，就好像已导入模块一样。</p>
+<h4 id="模块加载机制"><a href="#模块加载机制" class="headerlink" title="模块加载机制"></a>模块加载机制</h4><img src="../images/module-import.jpg">
+
+
+
+<h5 id="动态加载模块"><a href="#动态加载模块" class="headerlink" title="动态加载模块"></a>动态加载模块</h5><p><strong>但是import只能够加载固定名称模块，不能加载动态比如字符串名称模块</strong>，比如</p>
+<p><strong>str = ‘tools’import str</strong></p>
+<p>好了，现在解决了动态加载随意模块的问题了，但是距离成功还有一步之遥，在python里面，加载模块是有缓存的，意思就是说，加载tools.py之后，就算tools.py内容发生改变了，都不会重新加载，还是无法满足我们实时更新加载模块的需求。这里有个比较简单的办法，可以使得模块有需要的时候重新加载，回想之前我们说过，python加载后的模块都会保存在sys.modules里面，我们只需要在重新加载模块之前，把模块从sys.modules里面删除即可。</p>
+<p><strong>del sys.modules[‘tools’]<strong>import</strong>(‘tools’)</strong></p>
+<h3 id="Python-包"><a href="#Python-包" class="headerlink" title="Python 包"></a>Python 包</h3><blockquote>
+<p>为了帮助组织模块并提供名称层次结构，Python 还引入了包的概念。可以把包看成是文件系统中的目录，并把模块看成是目录中的文件，但请不要对这个类似做过于字面的理解，因为包和模块不是必须来自于文件系统。 与文件系统一样，包通过层次结构进行组织，在包之内除了一般的模块，还可以有子包。</p>
+</blockquote>
+<p>简单地来说，”包“ (package) 是含有 Python 模块的文件夹，不过前提条件是这个文件夹下必须存在 <code>__init__.py</code> 文件。</p>
+<h4 id="init-py-文件"><a href="#init-py-文件" class="headerlink" title="_init_.py 文件"></a>_<em>init_</em>.py 文件</h4><p>当文件夹下存在 <code>__init__.py</code> 文件时意味着该文件夹是一个包，<code>__init__.py</code> 文件用于组织包，管理各个模块之间的引用、控制包的导入行为。</p>
+<p>封装包时确保每个目录都定义了一个  <code>__init__.py</code> 文件，举个🌰：</p>
+<p>├── package             # 顶层目录<br>├── <strong>init</strong>.py<br>├── subPackage1     # 子包<br>│ ├── <strong>init</strong>.py<br>│ ├── module1<br>│ ├── module1<br>├── subPackage2     # 子包<br>│ ├── <strong>init</strong>.py<br>│ ├── module2 </p>
+<p>组织好目录结构和代码后，便可以执行以下 import 语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import package.subPackage1.module1</span><br><span class="line">from package.subPackage1 import module1</span><br><span class="line">import package.subPackage2.module2 as module2</span><br></pre></td></tr></table></figure>
+
+<p><code>__init__.py</code> 文件的目的是要包含不同运行级别的包的可选的初始化代码，导入一个包时会先导入的它的 <code>__init__.py</code> 文件并自动运行。</p>
+<p>举个🌰，执行语句 <code>import package.subPackage1.module1</code>  时，文件 <code>package/__init__.py</code> 将被导入，建立 package 命名空间的内容，且 <code>package/__init__.py</code> 将在文件  <code>package/subPackage1/__init__.py</code>  导入之前导入。</p>
+<p>一般情况下 <code>__init__.py</code> 文件可以为空，但是有的时候也可以在 <code>__init__.py</code> 中导入其他的包或模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># package/subPackage1/__init__.py</span><br><span class="line">from . import module1</span><br></pre></td></tr></table></figure>
+
+<p>于是就可以通过 <code>import package.subPackage1</code> 代替 <code>import package.subPackage1.module1</code> 来导入模块了。</p>
+<h4 id="包导入"><a href="#包导入" class="headerlink" title="包导入"></a>包导入</h4><h5 id="使用相对路径名导入包中子模块"><a href="#使用相对路径名导入包中子模块" class="headerlink" title="使用相对路径名导入包中子模块"></a>使用相对路径名导入包中子模块</h5><h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a href="https://docs.python.org/zh-cn/3/reference/import.html#the-module-cache" target="_blank" rel="noopener">【官方文档】—— 导入系统</a></li>
+<li><a href="https://www.jianshu.com/p/73f7fbf75183" target="_blank" rel="noopener">Python <em>\</em>init__.py 作用详解</a></li>
+<li><a href="https://www.jianshu.com/p/03af86845c95" target="_blank" rel="noopener">Python源码剖析笔记3-Python执行原理初探</a></li>
 </ul>
 
       
@@ -434,7 +504,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://uestc66.github.io/2019/09/01/Node.js/Node.js 传送门/" title="Node.js">https://uestc66.github.io/2019/09/01/Node.js/Node.js 传送门/</a>
+    <a href="https://uestc66.github.io/2019/09/01/Python/深入浅出 Python 模块机制/" title="深入浅出 Python 模块机制">https://uestc66.github.io/2019/09/01/Python/深入浅出 Python 模块机制/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -459,7 +529,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
         </div>
       
@@ -472,8 +542,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/21/Python/pandas 的 excel 应用/" rel="next" title>
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2019/09/01/Node.js/Node.js 传送门/" rel="next" title="Node.js">
+                <i class="fa fa-chevron-left"></i> Node.js
               </a>
             
           </div>
@@ -482,8 +552,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/01/Python/深入浅出 Python 模块机制/" rel="prev" title="深入浅出 Python 模块机制">
-                深入浅出 Python 模块机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/09/06/Web前端/前端传送门/" rel="prev" title="js 引擎(一)">
+                js 引擎(一) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -643,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何学习-Node-js"><span class="nav-number">1.</span> <span class="nav-text">如何学习 Node.js</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-模块"><span class="nav-number">1.</span> <span class="nav-text">Python 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是-Python-模块"><span class="nav-number">1.1.</span> <span class="nav-text">什么是 Python 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#举个-🌰"><span class="nav-number">1.2.</span> <span class="nav-text">举个 🌰</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块导入"><span class="nav-number">1.3.</span> <span class="nav-text">模块导入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#举个🌰"><span class="nav-number">1.3.1.</span> <span class="nav-text">举个🌰</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块执行"><span class="nav-number">1.4.</span> <span class="nav-text">模块执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块加载机制"><span class="nav-number">1.5.</span> <span class="nav-text">模块加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动态加载模块"><span class="nav-number">1.5.1.</span> <span class="nav-text">动态加载模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-包"><span class="nav-number">2.</span> <span class="nav-text">Python 包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#init-py-文件"><span class="nav-number">2.1.</span> <span class="nav-text">_init_.py 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包导入"><span class="nav-number">2.2.</span> <span class="nav-text">包导入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用相对路径名导入包中子模块"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用相对路径名导入包中子模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">3.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
             
 
           </div>
