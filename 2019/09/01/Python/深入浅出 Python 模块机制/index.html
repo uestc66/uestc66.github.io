@@ -95,12 +95,12 @@
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
 <meta property="og:description" content="Python 模块 模块是包括 Python 定义和声明的文件，文件名就是模块名加上 .py  后缀，模块名可以由全局变量 __name__ 得到。 Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Python、C 还是别的语言实现。  什么是 Python 模块简单来说，一个 Python 模块就是一个以 .py 为后缀的文件 ，模块中能定义内容包括：变量、函数、类和可执">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://uestc66.github.io/2019/09/01/Python/images/module-import.jpg">
-<meta property="og:updated_time" content="2019-09-05T16:18:10.002Z">
+<meta property="og:image" content="https://gw.alicdn.com/tfs/TB1gWubfoY1gK0jSZFCXXcwqXXa-1672-1166.jpg">
+<meta property="og:updated_time" content="2019-09-05T16:24:44.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出 Python 模块机制">
 <meta name="twitter:description" content="Python 模块 模块是包括 Python 定义和声明的文件，文件名就是模块名加上 .py  后缀，模块名可以由全局变量 __name__ 得到。 Python 只有一种模块对象类型，所有模块都属于该类型，无论模块是用 Python、C 还是别的语言实现。  什么是 Python 模块简单来说，一个 Python 模块就是一个以 .py 为后缀的文件 ，模块中能定义内容包括：变量、函数、类和可执">
-<meta name="twitter:image" content="https://uestc66.github.io/2019/09/01/Python/images/module-import.jpg">
+<meta name="twitter:image" content="https://gw.alicdn.com/tfs/TB1gWubfoY1gK0jSZFCXXcwqXXa-1672-1166.jpg">
 
 
 
@@ -428,7 +428,7 @@
 <li><p>自定义模块，即用户自己编写的模块。</p>
 </li>
 </ul>
-<h4 id="举个-🌰"><a href="#举个-🌰" class="headerlink" title="举个 🌰"></a>举个 🌰</h4><p>我们写一个模块 fibo.py ：</p>
+<p>举个 🌰，我们写一个模块 fibo.py ：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># write Fibonacci series up to n</span><br><span class="line">def fib(n):   </span><br><span class="line">    a, b = 0, 1</span><br><span class="line">    while a &lt; n:</span><br><span class="line">        print(a)</span><br><span class="line">        a, b = b, a+b</span><br><span class="line"></span><br><span class="line"># return Fibonacci series up to n</span><br><span class="line">def fib2(n): </span><br><span class="line">    result = []</span><br><span class="line">    a, b = 0, 1</span><br><span class="line">    while a &lt; n:</span><br><span class="line">        result.append(a)</span><br><span class="line">        a, b = b, a+b</span><br></pre></td></tr></table></figure>
 
 <h4 id="模块导入"><a href="#模块导入" class="headerlink" title="模块导入"></a>模块导入</h4><p>导入模块的方式有以下 2 种：</p>
@@ -441,7 +441,7 @@
 <li><strong>from module import func1, func2</strong> </li>
 </ul>
 <p>这是模块 <strong>部分引入</strong> 的方式。按需引入需要模块中定义的函数，另一个好处是可以直接在脚本中使用复制后的变量名。</p>
-<h5 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h5><p>现在进入 Python 解释器，导入该模块：</p>
+<p>举个🌰，现在进入 Python 解释器导入该模块：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import fibo</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
 
 <p>可以看到当前没有任何输出，因为导入模块的操作，只是进入到模块名 <code>fibo</code> 中，并不会直接进入到定义在 <code>fibo</code> 函数内。可以用模块名访问这些函数:</p>
@@ -455,7 +455,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; python fibo.py </span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
 
 <p>可以看到模块里的代码会被执行，就好像已导入模块一样。</p>
-<h4 id="模块加载机制"><a href="#模块加载机制" class="headerlink" title="模块加载机制"></a>模块加载机制</h4><img src="../images/module-import.jpg">
+<h4 id="模块加载机制"><a href="#模块加载机制" class="headerlink" title="模块加载机制"></a>模块加载机制</h4><img src="https://gw.alicdn.com/tfs/TB1gWubfoY1gK0jSZFCXXcwqXXa-1672-1166.jpg">
 
 
 
@@ -713,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-模块"><span class="nav-number">1.</span> <span class="nav-text">Python 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是-Python-模块"><span class="nav-number">1.1.</span> <span class="nav-text">什么是 Python 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#举个-🌰"><span class="nav-number">1.2.</span> <span class="nav-text">举个 🌰</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块导入"><span class="nav-number">1.3.</span> <span class="nav-text">模块导入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#举个🌰"><span class="nav-number">1.3.1.</span> <span class="nav-text">举个🌰</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块执行"><span class="nav-number">1.4.</span> <span class="nav-text">模块执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块加载机制"><span class="nav-number">1.5.</span> <span class="nav-text">模块加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动态加载模块"><span class="nav-number">1.5.1.</span> <span class="nav-text">动态加载模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-包"><span class="nav-number">2.</span> <span class="nav-text">Python 包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#init-py-文件"><span class="nav-number">2.1.</span> <span class="nav-text">_init_.py 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包导入"><span class="nav-number">2.2.</span> <span class="nav-text">包导入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用相对路径名导入包中子模块"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用相对路径名导入包中子模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">3.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-模块"><span class="nav-number">1.</span> <span class="nav-text">Python 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是-Python-模块"><span class="nav-number">1.1.</span> <span class="nav-text">什么是 Python 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块导入"><span class="nav-number">1.2.</span> <span class="nav-text">模块导入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块执行"><span class="nav-number">1.3.</span> <span class="nav-text">模块执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块加载机制"><span class="nav-number">1.4.</span> <span class="nav-text">模块加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动态加载模块"><span class="nav-number">1.4.1.</span> <span class="nav-text">动态加载模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-包"><span class="nav-number">2.</span> <span class="nav-text">Python 包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#init-py-文件"><span class="nav-number">2.1.</span> <span class="nav-text">_init_.py 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包导入"><span class="nav-number">2.2.</span> <span class="nav-text">包导入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用相对路径名导入包中子模块"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用相对路径名导入包中子模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">3.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
             
 
           </div>
