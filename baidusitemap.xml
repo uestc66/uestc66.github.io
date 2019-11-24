@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/250%E8%A1%8C%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84MVVM/</loc>
-    <lastmod>2019-09-24</lastmod>
+    <loc>https://uestc66.github.io/2019/11/24/Web%E5%89%8D%E7%AB%AF/Understanding%20JavaScript%20%E2%80%94%20Heap,%20Stack,%20Event-loops%20and%20Callback%20Queue/</loc>
+    <lastmod>2019-11-24</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/11/19/Web%E5%89%8D%E7%AB%AF/PWA%EF%BC%9APush/</loc>
+    <lastmod>2019-11-21</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/Chrome%20%E6%8F%92%E4%BB%B6/</loc>
+    <lastmod>2019-11-19</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks/</loc>
-    <lastmod>2019-09-24</lastmod>
+    <lastmod>2019-10-24</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/10/15/SQL/%E5%AE%9E%E7%94%A8%20SQL%20%E8%AF%AD%E5%8F%A5/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/06/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/%E9%A1%B5%E9%9D%A2%E5%8F%AF%E8%A7%86%E5%8C%96%E6%90%AD%E5%BB%BA%E5%B7%A5%E5%85%B7%E6%8A%80%E6%9C%AF%E8%A6%81%E7%82%B9/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/250%E8%A1%8C%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84MVVM/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/15/WebAssembly/WebAssembly%20%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/01/Node.js/Node.js%20%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/08/AI/AI%20%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/18/Web%E5%89%8D%E7%AB%AF/js%20%E5%BC%95%E6%93%8E%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
+    <lastmod>2019-10-16</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/10/02/Node.js/Puppeteer%20%E5%88%9D%E4%BD%93%E9%AA%8C/</loc>
+    <lastmod>2019-10-01</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/09/16/Python/MacOS%20%E6%90%AD%E5%BB%BA%20Python%20%E7%8E%AF%E5%A2%83/</loc>
     <lastmod>2019-09-17</lastmod>
   </url>  <url>
-    <loc>https://uestc66.github.io/2019/09/08/AI/AI%20%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
-    <lastmod>2019-09-15</lastmod>
-  </url>  <url>
     <loc>https://uestc66.github.io/2019/09/08/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2CSRF%E6%94%BB%E5%87%BB/</loc>
     <lastmod>2019-09-11</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2019/09/06/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
-    <lastmod>2019-09-08</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2019/09/01/Node.js/Node.js%20%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
-    <lastmod>2019-09-08</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/08/15/Python/Python%20%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
     <lastmod>2019-09-08</lastmod>
@@ -28,16 +52,10 @@
     <loc>https://uestc66.github.io/2019/09/01/Python/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%20Python%20%E6%A8%A1%E5%9D%97%E6%9C%BA%E5%88%B6/</loc>
     <lastmod>2019-09-08</lastmod>
   </url>  <url>
-    <loc>https://uestc66.github.io/2019/08/18/Web%E5%89%8D%E7%AB%AF/js%20%E5%BC%95%E6%93%8E%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
-    <lastmod>2019-09-08</lastmod>
-  </url>  <url>
     <loc>https://uestc66.github.io/2019/09/08/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2XSS%E6%94%BB%E5%87%BB/</loc>
     <lastmod>2019-09-08</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/08/17/%E5%85%B6%E4%BB%96/hexo%20&%20github%20page%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2019-09-05</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2019/08/15/WebAssembly/WebAssembly%20%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
     <lastmod>2019-09-05</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/08/21/Python/pandas%20%E7%9A%84%20excel%20%E5%BA%94%E7%94%A8/</loc>

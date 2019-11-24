@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="实用 SQL 语句前言文章沿着设计一个假想的应用 awesome_app 为主线，从零创建修改数据库，表格，字段属性，索引，字符集，默认值，自增，增删改查，多表查询，内置函数等实用 SQL 语句。收藏此文，告别零散又低效地搜索经常使用的 SQL 语句。所有 SQL 都在 MySQL 下通过验证，可留着日后回顾参考，也可跟着动手一起做，如果未安装 MySQL 可参考 《macOS 安装 mysql》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jerry.zmf&#39;s Blog">
+<meta property="og:url" content="https://uestc66.github.io/2019/10/15/SQL/实用 SQL 语句/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="实用 SQL 语句前言文章沿着设计一个假想的应用 awesome_app 为主线，从零创建修改数据库，表格，字段属性，索引，字符集，默认值，自增，增删改查，多表查询，内置函数等实用 SQL 语句。收藏此文，告别零散又低效地搜索经常使用的 SQL 语句。所有 SQL 都在 MySQL 下通过验证，可留着日后回顾参考，也可跟着动手一起做，如果未安装 MySQL 可参考 《macOS 安装 mysql》">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-16T09:35:21.712Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jerry.zmf&#39;s Blog">
+<meta name="twitter:description" content="实用 SQL 语句前言文章沿着设计一个假想的应用 awesome_app 为主线，从零创建修改数据库，表格，字段属性，索引，字符集，默认值，自增，增删改查，多表查询，内置函数等实用 SQL 语句。收藏此文，告别零散又低效地搜索经常使用的 SQL 语句。所有 SQL 都在 MySQL 下通过验证，可留着日后回顾参考，也可跟着动手一起做，如果未安装 MySQL 可参考 《macOS 安装 mysql》">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2019/10/15/SQL/实用 SQL 语句/">
+
+
+
+
+
+  <title> | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/10/15/SQL/实用 SQL 语句/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T00:53:47+08:00">
+                2019-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/15/SQL/实用 SQL 语句/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/15/SQL/实用 SQL 语句/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="实用-SQL-语句"><a href="#实用-SQL-语句" class="headerlink" title="实用 SQL 语句"></a>实用 SQL 语句</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>文章沿着设计一个假想的应用 <code>awesome_app</code> 为主线，从零创建修改数据库，表格，字段属性，索引，字符集，默认值，自增，增删改查，多表查询，内置函数等实用 SQL 语句。收藏此文，告别零散又低效地搜索经常使用的 SQL 语句。所有 SQL 都在 MySQL 下通过验证，可留着日后回顾参考，也可跟着动手一起做，如果未安装 MySQL 可参考 <a href="https://juejin.im/post/5da13c38e51d4577ec4eb983" target="_blank" rel="noopener">《macOS 安装 mysql》</a> (windows 安装大同小异)。</p>
+<h2 id="1-创建"><a href="#1-创建" class="headerlink" title="1. 创建"></a>1. 创建</h2><h3 id="1-1-创建数据库"><a href="#1-1-创建数据库" class="headerlink" title="1.1 创建数据库"></a>1.1 创建数据库</h3><p>语法：<strong>create database</strong> <em>db_name</em></p>
+<p>示例：创建应用数据库 <code>awesome_app</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database `awesome_app`</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-创建表格"><a href="#1-2-创建表格" class="headerlink" title="1.2 创建表格"></a>1.2 创建表格</h3><p>语法：<strong>create table</strong> <em>table_name ( … columns )</em></p>
+<p>示例：创建用户表 <code>users</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create table `users`</span><br><span class="line">(</span><br><span class="line">    `id` int,</span><br><span class="line">    `name` char(10),</span><br><span class="line">    `avatar` varchar(300),</span><br><span class="line">    `regtime` date</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-创建索引"><a href="#1-3-创建索引" class="headerlink" title="1.3 创建索引"></a>1.3 创建索引</h3><p>语法：<strong>create index</strong> <em>index_name</em> <strong>on</strong> <em>table_name</em> (column_name)</p>
+<p>示例：为用户 <code>id</code> 创建索引 <code>idx_id</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create index `idx_id` on `users` (`id`)</span><br><span class="line">/* 创建唯一索引 */</span><br><span class="line">create unique index `idx_id` on `users` (`id`)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-为已存在的列创建主键"><a href="#1-4-为已存在的列创建主键" class="headerlink" title="1.4 为已存在的列创建主键"></a>1.4 为已存在的列创建主键</h3><blockquote>
+<p>更常用的方式是在创建表语句所有列定义的后面添加一行 <code>primary key (column_name)</code>。</p>
+</blockquote>
+<p>语法：<strong>alter table</strong> <em>table_name</em> <strong>add primary key</strong> (<em>column_name</em>)</p>
+<p>示例：将用户 <code>id</code> 设为主键</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table users add primary key (`id`)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-为已存在的列创建自增约束"><a href="#1-5-为已存在的列创建自增约束" class="headerlink" title="1.5 为已存在的列创建自增约束"></a>1.5 为已存在的列创建自增约束</h3><blockquote>
+<p>更常用的方式是在创建表语句中添加自增列 <code>id int not null auto_increment</code>。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table `users` modify `id` int not null auto_increment</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-插入"><a href="#2-插入" class="headerlink" title="2. 插入"></a>2. 插入</h2><p>语法：</p>
+<ul>
+<li><strong>insert into</strong> <em>table_name</em> <strong>values</strong> (<em>value1, value2, …</em>)</li>
+<li><strong>insert into</strong> <em>table_name</em> (<em>column1, column2, …</em>) <strong>values</strong> (<em>value1, value2, …</em>)</li>
+</ul>
+<p>示例：新增注册用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">insert into `users` values (1, &apos;ken&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/avatar1.jpg&apos;, curdate())</span><br><span class="line">/* 指定列插入 */</span><br><span class="line">insert into `users` (`name`, `avatar`) values (&apos;bill&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/avatar2.jpg&apos;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-修改"><a href="#3-修改" class="headerlink" title="3. 修改"></a>3. 修改</h2><h3 id="3-1-修改数据记录"><a href="#3-1-修改数据记录" class="headerlink" title="3.1 修改数据记录"></a>3.1 修改数据记录</h3><p>语法：</p>
+<ul>
+<li><strong>update</strong> <em>table_name</em> <strong>set</strong> <em>column=new_value</em> <strong>where</strong> <em>condition</em></li>
+<li><strong>update</strong> <em>table_name</em> <strong>set</strong> <em>column1=new_value1,column2=new_value2,…</em> <strong>where</strong> <em>condition</em></li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update `users` set `regtime`=curdate() where `regtime` is null</span><br><span class="line">/* 一次修改多列 */</span><br><span class="line">update `users` set `name`=&apos;steven&apos;,`avatar`=&apos;http://cdn.awesome_app.com/path/to/xxx/steven.jpg&apos; where `id`=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-修改数据库字符集为-utf8"><a href="#3-2-修改数据库字符集为-utf8" class="headerlink" title="3.2 修改数据库字符集为 utf8"></a>3.2 修改数据库字符集为 <code>utf8</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter database `awesome_app` default character set utf8</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-修改表字符集为-utf8"><a href="#3-3-修改表字符集为-utf8" class="headerlink" title="3.3 修改表字符集为 utf8"></a>3.3 修改表字符集为 <code>utf8</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table `users` convert to character set utf8</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-修改表字段字符集为-utf8"><a href="#3-4-修改表字段字符集为-utf8" class="headerlink" title="3.4 修改表字段字符集为 utf8"></a>3.4 修改表字段字符集为 <code>utf8</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table `users` modify `name` char(10) character set utf8</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-修改字段类型"><a href="#3-5-修改字段类型" class="headerlink" title="3.5 修改字段类型"></a>3.5 修改字段类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table `users` modify `regtime` datetime not null</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-修改字段默认值"><a href="#3-5-修改字段默认值" class="headerlink" title="3.5 修改字段默认值"></a>3.5 修改字段默认值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table `users` alter `regtime` set default &apos;2019-10-12 00:00:00&apos;</span><br><span class="line">/* 设置默认为当前时间 current_timestamp，需要重新定义整个列 */</span><br><span class="line">alter table `users` modify `regtime` datetime not null default current_timestamp</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-删除"><a href="#4-删除" class="headerlink" title="4. 删除"></a>4. 删除</h2><h3 id="4-1-删除数据记录"><a href="#4-1-删除数据记录" class="headerlink" title="4.1 删除数据记录"></a>4.1 删除数据记录</h3><p>语法：<strong>delete from</strong> <em>table_name</em> <strong>where</strong> <em>condition</em></p>
+<p>示例：删除用户名未填写的用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 先增加一条用户名为空的用户</span><br><span class="line">mysql&gt; insert into `users` (`regtime`) values (curdate());</span><br><span class="line">mysql&gt; select * from users;</span><br><span class="line">+----+--------+----------------------------------------------------+------------+</span><br><span class="line">| id | name   | avatar                                             | regtime    |</span><br><span class="line">+----+--------+----------------------------------------------------+------------+</span><br><span class="line">|  1 | steven | http://cdn.awesome_app.com/path/to/xxx/steven.jpg  | 2019-10-12 |</span><br><span class="line">|  2 | bill   | http://cdn.awesome_app.com/path/to/xxx/avatar2.jpg | 2019-10-12 |</span><br><span class="line">|  3 | NULL   | NULL                                               | 2019-10-12 |</span><br><span class="line">+----+--------+----------------------------------------------------+------------+</span><br><span class="line"># 删除用户名为空的行</span><br><span class="line">mysql&gt; delete from `users` where `name` is null;</span><br><span class="line">mysql&gt; select * from users;</span><br><span class="line">+----+--------+----------------------------------------------------+------------+</span><br><span class="line">| id | name   | avatar                                             | regtime    |</span><br><span class="line">+----+--------+----------------------------------------------------+------------+</span><br><span class="line">|  1 | steven | http://cdn.awesome_app.com/path/to/xxx/steven.jpg  | 2019-10-12 |</span><br><span class="line">|  2 | bill   | http://cdn.awesome_app.com/path/to/xxx/avatar2.jpg | 2019-10-12 |</span><br><span class="line">+----+--------+----------------------------------------------------+------------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-删除数据库"><a href="#4-2-删除数据库" class="headerlink" title="4.2 删除数据库"></a>4.2 删除数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop database if exists `awesome_app`</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-删除表"><a href="#4-3-删除表" class="headerlink" title="4.3 删除表"></a>4.3 删除表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table if exists `users`</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-清空表中所有数据"><a href="#4-4-清空表中所有数据" class="headerlink" title="4.4 清空表中所有数据"></a>4.4 清空表中所有数据</h3><p>这个操作相当于先 <code>drop table</code> 再 <code>create table</code> ，因此需要有 <code>drop</code> 权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">truncate table `users`</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-删除索引"><a href="#4-5-删除索引" class="headerlink" title="4.5 删除索引"></a>4.5 删除索引</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop index `idx_id` on `users`</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-查询"><a href="#5-查询" class="headerlink" title="5. 查询"></a>5. 查询</h2><h3 id="5-1-语法"><a href="#5-1-语法" class="headerlink" title="5.1 语法"></a>5.1 语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    [ALL | DISTINCT | DISTINCTROW ]</span><br><span class="line">      [HIGH_PRIORITY]</span><br><span class="line">      [STRAIGHT_JOIN]</span><br><span class="line">      [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [SQL_BUFFER_RESULT]</span><br><span class="line">      [SQL_CACHE | SQL_NO_CACHE] [SQL_CALC_FOUND_ROWS]</span><br><span class="line">    select_expr [, select_expr ...]</span><br><span class="line">    [FROM table_references</span><br><span class="line">      [PARTITION partition_list]</span><br><span class="line">    [WHERE where_condition]</span><br><span class="line">    [GROUP BY &#123;col_name | expr | position&#125;</span><br><span class="line">      [ASC | DESC], ... [WITH ROLLUP]]</span><br><span class="line">    [HAVING where_condition]</span><br><span class="line">    [ORDER BY &#123;col_name | expr | position&#125;</span><br><span class="line">      [ASC | DESC], ...]</span><br><span class="line">    [LIMIT &#123;[offset,] row_count | row_count OFFSET offset&#125;]</span><br><span class="line">    [PROCEDURE procedure_name(argument_list)]</span><br><span class="line">    [INTO OUTFILE &apos;file_name&apos;</span><br><span class="line">        [CHARACTER SET charset_name]</span><br><span class="line">        export_options</span><br><span class="line">      | INTO DUMPFILE &apos;file_name&apos;</span><br><span class="line">      | INTO var_name [, var_name]]</span><br><span class="line">    [FOR UPDATE | LOCK IN SHARE MODE]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-单表查询"><a href="#5-2-单表查询" class="headerlink" title="5.2 单表查询"></a>5.2 单表查询</h3><h3 id="5-2-1-准备数据："><a href="#5-2-1-准备数据：" class="headerlink" title="5.2.1 准备数据："></a>5.2.1 准备数据：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">insert into users (`name`, `avatar`) values</span><br><span class="line">(&apos;张三&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/3.jpg&apos;),</span><br><span class="line">(&apos;李四&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/4.jpg&apos;),</span><br><span class="line">(&apos;王五&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/5.jpg&apos;),</span><br><span class="line">(&apos;马六&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/6.jpg&apos;),</span><br><span class="line">(&apos;肖七&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/7.jpg&apos;),</span><br><span class="line">(&apos;刘八&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/8.jpg&apos;),</span><br><span class="line">(&apos;杨九&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/9.jpg&apos;),</span><br><span class="line">(&apos;郑十&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/10.jpg&apos;);</span><br><span class="line"></span><br><span class="line">/* 增加重复行 */</span><br><span class="line">insert into users (`name`, `avatar`) values</span><br><span class="line">(&apos;张三&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/3.jpg&apos;),</span><br><span class="line">(&apos;李四&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/4.jpg&apos;),</span><br><span class="line">(&apos;王五&apos;, &apos;http://cdn.awesome_app.com/path/to/xxx/5.jpg&apos;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-2-查询所有列"><a href="#5-2-2-查询所有列" class="headerlink" title="5.2.2 查询所有列"></a>5.2.2 查询所有列</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from users;</span><br><span class="line">+----+--------+----------------------------------------------------+---------------------+</span><br><span class="line">| id | name   | avatar                                             | regtime             |</span><br><span class="line">+----+--------+----------------------------------------------------+---------------------+</span><br><span class="line">|  1 | steven | http://cdn.awesome_app.com/path/to/xxx/steven.jpg  | 2019-10-12 00:00:00 |</span><br><span class="line">|  2 | bill   | http://cdn.awesome_app.com/path/to/xxx/avatar2.jpg | 2019-10-12 00:00:00 |</span><br><span class="line">|  3 | 张三   | http://cdn.awesome_app.com/path/to/xxx/3.jpg       | 2019-10-13 10:58:37 |</span><br><span class="line">|  4 | 李四   | http://cdn.awesome_app.com/path/to/xxx/4.jpg       | 2019-10-13 10:58:37 |</span><br><span class="line">|  5 | 王五   | http://cdn.awesome_app.com/path/to/xxx/5.jpg       | 2019-10-13 10:58:37 |</span><br><span class="line">|  6 | 马六   | http://cdn.awesome_app.com/path/to/xxx/6.jpg       | 2019-10-13 10:58:37 |</span><br><span class="line">|  7 | 肖七   | http://cdn.awesome_app.com/path/to/xxx/7.jpg       | 2019-10-13 10:58:37 |</span><br><span class="line">|  8 | 刘八   | http://cdn.awesome_app.com/path/to/xxx/8.jpg       | 2019-10-13 10:58:37 |</span><br><span class="line">|  9 | 杨九   | http://cdn.awesome_app.com/path/to/xxx/9.jpg       | 2019-10-13 10:58:37 |</span><br><span class="line">| 10 | 郑十   | http://cdn.awesome_app.com/path/to/xxx/10.jpg      | 2019-10-13 10:58:37 |</span><br><span class="line">| 11 | 张三   | http://cdn.awesome_app.com/path/to/xxx/3.jpg       | 2019-10-13 11:20:17 |</span><br><span class="line">| 12 | 李四   | http://cdn.awesome_app.com/path/to/xxx/4.jpg       | 2019-10-13 11:20:17 |</span><br><span class="line">| 13 | 王五   | http://cdn.awesome_app.com/path/to/xxx/5.jpg       | 2019-10-13 11:20:17 |</span><br><span class="line">+----+--------+----------------------------------------------------+---------------------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-3-查询指定列"><a href="#5-2-3-查询指定列" class="headerlink" title="5.2.3 查询指定列"></a>5.2.3 查询指定列</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select id,name from users;</span><br><span class="line">+----+--------+</span><br><span class="line">| id | name   |</span><br><span class="line">+----+--------+</span><br><span class="line">|  1 | steven |</span><br><span class="line">|  2 | bill   |</span><br><span class="line">|  3 | 张三   |</span><br><span class="line">|  4 | 李四   |</span><br><span class="line">|  5 | 王五   |</span><br><span class="line">|  6 | 马六   |</span><br><span class="line">|  7 | 肖七   |</span><br><span class="line">|  8 | 刘八   |</span><br><span class="line">|  9 | 杨九   |</span><br><span class="line">| 10 | 郑十   |</span><br><span class="line">| 11 | 张三   |</span><br><span class="line">| 12 | 李四   |</span><br><span class="line">| 13 | 王五   |</span><br><span class="line">+----+--------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-4-查询不重复记录"><a href="#5-2-4-查询不重复记录" class="headerlink" title="5.2.4 查询不重复记录"></a>5.2.4 查询不重复记录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select distinct name,avatar  from users;</span><br><span class="line">+--------+----------------------------------------------------+</span><br><span class="line">| name   | avatar                                             |</span><br><span class="line">+--------+----------------------------------------------------+</span><br><span class="line">| steven | http://cdn.awesome_app.com/path/to/xxx/steven.jpg  |</span><br><span class="line">| bill   | http://cdn.awesome_app.com/path/to/xxx/avatar2.jpg |</span><br><span class="line">| 张三   | http://cdn.awesome_app.com/path/to/xxx/3.jpg       |</span><br><span class="line">| 李四   | http://cdn.awesome_app.com/path/to/xxx/4.jpg       |</span><br><span class="line">| 王五   | http://cdn.awesome_app.com/path/to/xxx/5.jpg       |</span><br><span class="line">| 马六   | http://cdn.awesome_app.com/path/to/xxx/6.jpg       |</span><br><span class="line">| 肖七   | http://cdn.awesome_app.com/path/to/xxx/7.jpg       |</span><br><span class="line">| 刘八   | http://cdn.awesome_app.com/path/to/xxx/8.jpg       |</span><br><span class="line">| 杨九   | http://cdn.awesome_app.com/path/to/xxx/9.jpg       |</span><br><span class="line">| 郑十   | http://cdn.awesome_app.com/path/to/xxx/10.jpg      |</span><br><span class="line">+--------+----------------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-5-限制查询行数"><a href="#5-2-5-限制查询行数" class="headerlink" title="5.2.5 限制查询行数"></a>5.2.5 限制查询行数</h3><p><strong>查询前几行</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select id,name from users limit 2;</span><br><span class="line">+----+--------+</span><br><span class="line">| id | name   |</span><br><span class="line">+----+--------+</span><br><span class="line">|  1 | steven |</span><br><span class="line">|  2 | bill   |</span><br><span class="line">+----+--------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>查询从指定偏移(第一行为偏移为0)开始的几行</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select id,name from users limit 2,3;</span><br><span class="line">+----+--------+</span><br><span class="line">| id | name   |</span><br><span class="line">+----+--------+</span><br><span class="line">|  3 | 张三   |</span><br><span class="line">|  4 | 李四   |</span><br><span class="line">|  5 | 王五   |</span><br><span class="line">+----+--------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-6-排序"><a href="#5-2-6-排序" class="headerlink" title="5.2.6 排序"></a>5.2.6 排序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 正序</span><br><span class="line">mysql&gt; select distinct name from users order by name asc limit 3;</span><br><span class="line">+--------+</span><br><span class="line">| name   |</span><br><span class="line">+--------+</span><br><span class="line">| bill   |</span><br><span class="line">| steven |</span><br><span class="line">| 刘八   |</span><br><span class="line">+--------+</span><br><span class="line"># 倒序</span><br><span class="line">mysql&gt; select id,name from users order by id desc limit 3;</span><br><span class="line">+----+--------+</span><br><span class="line">| id | name   |</span><br><span class="line">+----+--------+</span><br><span class="line">| 13 | 王五   |</span><br><span class="line">| 12 | 李四   |</span><br><span class="line">| 11 | 张三   |</span><br><span class="line">+----+--------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-7-分组"><a href="#5-2-7-分组" class="headerlink" title="5.2.7 分组"></a>5.2.7 分组</h3><p><strong>增加城市字段</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">alter table `users` add `city` varchar(10) comment &apos;用户所在城市&apos; after `name`;</span><br><span class="line">update `users` set `city`=&apos;旧金山&apos; where `id`=1;</span><br><span class="line">update `users` set `city`=&apos;西雅图&apos; where `id`=2;</span><br><span class="line">update `users` set `city`=&apos;北京&apos; where `id` in (3,5,7);</span><br><span class="line">update `users` set `city`=&apos;上海&apos; where `id` in (4,6,8);</span><br><span class="line">update `users` set `city`=&apos;广州&apos; where `id` between 9 and 10;</span><br><span class="line">update `users` set `city`=&apos;深圳&apos; where `id` between 11 and 13;</span><br></pre></td></tr></table></figure>
+
+<p><strong>按城市分组统计用户数</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select city, count(name) as num_of_user from users group by city;</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| city      | num_of_user |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| 上海      |           3 |</span><br><span class="line">| 北京      |           3 |</span><br><span class="line">| 广州      |           2 |</span><br><span class="line">| 旧金山    |           1 |</span><br><span class="line">| 深圳      |           3 |</span><br><span class="line">| 西雅图    |           1 |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">mysql&gt; select city, count(name) as num_of_user from users group by city having num_of_user=1;</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| city      | num_of_user |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| 旧金山    |           1 |</span><br><span class="line">| 西雅图    |           1 |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">mysql&gt; select city, count(name) as num_of_user from users group by city having num_of_user&gt;2;</span><br><span class="line">+--------+-------------+</span><br><span class="line">| city   | num_of_user |</span><br><span class="line">+--------+-------------+</span><br><span class="line">| 上海   |           3 |</span><br><span class="line">| 北京   |           3 |</span><br><span class="line">| 深圳   |           3 |</span><br><span class="line">+--------+-------------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-多表关联查询"><a href="#5-3-多表关联查询" class="headerlink" title="5.3 多表关联查询"></a>5.3 多表关联查询</h3><h4 id="5-3-1-准备数据"><a href="#5-3-1-准备数据" class="headerlink" title="5.3.1 准备数据"></a>5.3.1 准备数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">create table if not exists `orders`</span><br><span class="line">(</span><br><span class="line">    `id` int not null primary key auto_increment comment &apos;订单ID&apos;,</span><br><span class="line">    `title` varchar(50) not null comment &apos;订单标题&apos;,</span><br><span class="line">    `user_id` int not null comment &apos;用户ID&apos;,</span><br><span class="line">    `cretime` timestamp not null default current_timestamp comment &apos;创建时间&apos;</span><br><span class="line">);</span><br><span class="line">create table if not exists `groups`</span><br><span class="line">(</span><br><span class="line">    `id` int not null primary key auto_increment comment &apos;用户组ID&apos;,</span><br><span class="line">    `title` varchar(50) not null comment &apos;用户组标题&apos;,</span><br><span class="line">    `cretime` timestamp not null default current_timestamp comment &apos;创建时间&apos;</span><br><span class="line">);</span><br><span class="line">alter table `users` add `group_id` int comment &apos;用户分组&apos; after `city`;</span><br><span class="line"></span><br><span class="line">insert into `groups` (`title`) values (&apos;大佬&apos;), (&apos;萌新&apos;), (&apos;菜鸡&apos;);</span><br><span class="line">insert into `orders` (`title`, `user_id`) values (&apos;《大佬是怎样炼成的？》&apos;, 3), (&apos;《MySQL 从萌新到删库跑路》&apos;, 6), (&apos;《菜鸡踩坑记》&apos;, 9);</span><br><span class="line">update `users` set `group_id`=1 where `id` between 1 and 2;</span><br><span class="line">update `users` set `group_id`=2 where `id` in (4, 6, 8, 10, 12);</span><br><span class="line">update `users` set `group_id`=3 where `id` in (3, 5, 13);</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-3-2-join"><a href="#5-3-2-join" class="headerlink" title="5.3.2 join"></a>5.3.2 join</h4><p><strong>join</strong></p>
+<p>用于在多个表中查询相互匹配的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select `users`.`name` as `user_name`, `orders`.`title` as `order_title` from `users`, `orders` where `orders`.`user_id`=`users`.`id`;</span><br><span class="line">+-----------+--------------------------------------+</span><br><span class="line">| user_name | order_title                          |</span><br><span class="line">+-----------+--------------------------------------+</span><br><span class="line">| 张三      | 《大佬是怎样炼成的？》               |</span><br><span class="line">| 马六      | 《MySQL 从萌新到删库跑路》           |</span><br><span class="line">| 杨九      | 《菜鸡踩坑记》                       |</span><br><span class="line">+-----------+--------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>inner join</strong></p>
+<p>内部连接。效果与 <code>join</code> 一样 , 但用法不同，<code>join</code> 使用 <code>where</code> ，<code>inner join</code> 使用 <code>on</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select `users`.`name` as `user_name`, `orders`.`title` as `order_title` from `users` inner join `orders` on `orders`.`user_id`=`users`.`id`;</span><br><span class="line">+-----------+--------------------------------------+</span><br><span class="line">| user_name | order_title                          |</span><br><span class="line">+-----------+--------------------------------------+</span><br><span class="line">| 张三      | 《大佬是怎样炼成的？》               |</span><br><span class="line">| 马六      | 《MySQL 从萌新到删库跑路》           |</span><br><span class="line">| 杨九      | 《菜鸡踩坑记》                       |</span><br><span class="line">+-----------+--------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>left join</strong></p>
+<p>左连接。返回<strong>左表</strong>所有行，即使<strong>右表</strong>中没有匹配的行，不匹配的用 <code>NULL</code> 填充。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select `users`.`name` as `user_name`, `orders`.`title` as `order_title` from `users` left join `orders` on `orders`.`user_id`=`users`.`id`;</span><br><span class="line">+-----------+--------------------------------------+</span><br><span class="line">| user_name | order_title                          |</span><br><span class="line">+-----------+--------------------------------------+</span><br><span class="line">| 张三      | 《大佬是怎样炼成的？》               |</span><br><span class="line">| 马六      | 《MySQL 从萌新到删库跑路》           |</span><br><span class="line">| 杨九      | 《菜鸡踩坑记》                       |</span><br><span class="line">| steven    | NULL                                 |</span><br><span class="line">| bill      | NULL                                 |</span><br><span class="line">| 李四      | NULL                                 |</span><br><span class="line">| 王五      | NULL                                 |</span><br><span class="line">| 肖七      | NULL                                 |</span><br><span class="line">| 刘八      | NULL                                 |</span><br><span class="line">| 郑十      | NULL                                 |</span><br><span class="line">| 张三      | NULL                                 |</span><br><span class="line">| 李四      | NULL                                 |</span><br><span class="line">| 王五      | NULL                                 |</span><br><span class="line">+-----------+--------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>right join</strong></p>
+<p>右连接。和 <code>left join</code> 正好相反，会返回<strong>右表</strong>所有行，即使<strong>左表</strong>中没有匹配的行，不匹配的用 <code>NULL</code> 填充。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select `groups`.`title` as `group_title`, `users`.`name` as `user_name` from `groups` right join `users` on `users`.`group_id`=`groups`.`id`;</span><br><span class="line">+-------------+-----------+</span><br><span class="line">| group_title | user_name |</span><br><span class="line">+-------------+-----------+</span><br><span class="line">| 大佬        | steven    |</span><br><span class="line">| 大佬        | bill      |</span><br><span class="line">| 萌新        | 李四      |</span><br><span class="line">| 萌新        | 马六      |</span><br><span class="line">| 萌新        | 刘八      |</span><br><span class="line">| 萌新        | 郑十      |</span><br><span class="line">| 萌新        | 李四      |</span><br><span class="line">| 菜鸡        | 张三      |</span><br><span class="line">| 菜鸡        | 王五      |</span><br><span class="line">| 菜鸡        | 王五      |</span><br><span class="line">| NULL        | 肖七      |</span><br><span class="line">| NULL        | 杨九      |</span><br><span class="line">| NULL        | 张三      |</span><br><span class="line">+-------------+-----------+</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-3-3-union"><a href="#5-3-3-union" class="headerlink" title="5.3.3 union"></a>5.3.3 union</h4><p><code>union</code> 用于合并两个或多个查询结果，合并的查询结果必须具有相同数量的列，并且列拥有形似的数据类型，同时列的顺序相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; (select `id`, `title` from `groups`) union (select `id`, `title` from `orders`);</span><br><span class="line">+----+--------------------------------------+</span><br><span class="line">| id | title                                |</span><br><span class="line">+----+--------------------------------------+</span><br><span class="line">|  1 | 大佬                                 |</span><br><span class="line">|  2 | 萌新                                 |</span><br><span class="line">|  3 | 菜鸡                                 |</span><br><span class="line">|  1 | 《大佬是怎样炼成的？》               |</span><br><span class="line">|  2 | 《MySQL 从萌新到删库跑路》           |</span><br><span class="line">|  3 | 《菜鸡踩坑记》                       |</span><br><span class="line">+----+--------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-函数"><a href="#6-函数" class="headerlink" title="6. 函数"></a>6. 函数</h2><h3 id="6-1-语法"><a href="#6-1-语法" class="headerlink" title="6.1 语法"></a>6.1 语法</h3><p><strong>select function</strong>(<em>column</em>) <strong>from</strong> <em>table_name</em></p>
+<h3 id="6-2-合计函数（Aggregate-functions）"><a href="#6-2-合计函数（Aggregate-functions）" class="headerlink" title="6.2 合计函数（Aggregate functions）"></a>6.2 合计函数（Aggregate functions）</h3><p>合计函数的操作面向一系列的值，并返回一个单一的值。通常与 <code>group by</code> 语句一起用。</p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">avg(column)</td>
+<td align="left">返回某列的平均值</td>
+</tr>
+<tr>
+<td align="left">count(column)</td>
+<td align="left">返回某列的行数（不包括 NULL 值）</td>
+</tr>
+<tr>
+<td align="left">count(*)</td>
+<td align="left">返回被选行数</td>
+</tr>
+<tr>
+<td align="left">first(column)</td>
+<td align="left">返回在指定的域中第一个记录的值</td>
+</tr>
+<tr>
+<td align="left">last(column)</td>
+<td align="left">返回在指定的域中最后一个记录的值</td>
+</tr>
+<tr>
+<td align="left">max(column)</td>
+<td align="left">返回某列的最高值</td>
+</tr>
+<tr>
+<td align="left">min(column)</td>
+<td align="left">返回某列的最低值</td>
+</tr>
+<tr>
+<td align="left">sum(column)</td>
+<td align="left">返回某列的总和</td>
+</tr>
+</tbody></table>
+<h3 id="6-3-标量函数（Scalar-functions）"><a href="#6-3-标量函数（Scalar-functions）" class="headerlink" title="6.3 标量函数（Scalar functions）"></a>6.3 标量函数（Scalar functions）</h3><table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ucase(c)</td>
+<td align="left">转换为大写</td>
+</tr>
+<tr>
+<td align="left">lcase(c)</td>
+<td align="left">转换为小写</td>
+</tr>
+<tr>
+<td align="left">mid(c, start[, end])</td>
+<td align="left">从文本提取字符</td>
+</tr>
+<tr>
+<td align="left">len(c)</td>
+<td align="left">返回文本长度</td>
+</tr>
+<tr>
+<td align="left">instr(c, char)</td>
+<td align="left">返回在文本中指定字符的数值位置</td>
+</tr>
+<tr>
+<td align="left">left(c, number_of_char)</td>
+<td align="left">返回文本的左侧部分</td>
+</tr>
+<tr>
+<td align="left">right(c, number_of_char)</td>
+<td align="left">返回文本的右侧部分</td>
+</tr>
+<tr>
+<td align="left">round(c, decimals)</td>
+<td align="left">对数值指定小数位数四舍五入</td>
+</tr>
+<tr>
+<td align="left">mod(x, y)</td>
+<td align="left">取余（求模）</td>
+</tr>
+<tr>
+<td align="left">now()</td>
+<td align="left">返回当前的系统日期</td>
+</tr>
+<tr>
+<td align="left">format(c, format)</td>
+<td align="left">格式化显示</td>
+</tr>
+<tr>
+<td align="left">datediff(d, date1, date2)</td>
+<td align="left">日期计算</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2019/10/15/SQL/实用 SQL 语句/" title>https://uestc66.github.io/2019/10/15/SQL/实用 SQL 语句/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/02/Node.js/Puppeteer 初体验/" rel="next" title="Puppeteer 初体验">
+                <i class="fa fa-chevron-left"></i> Puppeteer 初体验
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/19/Web前端/PWA：Push/" rel="prev" title="PWA：Push">
+                PWA：Push <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实用-SQL-语句"><span class="nav-number">1.</span> <span class="nav-text">实用 SQL 语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-创建"><span class="nav-number">1.2.</span> <span class="nav-text">1. 创建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-创建数据库"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 创建数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-创建表格"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 创建表格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-创建索引"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.3 创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-为已存在的列创建主键"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.4 为已存在的列创建主键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-为已存在的列创建自增约束"><span class="nav-number">1.2.5.</span> <span class="nav-text">1.5 为已存在的列创建自增约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-插入"><span class="nav-number">1.3.</span> <span class="nav-text">2. 插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-修改"><span class="nav-number">1.4.</span> <span class="nav-text">3. 修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-修改数据记录"><span class="nav-number">1.4.1.</span> <span class="nav-text">3.1 修改数据记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-修改数据库字符集为-utf8"><span class="nav-number">1.4.2.</span> <span class="nav-text">3.2 修改数据库字符集为 utf8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-修改表字符集为-utf8"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.3 修改表字符集为 utf8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-修改表字段字符集为-utf8"><span class="nav-number">1.4.4.</span> <span class="nav-text">3.4 修改表字段字符集为 utf8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-修改字段类型"><span class="nav-number">1.4.5.</span> <span class="nav-text">3.5 修改字段类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-修改字段默认值"><span class="nav-number">1.4.6.</span> <span class="nav-text">3.5 修改字段默认值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-删除"><span class="nav-number">1.5.</span> <span class="nav-text">4. 删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-删除数据记录"><span class="nav-number">1.5.1.</span> <span class="nav-text">4.1 删除数据记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-删除数据库"><span class="nav-number">1.5.2.</span> <span class="nav-text">4.2 删除数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-删除表"><span class="nav-number">1.5.3.</span> <span class="nav-text">4.3 删除表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-清空表中所有数据"><span class="nav-number">1.5.4.</span> <span class="nav-text">4.4 清空表中所有数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-删除索引"><span class="nav-number">1.5.5.</span> <span class="nav-text">4.5 删除索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-查询"><span class="nav-number">1.6.</span> <span class="nav-text">5. 查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-语法"><span class="nav-number">1.6.1.</span> <span class="nav-text">5.1 语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-单表查询"><span class="nav-number">1.6.2.</span> <span class="nav-text">5.2 单表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-1-准备数据："><span class="nav-number">1.6.3.</span> <span class="nav-text">5.2.1 准备数据：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-2-查询所有列"><span class="nav-number">1.6.4.</span> <span class="nav-text">5.2.2 查询所有列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-3-查询指定列"><span class="nav-number">1.6.5.</span> <span class="nav-text">5.2.3 查询指定列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-4-查询不重复记录"><span class="nav-number">1.6.6.</span> <span class="nav-text">5.2.4 查询不重复记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-5-限制查询行数"><span class="nav-number">1.6.7.</span> <span class="nav-text">5.2.5 限制查询行数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-6-排序"><span class="nav-number">1.6.8.</span> <span class="nav-text">5.2.6 排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-7-分组"><span class="nav-number">1.6.9.</span> <span class="nav-text">5.2.7 分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-多表关联查询"><span class="nav-number">1.6.10.</span> <span class="nav-text">5.3 多表关联查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-准备数据"><span class="nav-number">1.6.10.1.</span> <span class="nav-text">5.3.1 准备数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-2-join"><span class="nav-number">1.6.10.2.</span> <span class="nav-text">5.3.2 join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-3-union"><span class="nav-number">1.6.10.3.</span> <span class="nav-text">5.3.3 union</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-函数"><span class="nav-number">1.7.</span> <span class="nav-text">6. 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-语法"><span class="nav-number">1.7.1.</span> <span class="nav-text">6.1 语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-合计函数（Aggregate-functions）"><span class="nav-number">1.7.2.</span> <span class="nav-text">6.2 合计函数（Aggregate functions）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-标量函数（Scalar-functions）"><span class="nav-number">1.7.3.</span> <span class="nav-text">6.3 标量函数（Scalar functions）</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

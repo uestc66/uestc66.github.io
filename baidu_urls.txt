@@ -1,5 +1,5 @@
-https://uestc66.github.io/2019/09/21/Web前端/250行实现一个简单的MVVM/
-https://uestc66.github.io/2019/09/16/Python/MacOS 搭建 Python 环境/
-https://uestc66.github.io/2019/09/08/Web前端/前端安全系列（二）：如何防止CSRF攻击/
-https://uestc66.github.io/2019/09/08/Web前端/前端安全系列（一）：如何防止XSS攻击/
-https://uestc66.github.io/2019/09/08/AI/AI 传送门/
+https://uestc66.github.io/2019/11/24/Web前端/Understanding JavaScript — Heap, Stack, Event-loops and Callback Queue/
+https://uestc66.github.io/2019/11/19/Web前端/PWA：Push/
+https://uestc66.github.io/2019/10/15/SQL/实用 SQL 语句/
+https://uestc66.github.io/2019/10/02/Node.js/Puppeteer 初体验/
+https://uestc66.github.io/2019/09/21/Web前端/页面可视化搭建工具技术要点/
