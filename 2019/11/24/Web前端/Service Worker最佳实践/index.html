@@ -87,18 +87,38 @@
 
 
 
-<meta name="description" content="先决条件google浏览器必须配置如下启动参数：  –enable-benchmarking : 启用基准测试扩展  –enable-net-benchmarking : 启用网络基准测试扩展  –remote-debugging-port=9222 : 开启远程调试   配置macOS 切换Google安装目录 1cd &amp;quot;/Applications/Google Chrome.app/">
+<meta name="description" content="转载自 TBS 腾讯浏览服务，原文链接：https://x5.tencent.com/tbs/guide/serviceworker.html 1 Service Worker介绍Service Worker是一项比较新的Web技术，是Chromium团队在吸收了ChromePackaged App的Event Page机制，同时吸取了HTML5 AppCache标准失败的教训之后，提出一套新的W">
 <meta name="keywords" content="Web前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="页面可视化搭建工具技术要点">
-<meta property="og:url" content="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件/index.html">
+<meta property="og:title" content="Service Worker最佳实践">
+<meta property="og:url" content="https://uestc66.github.io/2019/11/24/Web前端/Service Worker最佳实践/index.html">
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
-<meta property="og:description" content="先决条件google浏览器必须配置如下启动参数：  –enable-benchmarking : 启用基准测试扩展  –enable-net-benchmarking : 启用网络基准测试扩展  –remote-debugging-port=9222 : 开启远程调试   配置macOS 切换Google安装目录 1cd &amp;quot;/Applications/Google Chrome.app/">
+<meta property="og:description" content="转载自 TBS 腾讯浏览服务，原文链接：https://x5.tencent.com/tbs/guide/serviceworker.html 1 Service Worker介绍Service Worker是一项比较新的Web技术，是Chromium团队在吸收了ChromePackaged App的Event Page机制，同时吸取了HTML5 AppCache标准失败的教训之后，提出一套新的W">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-19T15:22:42.740Z">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-1.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-2.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-3.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-4.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-5.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-6.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-7.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-8.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-9.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-10.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-11.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-12.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-13.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-14.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-15.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-16.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-17.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-18.png">
+<meta property="og:image" content="https://x5.tencent.com/tbs/img/article/sw-19.png">
+<meta property="og:updated_time" content="2019-12-02T16:32:19.558Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="页面可视化搭建工具技术要点">
-<meta name="twitter:description" content="先决条件google浏览器必须配置如下启动参数：  –enable-benchmarking : 启用基准测试扩展  –enable-net-benchmarking : 启用网络基准测试扩展  –remote-debugging-port=9222 : 开启远程调试   配置macOS 切换Google安装目录 1cd &amp;quot;/Applications/Google Chrome.app/">
+<meta name="twitter:title" content="Service Worker最佳实践">
+<meta name="twitter:description" content="转载自 TBS 腾讯浏览服务，原文链接：https://x5.tencent.com/tbs/guide/serviceworker.html 1 Service Worker介绍Service Worker是一项比较新的Web技术，是Chromium团队在吸收了ChromePackaged App的Event Page机制，同时吸取了HTML5 AppCache标准失败的教训之后，提出一套新的W">
+<meta name="twitter:image" content="https://x5.tencent.com/tbs/img/article/sw-1.png">
 
 
 
@@ -128,13 +148,13 @@
 
 
 
-  <link rel="canonical" href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件/">
+  <link rel="canonical" href="https://uestc66.github.io/2019/11/24/Web前端/Service Worker最佳实践/">
 
 
 
 
 
-  <title>页面可视化搭建工具技术要点 | jerry.zmf's Blog</title>
+  <title>Service Worker最佳实践 | jerry.zmf's Blog</title>
   
 
 
@@ -307,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件/">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/11/24/Web前端/Service Worker最佳实践/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jerry.zmf">
@@ -324,7 +344,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">页面可视化搭建工具技术要点</h1>
+          <h1 class="post-title" itemprop="name headline">Service Worker最佳实践</h1>
         
 
         <div class="post-meta">
@@ -336,8 +356,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-21T00:34:24+08:00">
-                2019-09-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-24T16:51:24+08:00">
+                2019-11-24
               </time>
             
 
@@ -377,8 +397,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/21/Web前端/Chrome 插件/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/21/Web前端/Chrome 插件/" itemprop="commentCount"></span>
+                <a href="/2019/11/24/Web前端/Service Worker最佳实践/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/24/Web前端/Service Worker最佳实践/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -411,43 +431,108 @@
       
 
       
-        <h3 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h3><p>google浏览器必须配置如下启动参数：</p>
-<ul>
-<li><p>–enable-benchmarking : 启用基准测试扩展</p>
+        <p><font color="#00BFFF" size="2">转载自 TBS 腾讯浏览服务，原文链接：<a href="https://x5.tencent.com/tbs/guide/serviceworker.html" target="_blank" rel="noopener">https://x5.tencent.com/tbs/guide/serviceworker.html</a></font></p>
+<h4 id="1-Service-Worker介绍"><a href="#1-Service-Worker介绍" class="headerlink" title="1 Service Worker介绍"></a>1 Service Worker介绍</h4><p>Service Worker是一项比较新的Web技术，是Chromium团队在吸收了ChromePackaged App的Event Page机制，同时吸取了HTML5 AppCache标准失败的教训之后，提出一套新的W3C规范，旨在提高WebApp的离线缓存能力，缩小WebApp与NativeApp之间差距。</p>
+<p>Service Worker从英文翻译过来就是一个服务工人，服务于前端页面的后台线程，基于Web Worker实现。有着独立的Javascript运行环境，分担、协助前端页面完成前端开发者分配的需要在后台悄悄执行的任务。基于它可以实现拦截和处理网络请求、消息推送、静默更新、事件同步等服务。</p>
+<p>X5内核作为WebView提供给不同app使用，具备Service Worker网络拦截和处理网络请求，配合CacheStorage可以实现web页面的缓存管理以及与前端通过PostMessage通信。</p>
+<h4 id="2-Service-Worker工作原理"><a href="#2-Service-Worker工作原理" class="headerlink" title="2 Service Worker工作原理"></a>2 Service Worker工作原理</h4><p>Service Worker技术核心是Service Worker脚本，它 是一种由Javascript编写的浏览器端代理脚本。</p>
+<p>前端页面向内核发起注册时会将脚本地址通知内核，内核会启动独立进/线程加载Service Worker脚本并执行Service Worker安装及激活动作。成功激活后便进入空闲等待状态，若当前的Service Worker进/线程一直没有管辖的页面或者事件消息时会自动终止（具体的终止策略视不同浏览器及版本而定，不会影响前端编写逻辑，但前端勿在Service Worker脚本中保存需要持久化的信息，可以借助localstorage），当打开新的可管辖页面或者已管辖页面发起message等消息时，Service Worker进/线程会被重新唤起。</p>
+<p>每当已安装的Service Worker有管辖页面被打开时，便会触发Service Worker脚本更新，当上次脚本更新写入Service Worker数据库的时间戳与本次更新超过24小时，便会忽略本地网络cache的Service Worker脚本直接从网络拉取。若网络拉取的与本地有一个字节的差异都会触发Service Worker脚本的更新，更新流程与安装类似，只是在更新安装成功后不会立即进入active状态，需要等待旧版本的Service Worker进/线程终止。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-1.png" alt="img"></p>
+<h4 id="3-Service-Worker开发调试方法"><a href="#3-Service-Worker开发调试方法" class="headerlink" title="3 Service Worker开发调试方法"></a>3 Service Worker开发调试方法</h4><p>有过使用chrome inspect前端页面调试经验对于Service Worker开发调试就很容易上手了，以 <a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/offline-page/index.html" target="_blank" rel="noopener">offline-page</a> 为例：</p>
+<p>使用pc chrome浏览器（最好是M53以后版本）打开上述页面后，按F12键进入inspect调试模式后</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-2.png" alt="img"></p>
+<p>​                                </p>
+<p>单击图2 inspect调试界面中的1及2后会出现当前页面域下的所有Service Worker，在单击6就会进入图3界面，这个时候调试Service Worker脚本就如调试前端页面js一样，可以随意在Service Worker脚本中下断点。如果在fetch监听事件中打上断点，当页面刷新或者页面中有其它请求时便会到达Service Worker线程，使得Service Worker脚本中的fetch事件执行被中断，这时可以将鼠标移动到fetch事件中的event上便可以看到是什么样的请求、请求的url等 。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-3.png" alt="img"></p>
+<p>对于一些较为复杂的页面，往往会有一部分资源使用本地cache，还有一部分仍然需要是时拉取，在调试过程中勾选图2中的3、4来快速达到当前tab页离线和跳过Service Worker拦截。</p>
+<p>在之前的原理中说过，Service Worker会在每次打开对应的页面后去检查更新Service Worker脚本，但如果Service Worker脚本有缓存期限的话，那么在开发调试的时候修改了测试页面的Service Worker脚本并push到测试页面服务器上之后，刷新页面并不能立即去网络更新脚本，给开发调试带来麻烦，但图2中的5可以帮助开发强行忽略本地Service Worker脚本cache，实时的去网络更新。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-4.png" alt="img"></p>
+<p>Service Worker可以缓存资源，点击图2中的7便可以看到图4展示，表明了当前浏览器对当前页面的资源缓存情况，可以通过鼠标右键特定资源对资源进行删除操作。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-5.png" alt="img"></p>
+<p>最后我们可以通过在浏览器中输入chrome://serviceworker-internals来了解当前浏览器中所有已安装Service Worker的详细情况，Installation Status及Running Status展示当前Service Worker安装状态及运行状态，Version ID为其在当前数据库中的一个分配到的版本号，后续Service Worker脚本升级，版本号也会一起提升。</p>
+<h4 id="4-使用Service-Worker进行资源缓存"><a href="#4-使用Service-Worker进行资源缓存" class="headerlink" title="4 使用Service Worker进行资源缓存"></a>4 使用Service Worker进行资源缓存</h4><h5 id="4-1-使用Service-Worker进行简单的资源缓存"><a href="#4-1-使用Service-Worker进行简单的资源缓存" class="headerlink" title="4.1 使用Service Worker进行简单的资源缓存"></a>4.1 使用Service Worker进行简单的资源缓存</h5><p>还是以 <a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/offline-page/index.html" target="_blank" rel="noopener">offline-page</a> 为例，前端在原来的web应用中使用Service Worker只需要三大步</p>
+<p>1、切入到https；由于Service Worker可以劫持连接，伪造和过滤响应，所以保证其在传输过程中不被篡改非常重要。</p>
+<p>2、在页面加载的恰当时机注册Service Worker；示例中在index页面的body onload事件中注册了同path下的service-worker.js作为index页面的服务线程脚本。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-6.png" alt="img"></p>
+<p>3、编写serviceworker脚本逻辑；serviceworker是事件驱动型服务线程，所以serviceworker脚本逻辑中基本都是以事件监听作为逻辑入口，示例中在serviceworker脚本被安装的install事件中缓存index页面主资源及子资源，</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-7.png" alt="img"></p>
+<p>在激活事件activate监听事件中清除历史缓存，在这里需要注意的是caches.keys遍历的是当前域下所有的cache，可能同域下的其它path也使用了Service Worker进行资源缓存，直接如图所为，可能会误删除。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-8.png" alt="img"></p>
+<p>在fetch事件中，拦截前端页面发起的资源请求并到之前缓存的cache中匹配。其中加上容错处理，当发现缓存中无当前所要请求的资源时，折回网络请求。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-9.png" alt="img"></p>
+<h5 id="4-2-深入了解Service-Worker资源的几种缓存策略"><a href="#4-2-深入了解Service-Worker资源的几种缓存策略" class="headerlink" title="4.2 深入了解Service Worker资源的几种缓存策略"></a>4.2 深入了解Service Worker资源的几种缓存策略</h5><p>了解Service Worker资源的几种缓存策略是使用好Service Worker进行资源缓存的基础，实际应用场景会是几种缓存策略的集合。</p>
+<p>4.2.1 不影响安装的资源预缓存</p>
+<p>对于某些固定不变的静态资源，我们习惯在Service Worker初次安装的install事件中将其缓存，但资源过大或者网络不佳都会造成资源并未全部下载成功而导致Service Worker安装被中断，只有等下次用户在打开相应页面。这里可以将静态资源按优先级分为两类，一类是重要资源，一类是非重要资源，将重要资源放到安装等待队列中，非重要资源放到独立的队列中，这样只需要重要资源全部都加载成功就可以成功安装Service Worker了，可以提高Service Worker安装成功率。</p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/offline-page-not-dependent-on-install/index.html" target="_blank" rel="noopener">offline-page-not-dependent-on-install</a></p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-10.png" alt="img"></p>
+<p>4.2.2 渐进式缓存</p>
+<p>对于在install中发现没有缓存，页面又依赖但又不经常变化的资源，可以在页面打开或发生用户交互时触发fetch然后使用fetch api再去网络拉取，将返回正常的response缓存起来以便下次使用。</p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/progressive-cache/index.html" target="_blank" rel="noopener">progressive-cache</a></p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-11.png" alt="img"></p>
+<p>4.2.3 仅使用缓存</p>
+<p>在fetch事件中，仅去匹配资源，若匹配失败，表现出来的就是前端页面对于该 资源加载失败。这里容错性比较差，适合页面资源都是静态资源的，且不能使用不影响安装的资源预缓存。</p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/cache-only/index.html" target="_blank" rel="noopener">cache-only</a></p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-12.png" alt="img"></p>
+<p>4.2.4 仅使用网络</p>
+<p>在fetch事件中，仅将request重新抽出用fetch去网络加载并返回给前端页面。适用于资源大多是动态资源、实时性要求高的场景。</p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/network-only/index.html" target="_blank" rel="noopener">network-only</a></p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-13.png" alt="img"></p>
+<p>4.2.5 缓存优先</p>
+<p>简单的资源缓存中使用的就是缓存优先策略，先去缓存匹配，匹配失败折回网络，这算是最常用、容错性能好的一种策略。</p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/offline-page/index.html" target="_blank" rel="noopener">offline-page</a></p>
+<p>4.2.6 网络优先</p>
+<p>在fetch事件中先去网络fetch，当出现服务器故障或者网络不良时，折回本地缓存，目的是为了展示最新的数据，对实时性要求比较高但又能够带来良好体验的应用，比如天气类型应用。</p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/network-first/index.html" target="_blank" rel="noopener">network-first</a></p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-14.png" alt="img"></p>
+<p>4.2.7 速度优先</p>
+<p>在fetch事件中同时发起本地缓存匹配及网络请求，谁先返回使用谁的，该方案适用于对性能要求比较高的站点，缩短了缓存优先策略中有可能缓存中没有资源再折回网络的时间消耗。</p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/speed-first/index.html" target="_blank" rel="noopener">speed-first</a></p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-15.png" alt="img"></p>
+<h5 id="4-3-Service-Worker跨域资源的缓存策略"><a href="#4-3-Service-Worker跨域资源的缓存策略" class="headerlink" title="4.3 Service Worker跨域资源的缓存策略"></a>4.3 Service Worker跨域资源的缓存策略</h5><p>Service Worker可以拦截它管辖范围内的基本所有请求，跨域资源也不例外。在普通的页面中，包含几个跨域脚本、图片等资源也太正常了。那么如何对这些跨域资源进行缓存呢？</p>
+<p>首先，浏览器默认对跨域资源发起的是ncors请求，也就是得到的response是opaque的，Service Worker是无法获得该response的status及url信息，以至于该response是否成功不得而知。如果对跨域资源能够发起cors请求，在跨域服务器允许的情况下，得到部分属性status及url可见的response，就可以判断出跨域请求是否成功，是否可以进行缓存以备下次使用了。朝着这个思想：</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-16.png" alt="img"></p>
+<ol>
+<li><p>首先保证跨域的资源来自安全的https地址；</p>
 </li>
-<li><p>–enable-net-benchmarking : 启用网络基准测试扩展</p>
+<li><p>保证跨域资源服务器的response中Access-Control-Allow-Origin中包含当前的页面所在域或者为 *；</p>
 </li>
-<li><p>–remote-debugging-port=9222 : 开启远程调试</p>
-</li>
-</ul>
-<h3 id="配置macOS"><a href="#配置macOS" class="headerlink" title="配置macOS"></a>配置macOS</h3><ol>
-<li><p>切换Google安装目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &quot;/Applications/Google Chrome.app/Contents/MacOS/&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重命名的启动脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv &quot;Google Chrome&quot; Google.real</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>编辑启动脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &quot;Google Chrome&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>键入启动参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">cd &quot;/Applications/Google Chrome.app/Contents/MacOS&quot;</span><br><span class="line">&quot;/Applications/Google Chrome.app/Contents/MacOS/Google.real&quot; --enable-benchmarking --enable-net-benchmarkin</span><br></pre></td></tr></table></figure>
-
+<li><p>对于前端页面中的跨域资源的url可以附带“cors=1”参数，以便Service Worker在拦截之后可以判断出是跨域请求从而重新进行组装cors请求，如图17。</p>
 </li>
 </ol>
-<h3 id="动态注入-Content-Scripts"><a href="#动态注入-Content-Scripts" class="headerlink" title="动态注入 Content Scripts"></a>动态注入 Content Scripts</h3><p>在某些场景下，我们可能需要动态的注入一段 Content Scripts，来触达我们的业务，这个时候这种方式就能很好的处理这个问题，我们主要利用了 <code>chrome.tabs.executeScript</code> 的能力来达到动态注入的目的。</p>
-<p>首先，我们需要先配置 manifest.json 文件，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</span><br><span class="line">  &quot;name&quot;: &quot;welearnmore-dynamic_content_scripts&quot;,</span><br><span class="line">  &quot;manifest_version&quot;: 2,</span><br><span class="line">  &quot;description&quot;: &quot;welearnmore&quot;,</span><br><span class="line">  &quot;browser_action&quot;: &#123;</span><br><span class="line">    &quot;default_title&quot;: &quot;welearnmore dynamic content scripts&quot;,</span><br><span class="line">    &quot;default_icon&quot;: &quot;img/logo.png&quot;,</span><br><span class="line">    &quot;default_popup&quot;: &quot;popup.html&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;background&quot;: &#123;</span><br><span class="line">    &quot;scripts&quot;: [&quot;background.js&quot;],</span><br><span class="line">    &quot;persistent&quot;: false</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;permissions&quot;: [</span><br><span class="line">    &quot;tabs&quot;,</span><br><span class="line">    &quot;&lt;all_urls&gt;&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后在 <code>background.js</code> 中，利用消息通信的机制，去打开一个tab，由 Popup 页面中的某个按钮来触发：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)&#123;</span><br><span class="line">  chrome.tabs.create(&#123; url: &apos;https://icepy.me&apos;&#125;, function(tab)&#123;</span><br><span class="line">    chrome.tabs.executeScript(tab.id, &#123;file: &apos;dynamic_content_scripts.js&apos;&#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p><code>dynamic_content_scripts.js</code> 随便写一个 log，如：</p>
-<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
-<li><a href="https://developer.chrome.com/extensions/manifest" target="_blank" rel="noopener">官方文档</a></li>
-<li><a href="https://lightningminers.gitbook.io/chrome-extension-book/" target="_blank" rel="noopener">Chrome Extension 入门指南</a></li>
-<li><a href="https://juejin.im/post/5c135a275188257284143418" target="_blank" rel="noopener">一篇文章教你顺利入门和开发chrome扩展程序（插件）</a></li>
-</ul>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-17.png" alt="img"></p>
+<p><a href="https://res.imtt.qq.com/qqbrowser_x5/h5/samples/service-worker/cross-resources/index.html" target="_blank" rel="noopener">cross-resources</a></p>
+<h4 id="5-X5内核Service-Worker功能扩展"><a href="#5-X5内核Service-Worker功能扩展" class="headerlink" title="5 X5内核Service Worker功能扩展"></a>5 X5内核Service Worker功能扩展</h4><h5 id="5-1-首次访问解决方案方案"><a href="#5-1-首次访问解决方案方案" class="headerlink" title="5.1 首次访问解决方案方案"></a>5.1 首次访问解决方案方案</h5><p>首次访问解决方案旨在用户访问业务前实现业务的资源缓存，让用户在第一次真正访问业务时能够让业务页面以最快的速度展示出来。针对该主旨，X5内核实现了三套具体实现方案：</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-18.png" alt="img"></p>
+<p>5.1.1 离线包方式</p>
+<p>离线包原理就是先在X5内核上模拟打开一次业务网址，然后将Service Worker中的cachestorage缓存、注册信息及脚本信息数据库进行打包内置到宿主中，当宿主首次安装时将离线包路径告知内核，内核会自动将离线包拷贝解压到内核目录。相当于用户跳过了首次访问安装Service Worker的过程。以QQ浏览器为例：</p>
+<p>业务侧：</p>
+<p>1、前端业务需要建立基于Service Worker业务，并且业务可以通过SW实现离线访问，在SW脚本的install方法中需要做资源的缓存。</p>
+<p>2、可以通过QB6.8及以上版本访问swtool.qq.com，点击“离线包生成环境初始化”后重启浏览器，输入业务网址直到提示离线包已生成后退出浏览器，这时离线包已生成在/sdcard/tbs/com.tencent.mtt/out/Service Worker.zip。</p>
+<p>3、关闭网络进入QQ浏览器，通过设置清除缓存文件后再将生成的离线包拷贝至/sdcard/tbs/com.tencent.mtt/Service Worker.zip位置并重新启动浏览器访问业务网址，如果业务可以正常打开，说明离线包OK。</p>
+<p>4、若业务需要将离线包打进宿主apk，只要将离线包丢给宿主即可。</p>
+<p>X5内核宿主侧：</p>
+<p>1、若TBS宿主只有单个业务离线包打进apk，那么宿主需要在宿主apk首次安装并且在TBS内核初始化之前将业务离线包拷贝至/sdcard/tbs/{宿主包名}/Service Worker.zip即可，TBS启动时会自动搜索该路径。</p>
+<p>2、若TBS宿主有多个单业务的离线包需要打进apk，可以由X5内核侧协助完成合并(后续会有自动化合并站点工具)，将多个单业务离线包合并成一个后再按照单业务的方式处理。</p>
+<p>3、TBS宿主在发布前需要参考业务使用QB自检的方式自检业务是否可以离线打开。</p>
+<p>5.1.2 X5内核后台云下发指令</p>
+<p>1、前端业务需要建立基于Service Worker业务，并且业务可以通过SW实现离线访问，在SW脚本的install方法中需要做资源的缓存</p>
+<p>2、需要将提前预置的业务网址及Service Worker脚本url及宿主包名同步给X5内核团队(目前接口负责人zhengyuli、yongling)，审核通过后随时可以上线。</p>
+<p>5.1.3 X5内核扩展接口</p>
+<p>使用TBS的宿主可以调用X5内核扩展接口webview.getX5WebViewExtension().registerServiceWorkerBackground(String url, String scriptUrl)来提前向内核注册某一特定页面的Service Worker。</p>
+<h5 id="5-2-两种静默更新方案"><a href="#5-2-两种静默更新方案" class="headerlink" title="5.2 两种静默更新方案"></a>5.2 两种静默更新方案</h5><p>对于一些更新比较频繁，实时性要求较高的业务，对更新能力需求也是相当亟需。一方面能让用户能够及时看到最新消息（Service Worker目前自带的更新能力只会发生在当前访问后，只有下次才能看到新更新的页面），另一方面能够缓解对业务服务器的并发访问，还能够缓解用户的网络慢导致进行业务更新时长时间等待。具体实现框架见图17。</p>
+<p><img src="https://x5.tencent.com/tbs/img/article/sw-19.png" alt="img"></p>
+<p>5.2.1 TBS后台云下发指令</p>
+<p>1、前端业务需要验证业务在更新Service Worker脚本后是否可以正常访问</p>
+<p>2、需要将提前预置的业务网址及Service Worker脚本url及宿主包名和更新时间间隔同步给X5内核团队(目前接口负责人zhengyuli、yongling)，审核通过后随时可以上线。</p>
+<p>5.2.2 TBS webview扩展接口</p>
+<p>使用TBS的宿主可以调用X5内核扩展接口webview.getX5WebViewExtension().updateServiceWorkerBackground(String url)来提前向内核申请更新特定业务的Service Worker(注意这里需要业务已经在内核中安装过Service Worker，切此接口调用一次只会强制更新一次)。</p>
+<h4 id="6-X5内核基于Service-Worker离线场景加载优化"><a href="#6-X5内核基于Service-Worker离线场景加载优化" class="headerlink" title="6 X5内核基于Service Worker离线场景加载优化"></a>6 X5内核基于Service Worker离线场景加载优化</h4><p>通常app在使用webview时，为了提升展示页面的速度，一般都会使用webview的shouldInterceptRequest来拦截webview的资源请求，然后将本地的资源校验后丢给webview处理。因为shouldInterceptRequest从内核通知到app，需要统一在File线程中排队并经历好几个线程的中转到达app，对于资源并发请求较少的页面来说，这种瓶颈可能并不明显，对于页面较复杂并发请求较多的页面来说，首屏加载完成的时间并不能像打开本地页面那样“秒开”。</p>
+<p>X5内核借鉴Service Worker原理，允许app提前将业务的资源放入到内核缓存，当业务被访问时，会先访问本地cache，有就直接返回给内核，没有就跳过shouldInterceptRequest直接去网络加载，来屏蔽shouldInterceptRequest性能瓶颈。在手机QQ上的个别业务上有首屏性能有25%左右的提升。</p>
+<p>使用TBS的宿主在空闲时间（不要在打开业务的时候，转入内核缓存需要消耗资源）可以调用X5内核扩展接口</p>
+<p>webview.getX5WebViewExtension().registerServiceWorkerOffline(String url, List paths, boolean deleteAllCacheBefore)</p>
+<p>其中url为业务网址，paths为绝对缓存路径，如 <a href="https://host.com/path1/path2/img.png" target="_blank" rel="noopener">https://host.com/path1/path2/img.png</a> 需要建立/<strong><em>/cache/host.com/path1/path2/img.png 这样的路径，并将/</em></strong>/cache传入内核，因为是list，所以支持多个目录，比如/<strong><em>/cache1、/</em></strong>/cache2等。deleteAllCacheBefore 删除该业务之前也有缓存，因为在更新资源时也是调用同样的接口，所以可能会出现内核缓存的冗余。</p>
+<p>另外可以调用webview.getX5WebViewExtension().clearServiceWorkerCache()[将会在TBS3.3上提供]来清除转入内核的缓存，包括注册信息，以便能够动态的恢复到之前的状态。</p>
 
       
     </div>
@@ -468,7 +553,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件/" title="页面可视化搭建工具技术要点">https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件/</a>
+    <a href="https://uestc66.github.io/2019/11/24/Web前端/Service Worker最佳实践/" title="Service Worker最佳实践">https://uestc66.github.io/2019/11/24/Web前端/Service Worker最佳实践/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -506,8 +591,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/21/Web前端/250行实现一个简单的MVVM/" rel="next" title="250行实现一个简单的MVVM">
-                <i class="fa fa-chevron-left"></i> 250行实现一个简单的MVVM
+              <a href="/2019/11/19/Web前端/PWA：Push/" rel="next" title="PWA：Push">
+                <i class="fa fa-chevron-left"></i> PWA：Push
               </a>
             
           </div>
@@ -516,8 +601,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/21/Web前端/页面可视化搭建工具技术要点/" rel="prev" title="页面可视化搭建工具技术要点">
-                页面可视化搭建工具技术要点 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/24/Web前端/Understanding JavaScript — Heap, Stack, Event-loops and Callback Queue/" rel="prev" title="Understanding JavaScript — Heap, Stack, Event-loops and Callback Queue">
+                Understanding JavaScript — Heap, Stack, Event-loops and Callback Queue <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -677,7 +762,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#先决条件"><span class="nav-number">1.</span> <span class="nav-text">先决条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置macOS"><span class="nav-number">2.</span> <span class="nav-text">配置macOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态注入-Content-Scripts"><span class="nav-number">3.</span> <span class="nav-text">动态注入 Content Scripts</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number"></span> <span class="nav-text">参考文档</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Service-Worker介绍"><span class="nav-number">1.</span> <span class="nav-text">1 Service Worker介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Service-Worker工作原理"><span class="nav-number">2.</span> <span class="nav-text">2 Service Worker工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Service-Worker开发调试方法"><span class="nav-number">3.</span> <span class="nav-text">3 Service Worker开发调试方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-使用Service-Worker进行资源缓存"><span class="nav-number">4.</span> <span class="nav-text">4 使用Service Worker进行资源缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-使用Service-Worker进行简单的资源缓存"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 使用Service Worker进行简单的资源缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-深入了解Service-Worker资源的几种缓存策略"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 深入了解Service Worker资源的几种缓存策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-Service-Worker跨域资源的缓存策略"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 Service Worker跨域资源的缓存策略</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-X5内核Service-Worker功能扩展"><span class="nav-number">5.</span> <span class="nav-text">5 X5内核Service Worker功能扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-首次访问解决方案方案"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 首次访问解决方案方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-两种静默更新方案"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 两种静默更新方案</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-X5内核基于Service-Worker离线场景加载优化"><span class="nav-number">6.</span> <span class="nav-text">6 X5内核基于Service Worker离线场景加载优化</span></a></li></ol></div>
             
 
           </div>
