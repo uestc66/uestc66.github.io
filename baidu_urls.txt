@@ -1,5 +1,5 @@
+https://uestc66.github.io/2019/12/19/Web前端/D2 前端技术论坛有感/
 https://uestc66.github.io/2019/12/04/Web前端/Service Worker最佳实践/
 https://uestc66.github.io/2019/11/24/Web前端/Understanding JavaScript — Heap, Stack, Event-loops and Callback Queue/
 https://uestc66.github.io/2019/11/19/Web前端/PWA：Push/
 https://uestc66.github.io/2019/10/15/SQL/实用 SQL 语句/
-https://uestc66.github.io/2019/10/02/Node.js/Puppeteer 初体验/
