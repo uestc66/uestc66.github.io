@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/250%E8%A1%8C%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84MVVM/</loc>
+    <loc>https://uestc66.github.io/2019/12/19/Web%E5%89%8D%E7%AB%AF/D2%20%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E8%AE%BA%E5%9D%9B%E6%9C%89%E6%84%9F/</loc>
     
-    <lastmod>2020-01-27T14:52:23.267Z</lastmod>
+    <lastmod>2020-01-27T14:59:03.383Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://uestc66.github.io/2019/12/19/Web%E5%89%8D%E7%AB%AF/D2%20%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E8%AE%BA%E5%9D%9B%E6%9C%89%E6%84%9F/</loc>
+    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks/</loc>
     
-    <lastmod>2020-01-27T14:52:12.103Z</lastmod>
+    <lastmod>2020-01-27T14:58:51.971Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/250%E8%A1%8C%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84MVVM/</loc>
+    
+    <lastmod>2020-01-27T14:52:23.267Z</lastmod>
     
   </url>
   
@@ -47,13 +54,6 @@
     <loc>https://uestc66.github.io/2020/01/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/</loc>
     
     <lastmod>2020-01-07T02:00:21.128Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks/</loc>
-    
-    <lastmod>2019-12-30T02:39:22.216Z</lastmod>
     
   </url>
   
