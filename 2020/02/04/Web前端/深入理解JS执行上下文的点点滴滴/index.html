@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自掘金网络，原文链接：https://juejin.im/post/5ce767eef265da1bbf68f724 前言对于一名前端开发者来说，深入理解JavaScript程序内部执行机制当然是很有必要的，其中一个关键概念就是JavaScript的执行上下文和执行栈，理解这部分内容也有助于理解作用域、闭包等 本次重点 执行上下文概念、类型、特点 执行上下文的生命周期 关于变量提升 this指">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JS执行上下文的点点滴滴">
+<meta property="og:url" content="https://uestc66.github.io/2020/02/04/Web前端/深入理解JS执行上下文的点点滴滴/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5ce767eef265da1bbf68f724 前言对于一名前端开发者来说，深入理解JavaScript程序内部执行机制当然是很有必要的，其中一个关键概念就是JavaScript的执行上下文和执行栈，理解这部分内容也有助于理解作用域、闭包等 本次重点 执行上下文概念、类型、特点 执行上下文的生命周期 关于变量提升 this指">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/24/16ae7f5c5b24fc24">
+<meta property="og:updated_time" content="2020-02-11T14:59:12.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JS执行上下文的点点滴滴">
+<meta name="twitter:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5ce767eef265da1bbf68f724 前言对于一名前端开发者来说，深入理解JavaScript程序内部执行机制当然是很有必要的，其中一个关键概念就是JavaScript的执行上下文和执行栈，理解这部分内容也有助于理解作用域、闭包等 本次重点 执行上下文概念、类型、特点 执行上下文的生命周期 关于变量提升 this指">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/02/04/Web前端/深入理解JS执行上下文的点点滴滴/">
+
+
+
+
+
+  <title>深入理解JS执行上下文的点点滴滴 | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/02/04/Web前端/深入理解JS执行上下文的点点滴滴/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解JS执行上下文的点点滴滴</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-04T10:58:24+08:00">
+                2020-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/02/04/Web前端/深入理解JS执行上下文的点点滴滴/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/02/04/Web前端/深入理解JS执行上下文的点点滴滴/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自掘金网络，原文链接：<a href="https://juejin.im/post/5ce767eef265da1bbf68f724" target="_blank" rel="noopener">https://juejin.im/post/5ce767eef265da1bbf68f724</a></font></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>对于一名前端开发者来说，深入理解JavaScript程序内部执行机制当然是很有必要的，其中一个关键概念就是JavaScript的执行上下文和执行栈，理解这部分内容也有助于理解作用域、闭包等</p>
+<h4 id="本次重点"><a href="#本次重点" class="headerlink" title="本次重点"></a>本次重点</h4><ul>
+<li>执行上下文概念、类型、特点</li>
+<li>执行上下文的生命周期</li>
+<li>关于变量提升</li>
+<li>this指向问题</li>
+<li>执行上下文栈</li>
+</ul>
+<h4 id="基本概念："><a href="#基本概念：" class="headerlink" title="基本概念："></a>基本概念：</h4><p>所谓的JavaScript执行上下文就是当前JS代码代码被解析和执行时所在环境的抽象概念，js代码都是在执行上下文中运行的</p>
+<h4 id="一、执行上下文类型"><a href="#一、执行上下文类型" class="headerlink" title="一、执行上下文类型"></a>一、执行上下文类型</h4><h5 id="1-全局执行上下文"><a href="#1-全局执行上下文" class="headerlink" title="1.全局执行上下文"></a>1.全局执行上下文</h5><p>它的特点有以下几个：</p>
+<p>a.它是最基础、默认的全局执行上下文</p>
+<p>b.它会创建一个全局对象，并且将this指向全局对象，在浏览器中全局对象是window，在nodejs中全局对象是global</p>
+<p>c.一个程序中只有一个</p>
+<h5 id="2-函数执行上下文"><a href="#2-函数执行上下文" class="headerlink" title="2.函数执行上下文"></a>2.函数执行上下文</h5><p>它的特点有以下几个：</p>
+<p>a.有自己的执行上下文</p>
+<p>b.可以在一个程序中存在任意数量</p>
+<p>c.是函数被执行时创建</p>
+<h5 id="3-eval函数执行上下文："><a href="#3-eval函数执行上下文：" class="headerlink" title="3.eval函数执行上下文："></a>3.eval函数执行上下文：</h5><p>eval函数可以计算某个字符串，并执行其中的js代码，这样就会存在一个安全性问题，在代码字符串未知或者是来自于用户输入源的话，绝对不要使用eval函数</p>
+<p>以上就是执行上下文的几种类型和相应的特点，我们可以看下下面这段代码：</p>
+<p>里面的三个函数都被执行了，所以是有三个函数执行上下文</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 全局执行上下文</span><br><span class="line">var sayHello = &apos;Hello&apos;</span><br><span class="line">function someone() &#123;   // 函数执行上下文</span><br><span class="line">  var first = &apos;Tom&apos;, last = &apos;Ada&apos;</span><br><span class="line">  function getFirstName() &#123;  // 函数执行上下文</span><br><span class="line">    return first</span><br><span class="line">  &#125;</span><br><span class="line">  function getLastName() &#123;  // 函数执行上下文</span><br><span class="line">    return last</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(sayHello + getFirstName() + getLastName())</span><br><span class="line">&#125;</span><br><span class="line">someone()</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、执行上下文的生命周期"><a href="#二、执行上下文的生命周期" class="headerlink" title="二、执行上下文的生命周期"></a>二、执行上下文的生命周期</h4><p>执行上下文的生命周期分了三个阶段：</p>
+<ul>
+<li>创建阶段</li>
+<li>执行阶段</li>
+<li>回收阶段</li>
+</ul>
+<h5 id="创建阶段"><a href="#创建阶段" class="headerlink" title="创建阶段"></a>创建阶段</h5><p>对于函数执行上下文，函数被调用的时候，但是还未执行里面的代码之前，会做三件事情:</p>
+<ul>
+<li><p>创建变量对象：会初始化函数的参数，提升函数声明和变量声明</p>
+</li>
+<li><p>创建作用域链：作用域链用于标识符解析，看下面代码：</p>
+<p>f3函数被调用的时候，里面的变量num要求被解析的时候，会在当前f3的作用域里查找，如果没找到，就会向上一层作用域中查找，直到在全局作用找到该变量为30</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var num = 30;</span><br><span class="line">function f1() &#123;</span><br><span class="line">  function f2() &#123;</span><br><span class="line">    function f3() &#123;</span><br><span class="line">      console.log(num);</span><br><span class="line">    &#125;</span><br><span class="line">    f3();</span><br><span class="line">  &#125;</span><br><span class="line">  f2();</span><br><span class="line">&#125;</span><br><span class="line">f1();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>确定this指向：这个情况比较多，会在下文统一介绍</li>
+</ul>
+<p>在一个程序执行之前，要先解析代码，会先创建全局执行上下文环境，把需要执行的变量和函数声明都取出来并暂时赋值为undefined，函数也要先声明好待调用，这也是我们下文中会讲到的变量提升，以上几步做完后，开始正式执行程序</p>
+<h5 id="执行阶段"><a href="#执行阶段" class="headerlink" title="执行阶段"></a>执行阶段</h5><p>执行的变量赋值、函数调用等代码执行</p>
+<h5 id="回收阶段"><a href="#回收阶段" class="headerlink" title="回收阶段"></a>回收阶段</h5><p>执行上下文出栈，等待虚机垃圾回收执行上下文</p>
+<h4 id="三、变量提升"><a href="#三、变量提升" class="headerlink" title="三、变量提升"></a>三、变量提升</h4><p>变量提升分为两种：</p>
+<ul>
+<li>变量声明提升</li>
+<li>函数声明提升</li>
+</ul>
+<p>关于变量声明提升，先看以下代码片段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">console.log(a)  // undefined</span><br><span class="line">var a = 5</span><br><span class="line">function test() &#123;</span><br><span class="line">  console.log(a)  // undefined</span><br><span class="line">  var a = 10</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+<p>以上代码中，第1个 a 是在全局执行上下文环境中，由于在全局执行上下文创建的时候，把需要执行的变量和函数声明都取出来并暂时赋值为undefined，所以打印出来的就是undefined</p>
+<p>第2个 a 是在test这个函数执行上下文环境中，同上，所以打印出来的就是undefined</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var a</span><br><span class="line">console.log(a)  // undefined</span><br><span class="line">a = 5</span><br><span class="line">function test() &#123;</span><br><span class="line">  var a</span><br><span class="line">  console.log(a)  // undefined</span><br><span class="line">  a = 10</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+<p>关于函数声明提升，看以下代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">console.log(f1) // function f1() &#123;&#125;</span><br><span class="line">function f1() &#123;&#125;</span><br><span class="line">console.log(f2) // undefined</span><br><span class="line">var f2 = function() &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果在注释中，由于变量声明和函数声明提升原则可以把代码改成如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function f1() &#123;&#125;</span><br><span class="line">console.log(f1) // function f1() &#123;&#125;</span><br><span class="line">var f2;</span><br><span class="line">console.log(f2) // undefined</span><br><span class="line">f2 = function() &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>f1和f2不一样的地方是：f1是普通函数声明的方式，f2是函数表达式，在f2未被赋值的时候，它就是一个变量，这个时候变量提升，所以打印的f2为undefined</p>
+<p>如果一个变量既是函数声明的方式，又是变量声明的方式，代码如下:</p>
+<p>我们发现函数声明的优先级是高于变量提升的优先级的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function test(arg)&#123;</span><br><span class="line">  console.log(arg);  // function arg()&#123;console.log(&apos;hello world&apos;) &#125;</span><br><span class="line">  var arg = &apos;hello&apos;; </span><br><span class="line">  function arg()&#123;</span><br><span class="line">    console.log(&apos;hello world&apos;) </span><br><span class="line">  &#125;</span><br><span class="line">  console.log(arg); // hello </span><br><span class="line">&#125;</span><br><span class="line">test(&apos;hi&apos;);</span><br></pre></td></tr></table></figure>
+
+<p>总结：变量提升的几个特点：</p>
+<ul>
+<li>如果有形参，先给形参赋值</li>
+<li>函数声明的优先级是高于变量提升的优先级的，但可以重新赋值</li>
+<li>私有作用域代码从上到下执行</li>
+</ul>
+<h4 id="四、确定this指向问题"><a href="#四、确定this指向问题" class="headerlink" title="四、确定this指向问题"></a>四、确定this指向问题</h4><p>this指向问题通常会在一些面试题中出现，情况比较多，先了解下它的一些特点：</p>
+<ul>
+<li>this是执行上下文的一部分</li>
+<li>需要在执行时确定</li>
+<li>浏览器中 this 指向 window， node中this指向global</li>
+</ul>
+<h5 id="对于非严格模式和es5的js程序中，this指向可以分为以下几种情况："><a href="#对于非严格模式和es5的js程序中，this指向可以分为以下几种情况：" class="headerlink" title="对于非严格模式和es5的js程序中，this指向可以分为以下几种情况："></a>对于非严格模式和es5的js程序中，this指向可以分为以下几种情况：</h5><p>第一种：a()直接调用的方式，<code>this === window</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">  console.log(this.b)  </span><br><span class="line">&#125;</span><br><span class="line">var b = 0</span><br><span class="line">a()</span><br></pre></td></tr></table></figure>
+
+<p>打印出的值为 0</p>
+<p>第二种：谁调用了函数，谁就是this</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">  console.log(this)</span><br><span class="line">&#125;</span><br><span class="line">var obj = &#123;a: a&#125;</span><br><span class="line">obj.a()</span><br></pre></td></tr></table></figure>
+
+<p>打印出的值为obj这个对象</p>
+<p>第三种：构造函数模式下，this指向当前执行类的实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function getPersonInfo(name, age) &#123;</span><br><span class="line">  this.name = name</span><br><span class="line">  this.age = age</span><br><span class="line">  console.log(this)</span><br><span class="line">&#125;</span><br><span class="line">var p1 = new getPersonInfo(&apos;linda&apos;, 13)</span><br></pre></td></tr></table></figure>
+
+<p>打印出来的值是：</p>
+<p>getPersonInfo{ name: ‘linda’, age: 13 }</p>
+<p>第四种：call/apply/bind调用函数的方式，this指向第一个参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function add (b, c) &#123;</span><br><span class="line">  console.log(this)</span><br><span class="line">  return this.a + b + c</span><br><span class="line">&#125;</span><br><span class="line">var obj = &#123;a: 3&#125;</span><br><span class="line">add.call(obj, 5, 7)</span><br><span class="line">add.call(obj, [10, 20])</span><br></pre></td></tr></table></figure>
+
+<p>打印出来的值就是obj的值</p>
+<h5 id="对于严格模式的js程序中，this指向对于直接调用的方式有所不同："><a href="#对于严格模式的js程序中，this指向对于直接调用的方式有所不同：" class="headerlink" title="对于严格模式的js程序中，this指向对于直接调用的方式有所不同："></a>对于严格模式的js程序中，this指向对于直接调用的方式有所不同：</h5><p>严格模式下，函数直接调用的方式中this指向undefined</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&apos;use strict&apos;</span><br><span class="line">function a() &#123;</span><br><span class="line">  console.log(this)  </span><br><span class="line">&#125;</span><br><span class="line">a()</span><br></pre></td></tr></table></figure>
+
+<p>这个时候函数里的this打印出 <code>undefined</code></p>
+<h5 id="对于箭头函数"><a href="#对于箭头函数" class="headerlink" title="对于箭头函数"></a>对于箭头函数</h5><p>箭头函数没有自身的this关键字，看外层是否有函数，如果有函数，外层函数的this就是内部箭头函数的this，如果没有，this就是指向window</p>
+<p>可以看以下几种情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;</span><br><span class="line">  myName: &apos;linda&apos;, </span><br><span class="line">  age:1, </span><br><span class="line">  clickPerson: function() &#123; </span><br><span class="line">  	var show = function() &#123;</span><br><span class="line">  		console.log(`Person name is $&#123;this.myName&#125;, age is $&#123;this.age&#125;`)</span><br><span class="line">  	&#125;</span><br><span class="line">    show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">person.clickPerson()</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：<code>Person name is undefined, age is undefined</code></p>
+<p>里面的函数show被调用的时候，是普通函数调用的情况，所以this指向window，而全局函数中没有myName和age，所以打印出来是undefined</p>
+<p>可以换成箭头函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;</span><br><span class="line">  myName: &apos;linda&apos;, </span><br><span class="line">  age:1, </span><br><span class="line">  clickPerson: function() &#123; </span><br><span class="line">  	var show = () =&gt; &#123;</span><br><span class="line">  		console.log(`Person name is $&#123;this.myName&#125;, age is $&#123;this.age&#125;`)</span><br><span class="line">  	&#125;</span><br><span class="line">    show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">person.clickPerson()</span><br></pre></td></tr></table></figure>
+
+<p>打印出的结果是：<code>Person name is linda, age is 1</code></p>
+<p>对于箭头函数自身没有this关键字，所以看外层函数，而外层函数中是我们前面说到的第二种情况，this指向person这个对象，所以是有myName和age的值</p>
+<p>如果把clickPerson也换成箭头函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;</span><br><span class="line">  myName: &apos;linda&apos;, </span><br><span class="line">  age:1, </span><br><span class="line">  clickPerson: () =&gt; &#123; </span><br><span class="line">  	var show = () =&gt; &#123;</span><br><span class="line">  		console.log(`Person name is $&#123;this.myName&#125;, age is $&#123;this.age&#125;`)</span><br><span class="line">  	&#125;</span><br><span class="line">    show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">person.clickPerson()</span><br></pre></td></tr></table></figure>
+
+<p>我们发现打印的结果是：<code>Person name is undefined, age is undefined</code></p>
+<p>由于都是箭头函数，最后找到了全局的window，所以this指向window，而全局函数中没有myName和age，所以打印出来是undefined</p>
+<p>再看另外一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function getPersonInfo(name,age)&#123;</span><br><span class="line">  this.myName = name;</span><br><span class="line">  this.age = age;</span><br><span class="line">  this.show = function() &#123;</span><br><span class="line">    console.log(`Person name is $&#123;this.myName&#125;, age is $&#123;this.age&#125;`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">getPersonInfo.prototype.friend = function(friends) &#123;</span><br><span class="line">    var array = friends.map(function(friend) &#123;</span><br><span class="line">        return `my friend $&#123;this.myName&#125; age is $&#123;this.age&#125;`</span><br><span class="line">    &#125;);</span><br><span class="line">    console.log(array);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var person1 = new getPersonInfo(&quot;linda&quot;,18);</span><br><span class="line">person1.show()</span><br><span class="line">person1.friend([&apos;Ada&apos;, &apos;Tom&apos;])</span><br></pre></td></tr></table></figure>
+
+<p>show()函数调用结果打印：<code>Person name is linda, age is 18</code></p>
+<p>friend()函数调用打印结果：<code>[&quot;my friend undefined age is undefined&quot;, &quot;my friend undefined age is undefined&quot;]</code></p>
+<p>对于friend函数内部，this指向的是当前的getPersonInfo这个构造函数初始化的实例，但是在内部使用map是一个闭包函数，且内部是普通函数的调用方式，所以内部this是指向了window，可以把里面普通函数调用的方式改成箭头函数的方式即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function getPersonInfo(name,age)&#123;</span><br><span class="line">  this.myName = name;</span><br><span class="line">  this.age = age;</span><br><span class="line">  this.show = function() &#123;</span><br><span class="line">    console.log(`Person name is $&#123;this.myName&#125;, age is $&#123;this.age&#125;`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">getPersonInfo.prototype.friend = function(friends) &#123;</span><br><span class="line">    var array = friends.map((friend) =&gt; &#123;</span><br><span class="line">        return `my friend $&#123;this.myName&#125; age is $&#123;this.age&#125;`</span><br><span class="line">    &#125;);</span><br><span class="line">    console.log(array);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var person1 = new getPersonInfo(&quot;linda&quot;,18);</span><br><span class="line">person1.show()</span><br><span class="line">person1.friend([&apos;Ada&apos;, &apos;Tom&apos;])</span><br></pre></td></tr></table></figure>
+
+<p>这次打印结果就是<code>[&quot;my friend linda age is 18&quot;, &quot;my friend linda age is 18&quot;]</code>就是我们预想的了</p>
+<p>总结：（非严格模式下）可以按照下图规律查找this的指向</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1" alt="img"></p>
+<h4 id="五、执行上下文栈"><a href="#五、执行上下文栈" class="headerlink" title="五、执行上下文栈"></a>五、执行上下文栈</h4><p>js创建了执行上下文栈来管理执行上下文，我们通过如下一段代码和进栈出栈顺序图来理解执行上下文栈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var name = &apos;Tom&apos;;</span><br><span class="line">function father() &#123;</span><br><span class="line">  var sonName = &apos;Anda&apos;;</span><br><span class="line">  function son() &#123;</span><br><span class="line">    console.log(&apos;son name is &apos;, sonName)</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(&apos;father name is &apos;, name)</span><br><span class="line">  son();</span><br><span class="line">&#125;</span><br><span class="line">father();</span><br></pre></td></tr></table></figure>
+
+<p>过程：</p>
+<p>1.全局执行上下文进栈</p>
+<p>2.调用函数father，father函数执行上下文进栈</p>
+<p>3.father函数内部代码执行，son函数被执行，son函数执行上下文进栈</p>
+<p>4.son函数执行完毕，son函数的执行上下文出栈</p>
+<p>5.father函数执行完毕，father函数的执行上下文出栈</p>
+<p>6.浏览器关闭时，全局执行上下文出栈</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/5/24/16ae7f5c5b24fc24" alt="img"></p>
+<p>执行上下文栈特点：</p>
+<ul>
+<li>先创建全局执行上下文，并压入栈顶</li>
+<li>函数执行时创建函数执行上下文，再压入栈顶</li>
+<li>函数执行完函数的执行上下文出栈，等待垃圾回收</li>
+<li>JS执行引擎总是访问栈顶的执行上下文</li>
+<li>js代码是单线程的，代码是排队执行</li>
+<li>全局执行上下文在浏览器关闭时出栈</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/02/04/Web前端/深入理解JS执行上下文的点点滴滴/" title="深入理解JS执行上下文的点点滴滴">https://uestc66.github.io/2020/02/04/Web前端/深入理解JS执行上下文的点点滴滴/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/03/Web前端/你真的了解 React 生命周期吗/" rel="next" title="你真的了解 React 生命周期吗">
+                <i class="fa fa-chevron-left"></i> 你真的了解 React 生命周期吗
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/05/Web前端/浏览器进程架构的演化/" rel="prev" title="浏览器进程架构的演化">
+                浏览器进程架构的演化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次重点"><span class="nav-number">1.1.</span> <span class="nav-text">本次重点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本概念："><span class="nav-number">1.2.</span> <span class="nav-text">基本概念：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一、执行上下文类型"><span class="nav-number">1.3.</span> <span class="nav-text">一、执行上下文类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-全局执行上下文"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.全局执行上下文</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-函数执行上下文"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.函数执行上下文</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-eval函数执行上下文："><span class="nav-number">1.3.3.</span> <span class="nav-text">3.eval函数执行上下文：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、执行上下文的生命周期"><span class="nav-number">1.4.</span> <span class="nav-text">二、执行上下文的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建阶段"><span class="nav-number">1.4.1.</span> <span class="nav-text">创建阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#执行阶段"><span class="nav-number">1.4.2.</span> <span class="nav-text">执行阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#回收阶段"><span class="nav-number">1.4.3.</span> <span class="nav-text">回收阶段</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、变量提升"><span class="nav-number">1.5.</span> <span class="nav-text">三、变量提升</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、确定this指向问题"><span class="nav-number">1.6.</span> <span class="nav-text">四、确定this指向问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#对于非严格模式和es5的js程序中，this指向可以分为以下几种情况："><span class="nav-number">1.6.1.</span> <span class="nav-text">对于非严格模式和es5的js程序中，this指向可以分为以下几种情况：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对于严格模式的js程序中，this指向对于直接调用的方式有所不同："><span class="nav-number">1.6.2.</span> <span class="nav-text">对于严格模式的js程序中，this指向对于直接调用的方式有所不同：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对于箭头函数"><span class="nav-number">1.6.3.</span> <span class="nav-text">对于箭头函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、执行上下文栈"><span class="nav-number">1.7.</span> <span class="nav-text">五、执行上下文栈</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

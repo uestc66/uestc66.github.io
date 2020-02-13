@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Running PM2 &amp;amp; Node.js in Production Environments Nick ParsonsFollow Aug 7, 2018 · 6 min read   https://getstream.io/try-the-api At Stream, we build a lot of showcase and example applications to sh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jerry.zmf&#39;s Blog">
+<meta property="og:url" content="https://uestc66.github.io/2020/01/15/Node.js/Running PM2 & Node.js in Production Environments/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="Running PM2 &amp;amp; Node.js in Production Environments Nick ParsonsFollow Aug 7, 2018 · 6 min read   https://getstream.io/try-the-api At Stream, we build a lot of showcase and example applications to sh">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://miro.medium.com/fit/c/96/96/1*VNJql1GsBDRVePx3xQBPCg.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/60/1*oL7pbhHmJXcX4irfW6T_7w.png?q=20">
+<meta property="og:image" content="https://miro.medium.com/max/3480/1*oL7pbhHmJXcX4irfW6T_7w.png">
+<meta property="og:image" content="https://miro.medium.com/max/60/1*DFqGWeD1ZkWtcib3IA8u_w.png?q=20">
+<meta property="og:image" content="https://miro.medium.com/max/3164/1*DFqGWeD1ZkWtcib3IA8u_w.png">
+<meta property="og:image" content="https://miro.medium.com/max/60/1*BP35mkrIilomQhiX2L6moQ.png?q=20">
+<meta property="og:image" content="https://miro.medium.com/max/1440/1*BP35mkrIilomQhiX2L6moQ.png">
+<meta property="og:image" content="https://miro.medium.com/max/60/1*-nFQ3GTdhyll5taVGaYw_A.png?q=20">
+<meta property="og:image" content="https://miro.medium.com/max/1440/1*-nFQ3GTdhyll5taVGaYw_A.png">
+<meta property="og:image" content="https://miro.medium.com/max/60/1*p6tdnTm-LJYi6qyzB9KT_Q.png?q=20">
+<meta property="og:image" content="https://miro.medium.com/max/1440/1*p6tdnTm-LJYi6qyzB9KT_Q.png">
+<meta property="og:image" content="https://miro.medium.com/max/60/1*ASce0UmCHFGxeDtn-s5e2w.png?q=20">
+<meta property="og:image" content="https://miro.medium.com/max/1440/1*ASce0UmCHFGxeDtn-s5e2w.png">
+<meta property="og:updated_time" content="2020-02-05T03:13:59.186Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jerry.zmf&#39;s Blog">
+<meta name="twitter:description" content="Running PM2 &amp;amp; Node.js in Production Environments Nick ParsonsFollow Aug 7, 2018 · 6 min read   https://getstream.io/try-the-api At Stream, we build a lot of showcase and example applications to sh">
+<meta name="twitter:image" content="https://miro.medium.com/fit/c/96/96/1*VNJql1GsBDRVePx3xQBPCg.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/01/15/Node.js/Running PM2 & Node.js in Production Environments/">
+
+
+
+
+
+  <title> | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/01/15/Node.js/Running PM2 & Node.js in Production Environments/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-15T10:18:02+08:00">
+                2020-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/15/Node.js/Running PM2 & Node.js in Production Environments/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/01/15/Node.js/Running PM2 & Node.js in Production Environments/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Running-PM2-amp-Node-js-in-Production-Environments"><a href="#Running-PM2-amp-Node-js-in-Production-Environments" class="headerlink" title="Running PM2 &amp; Node.js in Production Environments"></a>Running PM2 &amp; Node.js in Production Environments</h1><p><a href="https://medium.com/@nparsons08?source=post_page-----13e703fc108a----------------------" target="_blank" rel="noopener"><img src="https://miro.medium.com/fit/c/96/96/1*VNJql1GsBDRVePx3xQBPCg.jpeg" alt="Nick Parsons"></a></p>
+<p><a href="https://medium.com/@nparsons08?source=post_page-----13e703fc108a----------------------" target="_blank" rel="noopener">Nick Parsons</a>Follow</p>
+<p><a href="https://medium.com/hackernoon/running-pm2-node-js-in-production-environments-13e703fc108a?source=post_page-----13e703fc108a----------------------" target="_blank" rel="noopener">Aug 7, 2018</a> · 6 min read</p>
+<p><img src="https://miro.medium.com/max/60/1*oL7pbhHmJXcX4irfW6T_7w.png?q=20" alt="img"></p>
+<p><img src="https://miro.medium.com/max/3480/1*oL7pbhHmJXcX4irfW6T_7w.png" alt="img"></p>
+<p><a href="https://getstream.io/try-the-api" target="_blank" rel="noopener">https://getstream.io/try-the-api</a></p>
+<p>At Stream, we build a lot of showcase and example applications to show off the awesome features that our service has to offer. For nearly all of our applications, we host them on an instance — usually <a href="https://www.digitalocean.com/" target="_blank" rel="noopener">DigitalOcean</a> or <a href="https://aws.amazon.com/ec2/" target="_blank" rel="noopener">AWS EC2</a>.</p>
+<p>While maintaining your codebase and keeping it relevant is difficult, we’ve found that the most challenging aspect when it comes to maintaining an application is keeping it alive and running. Additionally, with Node.js being the core language for most of our backend APIs, scaling a single threaded process can be hard to do; that’s where <a href="https://pm2.io/" target="_blank" rel="noopener">PM2</a> comes in and why we enjoy using it so much.</p>
+<p>There are many process managers out there, most notably <a href="https://github.com/foreverjs/forever" target="_blank" rel="noopener">Forever</a>, <a href="http://strong-pm.io/" target="_blank" rel="noopener">StrongLoop’s Process Manager</a>, and good ol’ <a href="https://en.wikipedia.org/wiki/Systemd" target="_blank" rel="noopener">SystemD</a>. And then there is PM2, with over 60 million downloads and 25k GitHub stars (and rising!). We like PM2 because, simply put, it’s easy to use and makes managing a production environment seamless.</p>
+<h1 id="What-is-PM2"><a href="#What-is-PM2" class="headerlink" title="What is PM2?"></a>What is PM2?</h1><p><img src="https://miro.medium.com/max/60/1*DFqGWeD1ZkWtcib3IA8u_w.png?q=20" alt="img"></p>
+<p><img src="https://miro.medium.com/max/3164/1*DFqGWeD1ZkWtcib3IA8u_w.png" alt="img"></p>
+<p>PM2 is a battle tested, production ready runtime and process manager for Node.js applications. It comes with a built-in <a href="https://pm2.io/doc/en/runtime/guide/load-balancing/" target="_blank" rel="noopener">load balancer</a>, as well, which makes scaling applications even easier. Best of all, it works on Linux, Windows, and macOS.</p>
+<p>With a configuration file (process.json), you specify what processes you want to run and how many you’d like to scale to. When starting PM2, you specify the process.json file and PM2 takes care of the rest. (More on process files in a bit 😉)</p>
+<p>What all of this means is that PM2 allows you to keep your Node.js applications alive forever, and to reload them with zero downtime when you have updates to your application or server.</p>
+<h1 id="Installing-PM2"><a href="#Installing-PM2" class="headerlink" title="Installing PM2"></a>Installing PM2</h1><p>Installing PM2 is a piece of cake. First, you’ll want to make sure that you have your process.json file ready to go in your code so we can kick off the process.</p>
+<p>If you’re on macOS, installing is as simple as running <strong>yarn add global pm2</strong>. If you’re on Linux, Windows, or using a Docker container (yes, it supports Docker as well), follow the instructions <a href="https://pm2.io/doc/en/runtime/guide/installation/" target="_blank" rel="noopener">here</a>.</p>
+<p>If you’re curious what it should look like, here is an example of our process_prod.json file for Winds, our open-source RSS &amp; Podcast application:</p>
+<iframe src="https://medium.com/media/bdc36b42d9062fdee94c538eb43f50f8" allowfullscreen frameborder="0" height="923" width="680" title="process_prod.json" class="ds t u hk ak" scrolling="auto" style="box-sizing: inherit; top: 0px; left: 0px; width: 680px; position: absolute; height: 923px;"></iframe>
+As you can see, we’re running several processes, and PM2 handles them without any issues, automatically using the Node.js Cluster API to spawn multiple processes.
+
+<h1 id="Tips-amp-Tricks"><a href="#Tips-amp-Tricks" class="headerlink" title="Tips &amp; Tricks"></a>Tips &amp; Tricks</h1><p>With any application (or process manager in our case), it’s good to know a few tips and tricks from individuals who have previously used it.</p>
+<h2 id="Auto-Restart"><a href="#Auto-Restart" class="headerlink" title="Auto Restart"></a>Auto Restart</h2><p><img src="https://miro.medium.com/max/60/1*BP35mkrIilomQhiX2L6moQ.png?q=20" alt="img"></p>
+<p><img src="https://miro.medium.com/max/1440/1*BP35mkrIilomQhiX2L6moQ.png" alt="img"></p>
+<p>Once it’s started, your app is forever alive, auto-restarting after crashes and machine restarts — all with one simple command:</p>
+<p><strong>pm2 startup</strong></p>
+<h2 id="Process-Management"><a href="#Process-Management" class="headerlink" title="Process Management"></a>Process Management</h2><p><img src="https://miro.medium.com/max/60/1*-nFQ3GTdhyll5taVGaYw_A.png?q=20" alt="img"></p>
+<p><img src="https://miro.medium.com/max/1440/1*-nFQ3GTdhyll5taVGaYw_A.png" alt="img"></p>
+<p>No matter how many applications you’re running, PM2 has a suite of commands that allow you to manage their respective states. Below are a few of our favorite commands (in no particular order):</p>
+<ul>
+<li><strong>pm2 start process_prod.json</strong> — Start process(es) via process JSON file</li>
+<li><strong>pm2 ls</strong> — Show a list of all applications</li>
+<li><strong>pm2 stop</strong> **** — Stops a specific application</li>
+<li><strong>pm2 start</strong> **** — Starts a specific application</li>
+<li><strong>pm2 ** **scale N</strong> — Scales the application you specify to N number of instances (can be used to scale up or down)</li>
+<li><strong>pm2 kill</strong> — Kills all running applications</li>
+<li><strong>pm2 restart</strong> — Restarts all running applications</li>
+<li><strong>pm2 reload</strong> — Reloads the app configuration (this comes in handy when you modify your application’s environment variables)</li>
+</ul>
+<h2 id="Process-Management-1"><a href="#Process-Management-1" class="headerlink" title="Process Management"></a>Process Management</h2><p><img src="https://miro.medium.com/max/60/1*p6tdnTm-LJYi6qyzB9KT_Q.png?q=20" alt="img"></p>
+<p><img src="https://miro.medium.com/max/1440/1*p6tdnTm-LJYi6qyzB9KT_Q.png" alt="img"></p>
+<p>Running the command <strong>pm2 monit</strong> will return a rich set of data around your application’s health. For example, you’ll see CPU utilization, memory usage, requests/minute, and more!</p>
+<h2 id="Log-Management"><a href="#Log-Management" class="headerlink" title="Log Management"></a>Log Management</h2><p><img src="https://miro.medium.com/max/60/1*ASce0UmCHFGxeDtn-s5e2w.png?q=20" alt="img"></p>
+<p><img src="https://miro.medium.com/max/1440/1*ASce0UmCHFGxeDtn-s5e2w.png" alt="img"></p>
+<p>PM2 has built-in log management. It aggregates log data from all of your applications and writes it to a single source for viewing. You can even tail the logs in real-time to see what’s going on behind the scenes with your application. Log Management from PM2 comes with log rotation as well, which is important, especially if you’re application is outputting verbose logs on a frequent basis.</p>
+<p>There are three commands that I use often, and you should too:</p>
+<ul>
+<li><strong>pm2 logs</strong> — Outputs logs from all running applications</li>
+<li><strong>pm2 logs app</strong> — Outputs logs from only the <strong>app</strong> application</li>
+<li><strong>pm2 flush</strong> — Flushes all log data, freeing up disk space</li>
+</ul>
+<p>Remember, the most important thing to do is to enable log rotation. Doing so will split one giant log file into many smaller files that are more manageable for PM2. To do this, run the following command:</p>
+<p><strong>pm2 install pm2-logrotate</strong></p>
+<p>More information on Log Management can be found <a href="https://pm2.io/doc/en/runtime/guide/log-management/" target="_blank" rel="noopener">here</a>.</p>
+<p>If you’re finding that your instance is filling up with logs often, think about using a centralized logging service such as <a href="https://www.loggly.com/" target="_blank" rel="noopener">Loggly</a>, <a href="https://papertrailapp.com/" target="_blank" rel="noopener">Papertrail</a>, or <a href="https://www.elastic.co/elk-stack" target="_blank" rel="noopener">ELK</a>.</p>
+<h1 id="Best-Practices"><a href="#Best-Practices" class="headerlink" title="Best Practices:"></a>Best Practices:</h1><p>Generally, I like to abide by the practices outlined in <a href="https://12factor.net/" target="_blank" rel="noopener">The Twelve-Factor App</a>. They will allow you to use PM2 to its full advantage. If you haven’t read the manifesto, it comes down to these 12 rules:</p>
+<ol>
+<li>One codebase tracked in revision control, many deploys</li>
+<li>Explicitly declare and isolate dependencies</li>
+<li>Store config in the environment</li>
+<li>Treat backing services as attached resources</li>
+<li>Strictly separate build and run stages</li>
+<li>Execute the app as one or more stateless processes</li>
+<li>Export services via port binding</li>
+<li>Scale out via the process model</li>
+<li>Maximize robustness with fast startup and graceful shutdown</li>
+<li>Keep development, staging, and production as similar as possible</li>
+<li>Treat logs as event streams</li>
+<li>Run admin/management tasks as one-off processes</li>
+</ol>
+<p>If you follow the rules above, you’ll be able to scale any application with PM2 effectively and efficiently with little to no errors.</p>
+<h1 id="Final-Thoughts"><a href="#Final-Thoughts" class="headerlink" title="Final Thoughts"></a>Final Thoughts</h1><p>At Stream, we’re all big fans of the open-source community and couldn’t be happier that PM2 is an open-source project. It allows us to focus on building amazing applications without worrying about the massive overhead that is required to keep an application up and running. With that said, thank you PM2!</p>
+<p>If you’d like to know more about Stream and what we do, have a look at our <a href="https://getstream.io/try-the-api" target="_blank" rel="noopener">5-minute tutorial</a> that walks you through how to use our API to build a scalable newsfeed in just a few lines of code.</p>
+<p>For those of you reading, I hope you enjoyed this short read and found a couple of tidbits to be helpful. If you have any questions or comments, please leave them in the comments below!</p>
+<p><strong>Thank you for reading and happy coding!</strong></p>
+<p><a href="https://medium.com/hackernoon/running-pm2-node-js-in-production-environments-13e703fc108a" target="_blank" rel="noopener">https://medium.com/hackernoon/running-pm2-node-js-in-production-environments-13e703fc108a</a></p>
+<p><a href="https://juejin.im/post/5e1c475af265da3e30770143?utm_source=gold_browser_extension" target="_blank" rel="noopener">https://juejin.im/post/5e1c475af265da3e30770143?utm_source=gold_browser_extension</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/01/15/Node.js/Running PM2 & Node.js in Production Environments/" title>https://uestc66.github.io/2020/01/15/Node.js/Running PM2 & Node.js in Production Environments/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/10/Web前端/webpack打包原理 ? 看完这篇你就懂了 !/" rel="next" title="webpack打包原理 ? 看完这篇你就懂了 !">
+                <i class="fa fa-chevron-left"></i> webpack打包原理 ? 看完这篇你就懂了 !
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/03/Web前端/你真的了解 React 生命周期吗/" rel="prev" title="你真的了解 React 生命周期吗">
+                你真的了解 React 生命周期吗 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Running-PM2-amp-Node-js-in-Production-Environments"><span class="nav-number">1.</span> <span class="nav-text">Running PM2 &amp; Node.js in Production Environments</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#What-is-PM2"><span class="nav-number">2.</span> <span class="nav-text">What is PM2?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Installing-PM2"><span class="nav-number">3.</span> <span class="nav-text">Installing PM2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tips-amp-Tricks"><span class="nav-number">4.</span> <span class="nav-text">Tips &amp; Tricks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Auto-Restart"><span class="nav-number">4.1.</span> <span class="nav-text">Auto Restart</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Process-Management"><span class="nav-number">4.2.</span> <span class="nav-text">Process Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Process-Management-1"><span class="nav-number">4.3.</span> <span class="nav-text">Process Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Log-Management"><span class="nav-number">4.4.</span> <span class="nav-text">Log Management</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Best-Practices"><span class="nav-number">5.</span> <span class="nav-text">Best Practices:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Final-Thoughts"><span class="nav-number">6.</span> <span class="nav-text">Final Thoughts</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

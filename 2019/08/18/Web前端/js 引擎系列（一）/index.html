@@ -95,7 +95,7 @@
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
 <meta property="og:description" content="在 Facebook 发布 Hermes 引擎之前，Fabrice Bellard 以及 C 语言专家 Charlie Gordon 公开发布了 QuickJS。 Facebook发布全新JS引擎！专注提高React Native应用的性能  为了提高 Facebook 应用的性能，我们的团队不断改进自己的 JavaScript 代码和平台。在分析性能数据时，我们发现 JavaScript 引擎本">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-16T02:27:29.031Z">
+<meta property="og:updated_time" content="2020-02-04T03:36:57.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js 引擎（一）">
 <meta name="twitter:description" content="在 Facebook 发布 Hermes 引擎之前，Fabrice Bellard 以及 C 语言专家 Charlie Gordon 公开发布了 QuickJS。 Facebook发布全新JS引擎！专注提高React Native应用的性能  为了提高 Facebook 应用的性能，我们的团队不断改进自己的 JavaScript 代码和平台。在分析性能数据时，我们发现 JavaScript 引擎本">
@@ -488,6 +488,9 @@
 <p>React 结合 Web worker ? 尝试在 Web worker 中运行 React Virtual DOM 的相关计算，即将 React core 部分移入 Web worker 线程中 ? 还真有人提出类似想法：<a href="https://github.com/facebook/react/issues/3092" target="_blank" rel="noopener">3092 issue</a>，但是提案被拒绝了，react 选择的是 <a href="https://www.infoq.cn/article/what-the-new-engine-of-react/" target="_blank" rel="noopener">React Fiber</a>。</p>
 <p>但是这个并不妨碍 Web worker 成为 “民间” 的 <strong>react 性能解药</strong>：</p>
 <h5 id="React-Redux-中间件思想遇见-Web-Worker-的灵感（附demo）"><a href="#React-Redux-中间件思想遇见-Web-Worker-的灵感（附demo）" class="headerlink" title="React Redux 中间件思想遇见 Web Worker 的灵感（附demo）"></a><a href="https://zhuanlan.zhihu.com/p/28525821" target="_blank" rel="noopener">React Redux 中间件思想遇见 Web Worker 的灵感（附demo）</a></h5><p>另外举个例子对比: <a href="http://web-perf.github.io/react-worker-dom/" target="_blank" rel="noopener">http://web-perf.github.io/react-worker-dom/</a></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://juejin.im/post/5e22b391f265da3e204d8c14?utm_source=gold_browser_extension" target="_blank" rel="noopener">硬核JS」一次搞懂JS运行机制</a></li>
+</ul>
 
       
     </div>
@@ -640,7 +643,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -717,7 +720,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#PS-前端性能优化终于走到了-js-引擎的层面。为了更好地地了解引擎技术，我们先来温故一下-js-基础机制："><span class="nav-number">1.</span> <span class="nav-text">PS: 前端性能优化终于走到了 js 引擎的层面。为了更好地地了解引擎技术，我们先来温故一下 js 基础机制：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开发做了这么多年，你真的了解JS工作机制吗？"><span class="nav-number">2.</span> <span class="nav-text">开发做了这么多年，你真的了解JS工作机制吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#前端内存相关探索"><span class="nav-number">3.</span> <span class="nav-text">前端内存相关探索</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#前端-Web-Workers-到底是什么？"><span class="nav-number">4.</span> <span class="nav-text">前端 Web Workers 到底是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#React-Redux-中间件思想遇见-Web-Worker-的灵感（附demo）"><span class="nav-number">5.</span> <span class="nav-text">React Redux 中间件思想遇见 Web Worker 的灵感（附demo）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#PS-前端性能优化终于走到了-js-引擎的层面。为了更好地地了解引擎技术，我们先来温故一下-js-基础机制："><span class="nav-number">1.</span> <span class="nav-text">PS: 前端性能优化终于走到了 js 引擎的层面。为了更好地地了解引擎技术，我们先来温故一下 js 基础机制：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开发做了这么多年，你真的了解JS工作机制吗？"><span class="nav-number">2.</span> <span class="nav-text">开发做了这么多年，你真的了解JS工作机制吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#前端内存相关探索"><span class="nav-number">3.</span> <span class="nav-text">前端内存相关探索</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#前端-Web-Workers-到底是什么？"><span class="nav-number">4.</span> <span class="nav-text">前端 Web Workers 到底是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#React-Redux-中间件思想遇见-Web-Worker-的灵感（附demo）"><span class="nav-number">5.</span> <span class="nav-text">React Redux 中间件思想遇见 Web Worker 的灵感（附demo）</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number"></span> <span class="nav-text">参考文章</span></a></li></div>
             
 
           </div>

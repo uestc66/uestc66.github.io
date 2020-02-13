@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="转载自网络，作者博主拿铁，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/ 什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。 ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如： 123456789&amp;#123;  name: &amp;apos">
+<meta name="description" content="转载自掘金网络，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/ 什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。 ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如： 123456789&amp;#123;  name: &amp;apos;miro">
 <meta name="keywords" content="Web前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="250行实现一个简单的MVVM">
 <meta property="og:url" content="https://uestc66.github.io/2019/09/21/Web前端/250行实现一个简单的MVVM/index.html">
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
-<meta property="og:description" content="转载自网络，作者博主拿铁，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/ 什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。 ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如： 123456789&amp;#123;  name: &amp;apos">
+<meta property="og:description" content="转载自掘金网络，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/ 什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。 ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如： 123456789&amp;#123;  name: &amp;apos;miro">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-27T14:52:23.267Z">
+<meta property="og:updated_time" content="2020-02-04T02:59:33.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="250行实现一个简单的MVVM">
-<meta name="twitter:description" content="转载自网络，作者博主拿铁，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/ 什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。 ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如： 123456789&amp;#123;  name: &amp;apos">
+<meta name="twitter:description" content="转载自掘金网络，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/ 什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。 ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如： 123456789&amp;#123;  name: &amp;apos;miro">
 
 
 
@@ -411,7 +411,7 @@
       
 
       
-        <p><font color="#00BFFF" size="2">转载自网络，作者博主拿铁，原文链接：<a href="https://saul-mirone.github.io/2016/12/19/simple-mvvm/" target="_blank" rel="noopener">https://saul-mirone.github.io/2016/12/19/simple-mvvm/</a></font></p>
+        <p><font color="#00BFFF" size="2">转载自掘金网络，原文链接：<a href="https://saul-mirone.github.io/2016/12/19/simple-mvvm/" target="_blank" rel="noopener">https://saul-mirone.github.io/2016/12/19/simple-mvvm/</a></font></p>
 <h1 id="什么是MVVM？"><a href="#什么是MVVM？" class="headerlink" title="什么是MVVM？"></a>什么是MVVM？</h1><p>MVVM是一种程序架构设计。把它拆开来看应该是<strong>Model-View-ViewModel</strong>。</p>
 <h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>Model指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  name: &apos;mirone&apos;,</span><br><span class="line">  age: 20,</span><br><span class="line">  friends: [&apos;singleDogA&apos;, &apos;singleDogB&apos;],</span><br><span class="line">  details: &#123;</span><br><span class="line">    type: &apos;notSingleDog&apos;,</span><br><span class="line">    tags: [&apos;fff&apos;, &apos;sox&apos;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -563,8 +563,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/16/Python/MacOS 搭建 Python 环境/" rel="next" title>
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2019/09/21/Web前端/页面可视化搭建工具技术要点/" rel="next" title="页面可视化搭建工具技术要点">
+                <i class="fa fa-chevron-left"></i> 页面可视化搭建工具技术要点
               </a>
             
           </div>
@@ -573,8 +573,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/21/Web前端/页面可视化搭建工具技术要点/" rel="prev" title="页面可视化搭建工具技术要点">
-                页面可视化搭建工具技术要点 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/02/Node.js/Puppeteer 初体验/" rel="prev" title="Puppeteer 初体验">
+                Puppeteer 初体验 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -657,7 +657,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
