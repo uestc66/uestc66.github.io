@@ -95,12 +95,12 @@
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
 <meta property="og:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5c0cf55c51882530544f22e2 本篇文章主要讲述的是如何通过Node创建一个稳定的web服务器，如果你看到这里想起了pm2等工具，那么你可以先抛弃pm2，进来看看，如果有哪些不合适的地方，恳请您指出。 创建一个稳定的web服务器需要解决什么问题。  如何利用多核CPU资源。 多个工作进程的存活状态管理。 工作">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4">
-<meta property="og:updated_time" content="2020-02-14T03:07:37.039Z">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2020-02-14T04:32:54.312Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何创建一个可靠稳定的Web服务器">
 <meta name="twitter:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5c0cf55c51882530544f22e2 本篇文章主要讲述的是如何通过Node创建一个稳定的web服务器，如果你看到这里想起了pm2等工具，那么你可以先抛弃pm2，进来看看，如果有哪些不合适的地方，恳请您指出。 创建一个稳定的web服务器需要解决什么问题。  如何利用多核CPU资源。 多个工作进程的存活状态管理。 工作">
-<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 
 
 
@@ -449,7 +449,7 @@
 <p>使用进程的方式，其实就是通过<code>cluster.isMaster</code>和<code>cluster.isWorker</code>来进行判断的。</p>
 <p>主从进程代码写在一块可能也不太好理解。这种写法也是Node官方的写法，当然也有更加清晰的写法，借助<a href="http://nodejs.cn/api/cluster.html#cluster_cluster_setupmaster_settings" target="_blank" rel="noopener"><code>cluster.setupMaster</code></a>实现，这里不去详细解释。</p>
 <p>通过Node执行代码，看看究竟发生了什么。</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4" alt="img"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img"></p>
 <p>首先判断<code>cluster.isMaster</code>是否存在，然后循环调用<code>createServer()</code>,<strong>fork</strong>4个工作进程。打印工作进程<strong>pid</strong>。</p>
 <p><code>cluster</code>启动时，它会在内部启动<strong>TCP</strong>服务，在<code>cluster.fork()</code>子进程时，将这个<strong>TCP</strong>服务端<code>socket</code>的文件描述符发送给工作进程。如果工作进程中存在<code>listen()</code>监听网络端口的调用，它将拿到该文件的文件描述符，通过<strong>SO_REUSEADDR</strong>端口重用，从而实现多个子进程共享端口。</p>
 <h2 id="进程管理、平滑重启、和错误处理。"><a href="#进程管理、平滑重启、和错误处理。" class="headerlink" title="进程管理、平滑重启、和错误处理。"></a>进程管理、平滑重启、和错误处理。</h2><p>一般来说，master进程比较稳定，工作进程并不是太稳定。</p>

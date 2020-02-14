@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件/">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/21/Web前端/250行实现一个简单的MVVM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jerry.zmf">
@@ -322,7 +322,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/21/Web前端/Chrome 插件/" itemprop="url">页面可视化搭建工具技术要点</a></h1>
+                <a class="post-title-link" href="/2019/09/21/Web前端/250行实现一个简单的MVVM/" itemprop="url">250行实现一个简单的MVVM</a></h1>
         
 
         <div class="post-meta">
@@ -375,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/21/Web前端/Chrome 插件/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/21/Web前端/Chrome 插件/" itemprop="commentCount"></span>
+                <a href="/2019/09/21/Web前端/250行实现一个简单的MVVM/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/21/Web前端/250行实现一个简单的MVVM/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -406,28 +406,14 @@
       
         
           
-          先决条件google浏览器必须配置如下启动参数：
-
-–enable-benchmarking : 启用基准测试扩展
-
-–enable-net-benchmarking : 启用网络基准测试扩展
-
-–remote-debugging-port=9222 : 开启远程调试
-
-
-配置macOS
-切换Google安装目录
-1cd &quot;/Applications/Google Chrome.app/Contents/MacOS/&quot;
-
-重命名的启动脚本
-1sudo mv &quot;Google Chrome&quot; Google.real
-
-编辑启动脚本
-1vim &quot;Go
+          转载自掘金网络，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/
+什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。
+ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如：
+123456789&#123;  name: &apos;mirone&apos;,  age: 20,  friends: [&apos;singleDogA&apos;, &apos;singleDogB&apos;],  details: &#123;    
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/09/21/Web前端/Chrome 插件/#more" rel="contents">
+            <a class="btn" href="/2019/09/21/Web前端/250行实现一个简单的MVVM/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
