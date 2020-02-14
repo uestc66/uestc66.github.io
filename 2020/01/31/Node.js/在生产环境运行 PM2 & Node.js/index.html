@@ -95,16 +95,12 @@
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
 <meta property="og:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5e1c475af265da3e30770143 维护你的代码库并保持其相关性确有难度；但与之相比我们会发现，维护一个应用时最大的挑战来自于保持其存活和运行。不仅如此，随着 Node.js 变成大部分后端 API 的核心语言，单线程程序的伸缩也变得困难；这就是 PM2 出现并受到欢迎的原因了。 有很多进程管理工具，广为人知的如">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9f86f61f7c322">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9e786fba8fa7e">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9e787ba4d7c93">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9e787c038f70a">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9e7884ea76687">
-<meta property="og:updated_time" content="2020-02-14T03:26:40.877Z">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9f86f61f7c322?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2020-02-14T04:25:04.564Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在生产环境运行 PM2 &amp; Node.js">
 <meta name="twitter:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5e1c475af265da3e30770143 维护你的代码库并保持其相关性确有难度；但与之相比我们会发现，维护一个应用时最大的挑战来自于保持其存活和运行。不仅如此，随着 Node.js 变成大部分后端 API 的核心语言，单线程程序的伸缩也变得困难；这就是 PM2 出现并受到欢迎的原因了。 有很多进程管理工具，广为人知的如">
-<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9f86f61f7c322">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2020/1/13/16f9f86f61f7c322?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 
 
 
@@ -420,7 +416,7 @@
         <p><font color="#00BFFF" size="2">转载自掘金网络，原文链接：<a href="https://juejin.im/post/5e1c475af265da3e30770143" target="_blank" rel="noopener">https://juejin.im/post/5e1c475af265da3e30770143</a></font></p>
 <p>维护你的代码库并保持其相关性确有难度；但与之相比我们会发现，维护一个应用时最大的挑战来自于保持其存活和运行。不仅如此，随着 Node.js 变成大部分后端 API 的核心语言，单线程程序的伸缩也变得困难；这就是 <a href="https://pm2.io" target="_blank" rel="noopener">PM2</a> 出现并受到欢迎的原因了。</p>
 <p>有很多进程管理工具，广为人知的如 <a href="https://github.com/foreverjs/forever" target="_blank" rel="noopener">Forever</a>、<a href="http://strong-pm.io/" target="_blank" rel="noopener">strong-pm</a>，或是不错的 Linux 系统工具 <a href="https://en.wikipedia.org/wiki/Systemd" target="_blank" rel="noopener">SystemD</a>。还有就是本文的主角 PM2，有着 4100 多万的总下载量和 31k GitHub stars（译注：截止本文翻译时）。究其原因，简单地说，就是其简单易用并且让管理一个生产环境变得天衣无缝。</p>
-<h1 id="何为-PM2？"><a href="#何为-PM2？" class="headerlink" title="何为 PM2？"></a>何为 PM2？</h1><p><img src="https://user-gold-cdn.xitu.io/2020/1/13/16f9f86f61f7c322" alt="img"></p>
+<h1 id="何为-PM2？"><a href="#何为-PM2？" class="headerlink" title="何为 PM2？"></a>何为 PM2？</h1><p><img src="https://user-gold-cdn.xitu.io/2020/1/13/16f9f86f61f7c322?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img"></p>
 <p>正如其新版首页中所标榜的，PM2 是一个“身经百战（battle hardened）”的、适用于生产环境的 Node.js 应用运行时和进程管理工具。 也自带了内建的 <a href="https://pm2.keymetrics.io/docs/usage/cluster-mode/" target="_blank" rel="noopener">负载均衡器</a>，这使得扩展应用愈加容易。最棒的是，它在 Linux、Windows 和 macOS 都能工作。</p>
 <p>通过一个 <code>process.json</code> 配置文件（译注：该文件可自行命名，一般叫做 process.json、processes.json 或 ecosystem.json，该名称将作为参数传入 <code>pm2 start</code> 等命令中），你可以指定想要运行的进程及要扩展到多少个进程。当启动 PM2 时，它将根据以上配置文件处理其他所有的事情（甚至比配置文件指定的更多一些 😉）。</p>
 <p>所有这些意味着 PM2 能帮助你保持 Node.js 应用永远运行下去，并在你更新应用或服务器时以 0 故障停机时间自动重启。</p>
@@ -432,7 +428,7 @@
 <p>如你所见，我们运行了若干个进程，并且 PM2 轻松掌控了一切；其自动地使用了 Node.js 的 Cluster API 以实现多进程。</p>
 <p>译注：配置文件的完整介绍见 <a href="https://pm2.keymetrics.io/docs/usage/application-declaration/#ecosystem-file" target="_blank" rel="noopener">pm2.keymetrics.io/docs/usage/…</a></p>
 <h1 id="技巧-amp-经验"><a href="#技巧-amp-经验" class="headerlink" title="技巧 &amp; 经验"></a>技巧 &amp; 经验</h1><p>对于任何应用（或者本例中的进程管理工具），从先行者那里了解一些技巧和经验都是有好处的。</p>
-<h2 id="自动重启"><a href="#自动重启" class="headerlink" title="自动重启"></a>自动重启</h2><p><img src="https://user-gold-cdn.xitu.io/2020/1/13/16f9e786fba8fa7e" alt="img"></p>
+<h2 id="自动重启"><a href="#自动重启" class="headerlink" title="自动重启"></a>自动重启</h2><p>![img](data:image/svg+xml;utf8,<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="720" height="394">)</svg></p>
 <p>一旦 PM2 启动，你的应用就将永远存活，并在应用崩溃和机器重新启动后自动重启 – 所有这些只消一条简单的命令（用于获得针对所在机器的自动配置过的启动脚本）：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pm2 startup </span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
 
@@ -440,7 +436,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ pm2 startup</span><br><span class="line">[PM2] You have to run this command as root. Execute the following command:</span><br><span class="line">      sudo su -c &quot;env PATH=$PATH:/home/unitech/.nvm/versions/node/v4.3/bin pm2 startup &lt;distribution&gt; -u &lt;user&gt; --hp &lt;home-path&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
 
 <p>只要按照打印的结果，拷贝并运行得到的脚本就行了。</p>
-<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p><img src="https://user-gold-cdn.xitu.io/2020/1/13/16f9e787ba4d7c93" alt="img"></p>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>![img](data:image/svg+xml;utf8,<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="720" height="394">)</svg></p>
 <p>不管你运行了多少个应用，PM2 的一套命令都能让你管理它们各自的状态。以下是常用的一些命令（不区分顺序）：</p>
 <ul>
 <li><code>pm2 start process_prod.json</code> — 通过进程配置文件启动进程</li>
@@ -452,9 +448,9 @@
 <li><code>pm2 restart</code> — 重启所有运行中的应用</li>
 <li><code>pm2 reload</code> — 重新加载应用配置（这会在你修改了应用的环境变量时派上用场）</li>
 </ul>
-<h2 id="进程监控"><a href="#进程监控" class="headerlink" title="进程监控"></a>进程监控</h2><p><img src="https://user-gold-cdn.xitu.io/2020/1/13/16f9e787c038f70a" alt="img"></p>
+<h2 id="进程监控"><a href="#进程监控" class="headerlink" title="进程监控"></a>进程监控</h2><p>![img](data:image/svg+xml;utf8,<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="720" height="394">)</svg></p>
 <p>运行命令 <code>pm2 monit</code> 会返回关于应用健康的丰富数据。比如，你将看到 CPU 利用率、内存使用量、请求分钟数等等。</p>
-<h2 id="日志管理"><a href="#日志管理" class="headerlink" title="日志管理"></a>日志管理</h2><p><img src="https://user-gold-cdn.xitu.io/2020/1/13/16f9e7884ea76687" alt="img"></p>
+<h2 id="日志管理"><a href="#日志管理" class="headerlink" title="日志管理"></a>日志管理</h2><p>![img](data:image/svg+xml;utf8,<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="720" height="394">)</svg></p>
 <p>PM2 内建了日志管理功能。它从所有你的应用中聚合日志数据，并将其写入一个用于阅读的源文件中。你甚至可以通过事实跟踪日志来看到应用背后正在发生什么。 PM2 的日志管理也提供了日志循环，这一点非常重要，特别是当应用程序频繁地输出详细日志时。</p>
 <p>有三条我经常使用的命令，想必你也应该一样：</p>
 <ul>

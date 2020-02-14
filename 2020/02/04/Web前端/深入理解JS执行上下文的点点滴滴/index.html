@@ -95,13 +95,13 @@
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
 <meta property="og:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5ce767eef265da1bbf68f724 前言对于一名前端开发者来说，深入理解JavaScript程序内部执行机制当然是很有必要的，其中一个关键概念就是JavaScript的执行上下文和执行栈，理解这部分内容也有助于理解作用域、闭包等 本次重点 执行上下文概念、类型、特点 执行上下文的生命周期 关于变量提升 this指">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/24/16ae7f5c5b24fc24">
-<meta property="og:updated_time" content="2020-02-11T14:59:12.327Z">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/24/16ae7f5c5b24fc24?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2020-02-14T04:12:24.491Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解JS执行上下文的点点滴滴">
 <meta name="twitter:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5ce767eef265da1bbf68f724 前言对于一名前端开发者来说，深入理解JavaScript程序内部执行机制当然是很有必要的，其中一个关键概念就是JavaScript的执行上下文和执行栈，理解这部分内容也有助于理解作用域、闭包等 本次重点 执行上下文概念、类型、特点 执行上下文的生命周期 关于变量提升 this指">
-<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 
 
 
@@ -541,7 +541,7 @@
 
 <p>这次打印结果就是<code>[&quot;my friend linda age is 18&quot;, &quot;my friend linda age is 18&quot;]</code>就是我们预想的了</p>
 <p>总结：（非严格模式下）可以按照下图规律查找this的指向</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1" alt="img"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/3/5/1694e75626c746d1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img"></p>
 <h4 id="五、执行上下文栈"><a href="#五、执行上下文栈" class="headerlink" title="五、执行上下文栈"></a>五、执行上下文栈</h4><p>js创建了执行上下文栈来管理执行上下文，我们通过如下一段代码和进栈出栈顺序图来理解执行上下文栈</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var name = &apos;Tom&apos;;</span><br><span class="line">function father() &#123;</span><br><span class="line">  var sonName = &apos;Anda&apos;;</span><br><span class="line">  function son() &#123;</span><br><span class="line">    console.log(&apos;son name is &apos;, sonName)</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(&apos;father name is &apos;, name)</span><br><span class="line">  son();</span><br><span class="line">&#125;</span><br><span class="line">father();</span><br></pre></td></tr></table></figure>
 
@@ -552,7 +552,7 @@
 <p>4.son函数执行完毕，son函数的执行上下文出栈</p>
 <p>5.father函数执行完毕，father函数的执行上下文出栈</p>
 <p>6.浏览器关闭时，全局执行上下文出栈</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/5/24/16ae7f5c5b24fc24" alt="img"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/5/24/16ae7f5c5b24fc24?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img"></p>
 <p>执行上下文栈特点：</p>
 <ul>
 <li>先创建全局执行上下文，并压入栈顶</li>
