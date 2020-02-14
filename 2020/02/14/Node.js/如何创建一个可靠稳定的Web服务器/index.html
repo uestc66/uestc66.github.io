@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Node.js,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自掘金网络，原文链接：https://juejin.im/post/5c0cf55c51882530544f22e2 本篇文章主要讲述的是如何通过Node创建一个稳定的web服务器，如果你看到这里想起了pm2等工具，那么你可以先抛弃pm2，进来看看，如果有哪些不合适的地方，恳请您指出。 创建一个稳定的web服务器需要解决什么问题。  如何利用多核CPU资源。 多个工作进程的存活状态管理。 工作">
+<meta name="keywords" content="Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何创建一个可靠稳定的Web服务器">
+<meta property="og:url" content="https://uestc66.github.io/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5c0cf55c51882530544f22e2 本篇文章主要讲述的是如何通过Node创建一个稳定的web服务器，如果你看到这里想起了pm2等工具，那么你可以先抛弃pm2，进来看看，如果有哪些不合适的地方，恳请您指出。 创建一个稳定的web服务器需要解决什么问题。  如何利用多核CPU资源。 多个工作进程的存活状态管理。 工作">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4">
+<meta property="og:updated_time" content="2020-02-14T03:07:37.039Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何创建一个可靠稳定的Web服务器">
+<meta name="twitter:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5c0cf55c51882530544f22e2 本篇文章主要讲述的是如何通过Node创建一个稳定的web服务器，如果你看到这里想起了pm2等工具，那么你可以先抛弃pm2，进来看看，如果有哪些不合适的地方，恳请您指出。 创建一个稳定的web服务器需要解决什么问题。  如何利用多核CPU资源。 多个工作进程的存活状态管理。 工作">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/">
+
+
+
+
+
+  <title>如何创建一个可靠稳定的Web服务器 | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何创建一个可靠稳定的Web服务器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-14T11:05:24+08:00">
+                2020-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">Node.js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自掘金网络，原文链接：<a href="https://juejin.im/post/5c0cf55c51882530544f22e2" target="_blank" rel="noopener">https://juejin.im/post/5c0cf55c51882530544f22e2</a></font></p>
+<p><strong>本篇文章主要讲述的是如何通过Node创建一个稳定的web服务器，如果你看到这里想起了pm2等工具，那么你可以先抛弃pm2，进来看看，如果有哪些不合适的地方，恳请您指出。</strong></p>
+<h2 id="创建一个稳定的web服务器需要解决什么问题。"><a href="#创建一个稳定的web服务器需要解决什么问题。" class="headerlink" title="创建一个稳定的web服务器需要解决什么问题。"></a>创建一个稳定的web服务器需要解决什么问题。</h2><blockquote>
+<ul>
+<li>如何利用多核CPU资源。</li>
+<li>多个工作进程的存活状态管理。</li>
+<li>工作进程的平滑重启。</li>
+<li>进程错误处理。</li>
+<li>工作进程限量重启。</li>
+</ul>
+</blockquote>
+<h2 id="如何利用多核CPU资源"><a href="#如何利用多核CPU资源" class="headerlink" title="如何利用多核CPU资源"></a>如何利用多核CPU资源</h2><h4 id="利用多核CPU资源有多种解决办法。"><a href="#利用多核CPU资源有多种解决办法。" class="headerlink" title="利用多核CPU资源有多种解决办法。"></a>利用多核CPU资源有多种解决办法。</h4><ul>
+<li><p>通过在单机上部署多个Node服务，然后监听不同端口，通过一台Nginx负载均衡。</p>
+<blockquote>
+<p>这种做法一般用于多台机器，在服务器集群时，采用这种做法，这里我们不采用。</p>
+</blockquote>
+</li>
+<li><p>通过单机启动一个master进程，然后fork多个子进程，master进程发送句柄给子进程后，关闭监听端口，让子进程来处理请求。</p>
+<blockquote>
+<p>这种做法也是Node单机集群普遍的做法。</p>
+</blockquote>
+</li>
+</ul>
+<p>所幸的是，Node在v0.8版本新增的cluster模块，让我们不必使用<a href="http://nodejs.cn/api/child_process.html" target="_blank" rel="noopener">child_process</a>一步一步的去处理Node集群这么多细节。</p>
+<p><strong>所以本篇文章讲述的是基于cluster模块解决上述的问题。</strong></p>
+<p><strong>首先创建一个Web服务器</strong>，Node端采用的是<strong>Koa</strong>框架。没有使用过的可以先去看下 ===&gt; <a href="https://koa.bootcss.com/" target="_blank" rel="noopener">传送门</a></p>
+<p>下面的代码是创建一个基本的web服务需要的配置，看过上篇文章的可以先直接过滤这块代码，直接看后面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">const Koa = require(&apos;koa&apos;);</span><br><span class="line">const app = new Koa();</span><br><span class="line">const koaNunjucks = require(&apos;koa-nunjucks-2&apos;);</span><br><span class="line">const koaStatic = require(&apos;koa-static&apos;);</span><br><span class="line">const KoaRouter = require(&apos;koa-router&apos;);</span><br><span class="line">const router = new KoaRouter();</span><br><span class="line">const path = require(&apos;path&apos;);</span><br><span class="line">const colors = require(&apos;colors&apos;);</span><br><span class="line">const compress = require(&apos;koa-compress&apos;);</span><br><span class="line">const AngelLogger = require(&apos;../angel-logger&apos;)</span><br><span class="line">const cluster = require(&apos;cluster&apos;);</span><br><span class="line">const http = require(&apos;http&apos;);</span><br><span class="line"></span><br><span class="line">class AngelConfig &#123;</span><br><span class="line">  constructor(options) &#123;</span><br><span class="line">    this.config = require(options.configUrl);</span><br><span class="line">    this.app = app;</span><br><span class="line">    this.router = require(options.routerUrl);</span><br><span class="line">    this.setDefaultConfig(); </span><br><span class="line">    this.setServerConfig();</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setDefaultConfig() &#123;</span><br><span class="line">    //静态文件根目录</span><br><span class="line">    this.config.root = this.config.root ? this.config.root : path.join(process.cwd(), &apos;app/static&apos;);</span><br><span class="line">    //默认静态配置</span><br><span class="line">    this.config.static = this.config.static ? this.config.static : &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setServerConfig() &#123;</span><br><span class="line">    this.port = this.config.listen.port;</span><br><span class="line"></span><br><span class="line">    //cookie签名验证</span><br><span class="line">    this.app.keys = this.config.keys ? this.config.keys : this.app.keys;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//启动服务器</span><br><span class="line">class AngelServer extends AngelConfig &#123;</span><br><span class="line">  constructor(options) &#123;</span><br><span class="line">    super(options);</span><br><span class="line">    this.startService();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  startService() &#123;</span><br><span class="line">    //开启gzip压缩</span><br><span class="line">    this.app.use(compress(this.config.compress));</span><br><span class="line"></span><br><span class="line">      //模板语法</span><br><span class="line">    this.app.use(koaNunjucks(&#123;</span><br><span class="line">      ext: &apos;html&apos;,</span><br><span class="line">      path: path.join(process.cwd(), &apos;app/views&apos;),</span><br><span class="line">      nunjucksConfig: &#123;</span><br><span class="line">        trimBlocks: true</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;));</span><br><span class="line">    this.app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">      ctx.logger = new AngelLogger().logger;</span><br><span class="line">      await next();</span><br><span class="line">    &#125;)</span><br><span class="line">  </span><br><span class="line">    //访问日志</span><br><span class="line">    this.app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">      await next();</span><br><span class="line">      // console.log(ctx.logger,&apos;loggerloggerlogger&apos;);</span><br><span class="line">      const rt = ctx.response.get(&apos;X-Response-Time&apos;);</span><br><span class="line">      ctx.logger.info(`angel $&#123;ctx.method&#125;`.green,` $&#123;ctx.url&#125; - `,`$&#123;rt&#125;`.green);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    // 响应时间</span><br><span class="line">    this.app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">      const start = Date.now();</span><br><span class="line">      await next();</span><br><span class="line">      const ms = Date.now() - start;</span><br><span class="line">      ctx.set(&apos;X-Response-Time&apos;, `$&#123;ms&#125;ms`);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    this.app.use(router.routes())</span><br><span class="line">      .use(router.allowedMethods());</span><br><span class="line"></span><br><span class="line">    // 静态资源</span><br><span class="line">    this.app.use(koaStatic(this.config.root, this.config.static));</span><br><span class="line">  </span><br><span class="line">    // 启动服务器</span><br><span class="line">    this.server = this.app.listen(this.port, () =&gt; &#123;</span><br><span class="line">      console.log(`当前服务器已经启动,请访问`,`http://127.0.0.1:$&#123;this.port&#125;`.green);</span><br><span class="line">      this.router(&#123;</span><br><span class="line">        router,</span><br><span class="line">        config: this.config,</span><br><span class="line">        app: this.app</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports = AngelServer;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在启动服务器之后，将<code>this.app.listen</code>赋值给<code>this.server</code>，后面会用到。</strong></p>
+<p>一般我们做<strong>单机集群</strong>时，我们<code>fork</code>的进程数量是机器的CPU数量。当然更多也不限定，只是一般不推荐。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">const cluster = require(&apos;cluster&apos;);</span><br><span class="line">const &#123; cpus &#125; = require(&apos;os&apos;); </span><br><span class="line">const AngelServer = require(&apos;../server/index.js&apos;);</span><br><span class="line">const path = require(&apos;path&apos;);</span><br><span class="line">let cpusNum = cpus().length;</span><br><span class="line"></span><br><span class="line">//超时</span><br><span class="line">let timeout = null;</span><br><span class="line"></span><br><span class="line">//重启次数</span><br><span class="line">let limit = 10;</span><br><span class="line">// 时间</span><br><span class="line">let during = 60000;</span><br><span class="line">let restart = [];</span><br><span class="line"></span><br><span class="line">//master进程</span><br><span class="line">if(cluster.isMaster) &#123;</span><br><span class="line">  //fork多个工作进程</span><br><span class="line">  for(let i = 0; i &lt; cpusNum; i++) &#123;</span><br><span class="line">    creatServer();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125; else &#123;</span><br><span class="line">  //worker进程</span><br><span class="line">  let angelServer = new AngelServer(&#123;</span><br><span class="line">    routerUrl: path.join(process.cwd(), &apos;app/router.js&apos;),//路由地址</span><br><span class="line">    configUrl: path.join(process.cwd(), &apos;config/config.default.js&apos;)  </span><br><span class="line">    //默认读取config/config.default.js</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// master.js</span><br><span class="line">//创建服务进程  </span><br><span class="line">function creatServer() &#123;</span><br><span class="line">  let worker = cluster.fork();</span><br><span class="line">  console.log(`工作进程已经重启pid: $&#123;worker.process.pid&#125;`);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用进程的方式，其实就是通过<code>cluster.isMaster</code>和<code>cluster.isWorker</code>来进行判断的。</p>
+<p>主从进程代码写在一块可能也不太好理解。这种写法也是Node官方的写法，当然也有更加清晰的写法，借助<a href="http://nodejs.cn/api/cluster.html#cluster_cluster_setupmaster_settings" target="_blank" rel="noopener"><code>cluster.setupMaster</code></a>实现，这里不去详细解释。</p>
+<p>通过Node执行代码，看看究竟发生了什么。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/12/9/1679253db1777ae4" alt="img"></p>
+<p>首先判断<code>cluster.isMaster</code>是否存在，然后循环调用<code>createServer()</code>,<strong>fork</strong>4个工作进程。打印工作进程<strong>pid</strong>。</p>
+<p><code>cluster</code>启动时，它会在内部启动<strong>TCP</strong>服务，在<code>cluster.fork()</code>子进程时，将这个<strong>TCP</strong>服务端<code>socket</code>的文件描述符发送给工作进程。如果工作进程中存在<code>listen()</code>监听网络端口的调用，它将拿到该文件的文件描述符，通过<strong>SO_REUSEADDR</strong>端口重用，从而实现多个子进程共享端口。</p>
+<h2 id="进程管理、平滑重启、和错误处理。"><a href="#进程管理、平滑重启、和错误处理。" class="headerlink" title="进程管理、平滑重启、和错误处理。"></a>进程管理、平滑重启、和错误处理。</h2><p>一般来说，master进程比较稳定，工作进程并不是太稳定。</p>
+<p>因为工作进程处理的是业务逻辑，因此，我们需要给工作进程添加<strong>自动重启</strong>的功能，也就是如果子进程因为业务中不可控的原因报错了，而且阻塞了，此时，我们应该停止该进程接收任何请求，然后<strong>优雅</strong>的关闭该工作进程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">//超时</span><br><span class="line">let timeout = null;</span><br><span class="line"></span><br><span class="line">//重启次数</span><br><span class="line">let limit = 10;</span><br><span class="line">// 时间</span><br><span class="line">let during = 60000;</span><br><span class="line">let restart = [];</span><br><span class="line"></span><br><span class="line">if(cluster.isMaster) &#123;</span><br><span class="line">  //fork多个工作进程</span><br><span class="line">  for(let i = 0; i &lt; cpusNum; i++) &#123;</span><br><span class="line">    creatServer();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125; else &#123;</span><br><span class="line">  //worker</span><br><span class="line">  let angelServer = new AngelServer(&#123;</span><br><span class="line">    routerUrl: path.join(process.cwd(), &apos;app/router.js&apos;),//路由地址</span><br><span class="line">    configUrl: path.join(process.cwd(), &apos;config/config.default.js&apos;) //默认读取config/config.default.js</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  //服务器优雅退出</span><br><span class="line">  angelServer.app.on(&apos;error&apos;, err =&gt; &#123;</span><br><span class="line">    //发送一个自杀信号</span><br><span class="line">    process.send(&#123; act: &apos;suicide&apos; &#125;);</span><br><span class="line">    cluster.worker.disconnect();</span><br><span class="line">    angelServer.server.close(() =&gt; &#123;</span><br><span class="line">      //所有已有连接断开后，退出进程</span><br><span class="line">      process.exit(1);</span><br><span class="line">    &#125;);</span><br><span class="line">    //5秒后退出进程</span><br><span class="line">    timeout = setTimeout(() =&gt; &#123;</span><br><span class="line">      process.exit(1);</span><br><span class="line">    &#125;,5000);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// master.js</span><br><span class="line">//创建服务进程  </span><br><span class="line">function creatServer() &#123;</span><br><span class="line"></span><br><span class="line">  let worker = cluster.fork();</span><br><span class="line">  console.log(`工作进程已经重启pid: $&#123;worker.process.pid&#125;`);</span><br><span class="line">  //监听message事件，监听自杀信号，如果有子进程发送自杀信号，则立即重启进程。</span><br><span class="line">  //平滑重启 重启在前，自杀在后。</span><br><span class="line">  worker.on(&apos;message&apos;, (msg) =&gt; &#123;</span><br><span class="line">    //msg为自杀信号，则重启进程</span><br><span class="line">    if(msg.act == &apos;suicide&apos;) &#123;</span><br><span class="line">      creatServer();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  //清理定时器。</span><br><span class="line">  worker.on(&apos;disconnect&apos;, () =&gt; &#123;</span><br><span class="line">    clearTimeout(timeout);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在实例化<code>AngelServer</code>后，得到<code>angelServer</code>，通过拿到<code>angelServer.app</code>拿到<code>Koa</code>的实例，从而监听Koa的<code>error</code>事件。</p>
+<p>当监听到错误发生时，发送一个自杀信号<code>process.send({ act: &#39;suicide&#39; })</code>。 调用<code>cluster.worker.disconnect()</code>方法，调用此方法会关闭所有的server，并等待这些server的 ‘close’事件执行，然后关闭IPC管道。</p>
+<p>调用<code>angelServer.server.close()</code>方法，当所有连接都关闭后，通往该工作进程的IPC管道将会关闭，允许工作进程优雅地死掉。</p>
+<p>如果5s的时间还没有退出进程，此时，5s后将强制关闭该进程。</p>
+<p>Koa的<code>app.listen</code>是<code>http.createServer(app.callback()).listen();</code>的语法糖，因此可以调用close方法。</p>
+<p><strong>worker</strong>监听<code>message</code>，如果是该信号，此时先重启新的进程。 同时监听<code>disconnect</code>事件，清理定时器。</p>
+<p>正常来说，我们应该监听<code>process</code>的<code>uncaughtException</code>事件，<em>如果 Javascript 未捕获的异常，沿着代码调用路径反向传递回事件循环，会触发 ‘uncaughtException’ 事件。</em></p>
+<p>但是<code>Koa</code>已经在<a href="https://github.com/chenshenhai/koajs-design-note/blob/master/note/chapter01/06.md" target="_blank" rel="noopener">middleware</a>外边加了<code>tryCatch</code>。因此在uncaughtException捕获不到。</p>
+<p>在这里，还得特别感谢下<a href="https://github.com/chenshenhai" target="_blank" rel="noopener">大深海</a>老哥，深夜里，在群里给我指点迷津。</p>
+<h2 id="限量重启"><a href="#限量重启" class="headerlink" title="限量重启"></a>限量重启</h2><p>通过自杀信号告知主进程可以使新连接总是有进程服务，但是依然还是有极端的情况。 工作进程不能无限制的被频繁重启。</p>
+<p>因此在单位时间规定只能重启多少次，超过限制就触发giveup事件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//检查启动次数是否太过频繁，超过一定次数，重新启动。</span><br><span class="line">function isRestartNum() &#123;</span><br><span class="line"></span><br><span class="line">  //记录重启的时间</span><br><span class="line">  let time = Date.now();</span><br><span class="line">  let length = restart.push(time);</span><br><span class="line">  if(length &gt; limit) &#123;</span><br><span class="line">    //取出最后10个</span><br><span class="line">    restart = restart.slice(limit * -1);</span><br><span class="line">  &#125;</span><br><span class="line">  //1分钟重启的次数是否太过频繁</span><br><span class="line">  return restart.length &gt;= limit &amp;&amp; restart[restart.length - 1] - restart[0] &lt; during;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时将createServer修改成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// master.js</span><br><span class="line">//创建服务进程  </span><br><span class="line">function creatServer() &#123;</span><br><span class="line">  //检查启动是否太过频繁</span><br><span class="line">  if(isRestartNum()) &#123;</span><br><span class="line">    process.emit(&apos;giveup&apos;, length, during);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  let worker = cluster.fork();</span><br><span class="line">  console.log(`工作进程已经重启pid: $&#123;worker.process.pid&#125;`);</span><br><span class="line">  //监听message事件，监听自杀信号，如果有子进程发送自杀信号，则立即重启进程。</span><br><span class="line">  //平滑重启 重启在前，自杀在后。</span><br><span class="line">  worker.on(&apos;message&apos;, (msg) =&gt; &#123;</span><br><span class="line">    //msg为自杀信号，则重启进程</span><br><span class="line">    if(msg.act == &apos;suicide&apos;) &#123;</span><br><span class="line">      creatServer();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  //清理定时器。</span><br><span class="line">  worker.on(&apos;disconnect&apos;, () =&gt; &#123;</span><br><span class="line">    clearTimeout(timeout);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="更改负载均衡策略"><a href="#更改负载均衡策略" class="headerlink" title="更改负载均衡策略"></a>更改负载均衡策略</h2><p>默认的是操作系统抢占式，就是在一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务。</p>
+<p>对于是否繁忙是由CPU和I/O决定的，但是影响抢占的是CPU。</p>
+<p>对于不同的业务，会有的I/O繁忙，但CPU空闲的情况，这时会造成负载不均衡的情况。<br>因此我们使用node的另一种策略，名为轮叫制度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cluster.schedulingPolicy = cluster.SCHED_RR;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>当然创建一个稳定的web服务还需要注意很多地方，比如优化处理进程之间的通信，数据共享等等。</p>
+<p>本片文章只是给大家一个参考，如果有哪些地方写的不合适的地方，恳请您指出。</p>
+<p>完整代码请见 <a href="https://github.com/baiyuze/angel-lib/blob/master/angel-cluster/master.js" target="_blank" rel="noopener">Github</a>。</p>
+<p>参考资料：<strong>深入浅出nodejs</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/" title="如何创建一个可靠稳定的Web服务器">https://uestc66.github.io/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/" rel="next" title="Egg 源码分析之 egg-core（二）">
+                <i class="fa fa-chevron-left"></i> Egg 源码分析之 egg-core（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个稳定的web服务器需要解决什么问题。"><span class="nav-number">1.</span> <span class="nav-text">创建一个稳定的web服务器需要解决什么问题。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何利用多核CPU资源"><span class="nav-number">2.</span> <span class="nav-text">如何利用多核CPU资源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#利用多核CPU资源有多种解决办法。"><span class="nav-number">2.0.1.</span> <span class="nav-text">利用多核CPU资源有多种解决办法。</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#进程管理、平滑重启、和错误处理。"><span class="nav-number">3.</span> <span class="nav-text">进程管理、平滑重启、和错误处理。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限量重启"><span class="nav-number">4.</span> <span class="nav-text">限量重启</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改负载均衡策略"><span class="nav-number">5.</span> <span class="nav-text">更改负载均衡策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

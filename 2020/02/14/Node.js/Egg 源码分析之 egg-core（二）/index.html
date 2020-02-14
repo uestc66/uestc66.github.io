@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Node.js,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自知乎网络，原文链接：https://zhuanlan.zhihu.com/p/47180589 loadService 函数如何在 Egg 框架中使用 serviceloadService 函数的实现是所有load函数中最复杂的一个，我们不着急看源码，先看一下 service 在 Egg 框架中如何使用 12345678910111213141516171819202122232425262">
+<meta name="keywords" content="Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Egg 源码分析之 egg-core（二）">
+<meta property="og:url" content="https://uestc66.github.io/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="转载自知乎网络，原文链接：https://zhuanlan.zhihu.com/p/47180589 loadService 函数如何在 Egg 框架中使用 serviceloadService 函数的实现是所有load函数中最复杂的一个，我们不着急看源码，先看一下 service 在 Egg 框架中如何使用 12345678910111213141516171819202122232425262">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-02-14T03:07:54.760Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Egg 源码分析之 egg-core（二）">
+<meta name="twitter:description" content="转载自知乎网络，原文链接：https://zhuanlan.zhihu.com/p/47180589 loadService 函数如何在 Egg 框架中使用 serviceloadService 函数的实现是所有load函数中最复杂的一个，我们不着急看源码，先看一下 service 在 Egg 框架中如何使用 12345678910111213141516171819202122232425262">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/">
+
+
+
+
+
+  <title>Egg 源码分析之 egg-core（二） | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Egg 源码分析之 egg-core（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-14T11:04:24+08:00">
+                2020-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">Node.js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自知乎网络，原文链接：<a href="https://zhuanlan.zhihu.com/p/47180589" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47180589</a></font></p>
+<h2 id="loadService-函数"><a href="#loadService-函数" class="headerlink" title="loadService 函数"></a>loadService 函数</h2><h2 id="如何在-Egg-框架中使用-service"><a href="#如何在-Egg-框架中使用-service" class="headerlink" title="如何在 Egg 框架中使用 service"></a>如何在 Egg 框架中使用 service</h2><p>loadService 函数的实现是所有load函数中最复杂的一个，我们不着急看源码，先看一下 service 在 Egg 框架中如何使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core 源码 -&gt; 如何在 egg 框架中使用 service</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//方式 1 ：app/service/user1.js</span></span><br><span class="line"><span class="comment">//这个是最标准的做法，导出一个 class ，这个 class 继承了 require('egg').Service ，其实也就是我们上文提到的 eggCore 导出的 BaseContextClass</span></span><br><span class="line"><span class="comment">//最终我们在业务逻辑中获取到的是这个class的一个实例，在 load 的时候是将 app.context 当作新建实例的参数</span></span><br><span class="line"><span class="comment">//在 controller 中调用方式：this.ctx.service.user1.find(1)</span></span><br><span class="line"><span class="keyword">const</span> Service = <span class="built_in">require</span>(<span class="string">'egg'</span>).Service;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> find(uid) &#123;</span><br><span class="line">    <span class="comment">//此时我们可以通过 this.ctx,this.app,this.config,this.service 获取到有用的信息，尤其是 this.ctx 非常重要，每个请求对应一个 ctx，我们可以查询到当前请求的所有信息</span></span><br><span class="line">    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="keyword">this</span>.ctx.db.query(<span class="string">'select * from user where uid = ?'</span>, uid);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = UserService;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式 2 ：app/service/user2.js</span></span><br><span class="line"><span class="comment">//这个做法是我模拟了一个 BaseContextClass，当然也就可以实现方法 1 的目的，但是不推荐</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(ctx) &#123;</span><br><span class="line">    <span class="keyword">this</span>.ctx = ctx;</span><br><span class="line">    <span class="keyword">this</span>.app = ctx.app;</span><br><span class="line">    <span class="keyword">this</span>.config = ctx.app.config;</span><br><span class="line">    <span class="keyword">this</span>.service = ctx.service;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">async</span> find(uid) &#123;</span><br><span class="line">    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="keyword">this</span>.ctx.db.query(<span class="string">'select * from user where uid = ?'</span>, uid);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = UserService;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式 3 ：app/service/user3.js</span></span><br><span class="line"><span class="comment">// service 中也可以 export 函数，在 load 的时候会主动调用这个函数，把 appInfo 参数传入，最终获取到的是函数返回结果</span></span><br><span class="line"><span class="comment">//在 controller 中调用方式：this.ctx.service.user3.getAppName(1) ，这个时候在 service 中获取不到当前请求的上下文 ctx</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">appInfo</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="keyword">async</span> getAppName(uid)&#123;</span><br><span class="line">            <span class="keyword">return</span> appInfo.name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式 4 ：app/service/user4.js</span></span><br><span class="line"><span class="comment">// service 也可以直接 export 普通的原生对象，load 的时候会将该普通对象返回，同样获取不到当前请求的上下文 ctx</span></span><br><span class="line"><span class="comment">//在 controller 中调用方式：this.ctx.service.user4.getAppName(1)</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="keyword">async</span> getAppName(uid)&#123;</span><br><span class="line">        <span class="keyword">return</span> appInfo.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们上面列举了 service 下的 js 文件的四种写法，都是从每次请求的上下文 this.ctx 获取到 service 对象，然后就可以使用到每个 service 文件导出的对象了，这里主要有两个地方需要注意：</p>
+<ol>
+<li>为什么我们可以从每个请求的 this.ctx 上获取到 service 对象呢：<br>看过 Koa 源码的同学知道，this.ctx 其实是从 app.context 继承而来，所以我们只要把 service 绑定到 app.context 上，那么当前请求的上下文 ctx 自然可以拿到 service 对象，EggLoader 也是这样做的</li>
+<li>针对上述四种使用场景，具体导出实例是怎么处理的呢？</li>
+</ol>
+<ul>
+<li>如果导出的是一个类，EggLoader 会主动以 ctx 对象去初始化这个实例并导出，所以我们就可以直接在该类中使用 this.ctx 获取当前请求的上下文了</li>
+<li>如果导出的是一个函数，那么 EggLoader 会以 app 作为参数运行这个函数并将结果导出</li>
+<li>如果是一个普通的对象，直接导出</li>
+</ul>
+<h2 id="FileLoader-类的实现分析"><a href="#FileLoader-类的实现分析" class="headerlink" title="FileLoader 类的实现分析"></a>FileLoader 类的实现分析</h2><p>在实现 loadService 函数时，有一个基础类就是 FileLoader ，它同时也是 loadMiddleware，loadController 实现的基础，这个类提供一个 load 函数根据目录结构和文件内容进行解析，返回一个 target 对象，我们可以根据文件名以及子文件名以及函数名称获取到 service 里导出的内容，target 结构类似这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"file1"</span>: &#123;</span><br><span class="line">        <span class="attr">"file11"</span>: &#123;</span><br><span class="line">            <span class="attr">"function1"</span>: a =&gt; a</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"file2"</span>: &#123;</span><br><span class="line">        <span class="attr">"function2"</span>: a =&gt; a</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面我们先看一下 FileLoader 这个类的实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core 源码 -&gt; FileLoader 实现</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileLoader</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">    <span class="comment">/* options 里几个重要参数的含义:</span></span><br><span class="line"><span class="comment">    1. directory: 需要加载文件的所有目录</span></span><br><span class="line"><span class="comment">    2. target: 最终加载成功后的目标对象</span></span><br><span class="line"><span class="comment">    3. initializer：一个初始化函数，对文件导出内容进行初始化，这个在 loadController 实现时会用到</span></span><br><span class="line"><span class="comment">    4. inject：如果某个文件的导出对象是一个函数，那么将该值传入函数并执行导出，一般都是 this.app</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">this</span>.options = <span class="built_in">Object</span>.assign(&#123;&#125;, defaults, options);</span><br><span class="line">  &#125;</span><br><span class="line">  load() &#123;</span><br><span class="line">    <span class="comment">//解析 directory 下的文件，下面有 parse 函数的部分实现</span></span><br><span class="line">    <span class="keyword">const</span> items = <span class="keyword">this</span>.parse();</span><br><span class="line">    <span class="keyword">const</span> target = <span class="keyword">this</span>.options.target;</span><br><span class="line">    <span class="comment">// item1 = &#123; properties: [ 'a', 'b', 'c'], exports1 &#125;,item2 = &#123; properties: [ 'a', 'b', 'd'], exports2 &#125;</span></span><br><span class="line">    <span class="comment">// =&gt; target = &#123;a: &#123;b: &#123;c: exports1, d: exports2&#125;&#125;&#125;</span></span><br><span class="line">    <span class="comment">//根据文件路径名称递归生成一个大的对象 target ，我们通过 target.file1.file2 就可以获取到对应的导出内容</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> item <span class="keyword">of</span> items) &#123;</span><br><span class="line">      item.properties.reduce(<span class="function">(<span class="params">target, property, index</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> obj;</span><br><span class="line">        <span class="keyword">const</span> properties = item.properties.slice(<span class="number">0</span>, index + <span class="number">1</span>).join(<span class="string">'.'</span>);</span><br><span class="line">        <span class="keyword">if</span> (index === item.properties.length - <span class="number">1</span>) &#123;</span><br><span class="line">          obj = item.exports;</span><br><span class="line">          <span class="keyword">if</span> (obj &amp;&amp; !is.primitive(obj)) &#123;</span><br><span class="line">            <span class="comment">//这步骤很重要，确定这个 target 是不是一个 exports ，有可能只是一个路径而已</span></span><br><span class="line">            obj[FULLPATH] = item.fullpath;</span><br><span class="line">            obj[EXPORTS] = <span class="literal">true</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          obj = target[property] || &#123;&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        target[property] = obj;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">      &#125;, target);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> target;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//最终生成 [&#123; properties: [ 'a', 'b', 'c'], exports，fullpath&#125;] 形式， properties 文件路径名称的数组， exports 是导出对象， fullpath 是文件的绝对路径</span></span><br><span class="line">  parse() &#123;</span><br><span class="line">    <span class="comment">//文件目录转换为数组</span></span><br><span class="line">    <span class="keyword">let</span> directories = <span class="keyword">this</span>.options.directory;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">Array</span>.isArray(directories)) &#123;</span><br><span class="line">      directories = [ directories ];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//遍历所有文件路径</span></span><br><span class="line">    <span class="keyword">const</span> items = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> directory <span class="keyword">of</span> directories) &#123;</span><br><span class="line">      <span class="comment">//每个文件目录下面可能还会有子文件夹，所以 globby.sync 函数是获取所有文件包括子文件下的文件的路径</span></span><br><span class="line">      <span class="keyword">const</span> filepaths = globby.sync(files, &#123; <span class="attr">cwd</span>: directory &#125;);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> filepath <span class="keyword">of</span> filepaths) &#123;</span><br><span class="line">        <span class="keyword">const</span> fullpath = path.join(directory, filepath);</span><br><span class="line">        <span class="keyword">if</span> (!fs.statSync(fullpath).isFile()) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="comment">//获取文件路径上的以 "/" 分割的所有文件名，foo/bar.js =&gt; [ 'foo', 'bar' ]，这个函数会对 propertie 同一格式，默认为驼峰</span></span><br><span class="line">        <span class="keyword">const</span> properties = getProperties(filepath, <span class="keyword">this</span>.options);</span><br><span class="line">        <span class="comment">// app/service/foo/bar.js =&gt; service.foo.bar</span></span><br><span class="line">        <span class="keyword">const</span> pathName = directory.split(<span class="regexp">/[/\\]/</span>).slice(<span class="number">-1</span>) + <span class="string">'.'</span> + properties.join(<span class="string">'.'</span>);</span><br><span class="line">        <span class="comment">// getExports 函数获取文件内容，并将结果做一些处理，看下面实现</span></span><br><span class="line">        <span class="keyword">const</span> exports = getExports(fullpath, <span class="keyword">this</span>.options, pathName);</span><br><span class="line">        <span class="comment">//如果导出的是 class ，会设置一些属性，这个属性下文中对于 class 的特殊处理地方会用到</span></span><br><span class="line">        <span class="keyword">if</span> (is.class(exports)) &#123;</span><br><span class="line">          exports.prototype.pathName = pathName;</span><br><span class="line">          exports.prototype.fullPath = fullpath;</span><br><span class="line">        &#125;</span><br><span class="line">        items.push(&#123; fullpath, properties, exports &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> items;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据指定路径获取导出对象并作预处理</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getExports</span>(<span class="params">fullpath, &#123; initializer, call, inject &#125;, pathName</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> exports = utils.loadFile(fullpath);</span><br><span class="line">  <span class="comment">//用 initializer 函数对exports结果做预处理</span></span><br><span class="line">  <span class="keyword">if</span> (initializer) &#123;</span><br><span class="line">    exports = initializer(exports, &#123; <span class="attr">path</span>: fullpath, pathName &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//如果 exports 是 class，generatorFunction，asyncFunction 则直接返回    </span></span><br><span class="line">  <span class="keyword">if</span> (is.class(exports) || is.generatorFunction(exports) || is.asyncFunction(exports)) &#123;</span><br><span class="line">    <span class="keyword">return</span> exports;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//如果导出的是一个普通函数，并且设置了 call=true，默认是 true，会将 inject 传入并调用该函数，上文中提到过好几次，就是在这里实现的</span></span><br><span class="line">  <span class="keyword">if</span> (call &amp;&amp; is.function(exports)) &#123;</span><br><span class="line">    exports = exports(inject);</span><br><span class="line">    <span class="keyword">if</span> (exports != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> exports;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//其它情况直接返回</span></span><br><span class="line">  <span class="keyword">return</span> exports;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ContextLoader-类的实现分析"><a href="#ContextLoader-类的实现分析" class="headerlink" title="ContextLoader 类的实现分析"></a>ContextLoader 类的实现分析</h2><p>上文中说到 loadService 函数其实最终把 service 对象挂载在了 app.context 上，所以为此提供了 ContextLoader 这个类，继承了 FileLoader 类，用于将 FileLoader 解析出来的 target 挂载在 app.context 上，下面是其实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core -&gt; ContextLoader 类的源码实现</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ContextLoader</span> <span class="keyword">extends</span> <span class="title">FileLoader</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">        <span class="keyword">const</span> target = options.target = &#123;&#125;;</span><br><span class="line">        <span class="keyword">super</span>(options);</span><br><span class="line">        <span class="comment">// FileLoader 已经讲过 inject 就是 app</span></span><br><span class="line">        <span class="keyword">const</span> app = <span class="keyword">this</span>.options.inject;</span><br><span class="line">        <span class="comment">// property 就是要挂载的属性，比如 "service"</span></span><br><span class="line">        <span class="keyword">const</span> property = options.property;</span><br><span class="line">        <span class="comment">//将 service 属性挂载在 app.context 上</span></span><br><span class="line">        <span class="built_in">Object</span>.defineProperty(app.context, property, &#123;</span><br><span class="line">            <span class="keyword">get</span>() &#123;</span><br><span class="line">                <span class="comment">//做缓存，由于不同的请求 ctx 不一样，这里是针对同一个请求的内容进行缓存</span></span><br><span class="line">                <span class="keyword">if</span> (!<span class="keyword">this</span>[CLASSLOADER]) &#123;</span><br><span class="line">                    <span class="keyword">this</span>[CLASSLOADER] = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">const</span> classLoader = <span class="keyword">this</span>[CLASSLOADER];</span><br><span class="line">                <span class="comment">//获取导出实例，这里就是上文用例中获取 this.ctx.service.file1.fun1 的实现，这里的实例就是 this.ctx.service，实现逻辑请看下面的 getInstance 的实现</span></span><br><span class="line">                <span class="keyword">let</span> instance = classLoader.get(property);</span><br><span class="line">                <span class="keyword">if</span> (!instance) &#123;</span><br><span class="line">                    <span class="comment">//这里传入的 this 就是为了初始化 require('egg').Service 实例时当作参数传入</span></span><br><span class="line">                    <span class="comment">// this 会根据调用者的不同而改变，比如是 app.context 的实例调用那么就是 app.context ，如果是 app.context 子类的实例调用，那么就是其子类的实例</span></span><br><span class="line">                    <span class="comment">//就是因为这个 this ，如果 service 里继承require('egg').Service ，才可以通过 this.ctx 获取到当前请求的上下文</span></span><br><span class="line">                    instance = getInstance(target, <span class="keyword">this</span>);</span><br><span class="line">                    classLoader.set(property, instance);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> instance;</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// values 是 FileLoader/load 函数生成 target 对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getInstance</span>(<span class="params">values, ctx</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//上文 FileLoader 里实现中我们讲过，target 对象是一个由路径和 exports 组装成的一个大对象，这里 Class 是为了确定其是不是一个 exports ，有可能是一个路径名</span></span><br><span class="line">  <span class="keyword">const</span> Class = values[EXPORTS] ? values : <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">let</span> instance;</span><br><span class="line">  <span class="keyword">if</span> (Class) &#123;</span><br><span class="line">    <span class="keyword">if</span> (is.class(Class)) &#123;</span><br><span class="line">        <span class="comment">//这一步很重要，如果是类，就用 ctx 进行初始化获取实例</span></span><br><span class="line">        instance = <span class="keyword">new</span> Class(ctx);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//普通对象直接导出，这里要注意的是如果是 exports 函数，在 FileLoader 实现中已经将其执行并转换为了对象</span></span><br><span class="line">        <span class="comment">// function 和 class 分别在子类和父类的处理的原因是， function 的处理逻辑 loadMiddleware,loadService,loadController 公用，而 class 的处理逻辑 loadService 使用</span></span><br><span class="line">        instance = Class;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (is.primitive(values)) &#123;</span><br><span class="line">       <span class="comment">//原生类型直接导出</span></span><br><span class="line">       instance = values;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="comment">//如果目前的 target 部分是一个路径，那么会新建一个 ClassLoader 实例，这个 ClassLoader 中又会递归的调用 getInstance</span></span><br><span class="line">       <span class="comment">//这里之所以新建一个类，一是为了做缓存，二是为了在每个节点获取到的都是一个类的实例</span></span><br><span class="line">       instance = <span class="keyword">new</span> ClassLoader(&#123; ctx, <span class="attr">properties</span>: values &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="loadService-的实现"><a href="#loadService-的实现" class="headerlink" title="loadService 的实现"></a>loadService 的实现</h2><p>有了 ContextLoader 类，那实现 loadService 函数就非常容易了，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core -&gt; loadService 函数实现源码</span></span><br><span class="line"><span class="comment">// loadService 函数调用 loadToContext 函数</span></span><br><span class="line">loadService(opt) &#123;</span><br><span class="line">    opt = <span class="built_in">Object</span>.assign(&#123;</span><br><span class="line">      call: <span class="literal">true</span>,</span><br><span class="line">      caseStyle: <span class="string">'lower'</span>,</span><br><span class="line">      fieldClass: <span class="string">'serviceClasses'</span>,</span><br><span class="line">      directory: <span class="keyword">this</span>.getLoadUnits().map(<span class="function"><span class="params">unit</span> =&gt;</span> path.join(unit.path, <span class="string">'app/service'</span>)), <span class="comment">//所有加载单元目录下的 service</span></span><br><span class="line">    &#125;, opt);</span><br><span class="line">    <span class="keyword">const</span> servicePaths = opt.directory;</span><br><span class="line">    <span class="keyword">this</span>.loadToContext(servicePaths, <span class="string">'service'</span>, opt);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// loadToContext 函数直接新建 ContextLoader 实例，调用 load 函数实现加载</span></span><br><span class="line">loadToContext(directory, property, opt) &#123;</span><br><span class="line">    opt = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">      directory,</span><br><span class="line">      property,</span><br><span class="line">      inject: <span class="keyword">this</span>.app,</span><br><span class="line">    &#125;, opt);</span><br><span class="line">    <span class="keyword">new</span> ContextLoader(opt).load();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="loadMiddleware-函数"><a href="#loadMiddleware-函数" class="headerlink" title="loadMiddleware 函数"></a>loadMiddleware 函数</h2><p>中间件是 Koa 框架中很重要的一个环节，通过 app.use 引入中间件，使用洋葱圈模型，所以中间件加载的顺序很重要。 - 如果在上文中的 config 中配置的中间件，系统会自动用 app.use 函数使用该中间件 - 所有的中间件我们都可以在 app.middleware 中通过中间件 name 获取到，便于在业务中动态使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core 源码 -&gt; loadMiddleware 函数实现源码</span></span><br><span class="line"></span><br><span class="line">loadMiddleware(opt) &#123;</span><br><span class="line">    <span class="keyword">const</span> app = <span class="keyword">this</span>.app;</span><br><span class="line">    opt = <span class="built_in">Object</span>.assign(&#123;</span><br><span class="line">      call: <span class="literal">false</span>,   <span class="comment">// call=false 表示如果中间件导出是函数，不会主动调用函数做转换</span></span><br><span class="line">      override: <span class="literal">true</span>,</span><br><span class="line">      caseStyle: <span class="string">'lower'</span>,</span><br><span class="line">      directory: <span class="keyword">this</span>.getLoadUnits().map(<span class="function"><span class="params">unit</span> =&gt;</span> join(unit.path, <span class="string">'app/middleware'</span>)) <span class="comment">//所有加载单元目录下的 middleware</span></span><br><span class="line">    &#125;, opt);</span><br><span class="line">    <span class="keyword">const</span> middlewarePaths = opt.directory;</span><br><span class="line">    <span class="comment">//将所有中间件 middlewares 挂载在 app 上，这个函数在 loadController 实现中也用到了，看下文的实现</span></span><br><span class="line">    <span class="keyword">this</span>.loadToApp(middlewarePaths, <span class="string">'middlewares'</span>, opt);</span><br><span class="line">    <span class="comment">//将 app.middlewares 中的每个中间件重新绑定在 app.middleware 上，每个中间件的属性不可配置，不可枚举</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> name <span class="keyword">in</span> app.middlewares) &#123;</span><br><span class="line">      <span class="built_in">Object</span>.defineProperty(app.middleware, name, &#123;</span><br><span class="line">        <span class="keyword">get</span>() &#123;</span><br><span class="line">          <span class="keyword">return</span> app.middlewares[name];</span><br><span class="line">        &#125;,</span><br><span class="line">        enumerable: <span class="literal">false</span>,</span><br><span class="line">        configurable: <span class="literal">false</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//只有在 config 中配置了 appMiddleware 和 coreMiddleware 才会直接在 app.use 中使用，其它中间件只是挂载在 app 上，开发人员可以动态使用</span></span><br><span class="line">    <span class="keyword">const</span> middlewareNames = <span class="keyword">this</span>.config.coreMiddleware.concat(<span class="keyword">this</span>.config.appMiddleware);</span><br><span class="line">    <span class="keyword">const</span> middlewaresMap = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> name <span class="keyword">of</span> middlewareNames) &#123;</span><br><span class="line">      <span class="comment">//如果 config 中定义 middleware 在 app.middlewares 中找不到或者重复定义，都会报错</span></span><br><span class="line">      <span class="keyword">if</span> (!app.middlewares[name]) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">`Middleware <span class="subst">$&#123;name&#125;</span> not found`</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (middlewaresMap.has(name)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">`Middleware <span class="subst">$&#123;name&#125;</span> redefined`</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      middlewaresMap.set(name, <span class="literal">true</span>);</span><br><span class="line">      <span class="keyword">const</span> options = <span class="keyword">this</span>.config[name] || &#123;&#125;;</span><br><span class="line">      <span class="keyword">let</span> mw = app.middlewares[name];</span><br><span class="line">      <span class="comment">//中间件的文件定义必须 exports 一个普通 function ，并且接受两个参数：</span></span><br><span class="line">      <span class="comment">// options: 中间件的配置项，框架会将 app.config[$&#123;middlewareName&#125;] 传递进来, app: 当前应用 Application 的实例</span></span><br><span class="line">      <span class="comment">//执行 exports 的函数，生成最终要的中间件</span></span><br><span class="line">      mw = mw(options, app);</span><br><span class="line">      mw._name = name;</span><br><span class="line">      <span class="comment">//包装中间件，最终转换成 async function(ctx, next) 形式</span></span><br><span class="line">      mw = wrapMiddleware(mw, options);</span><br><span class="line">      <span class="keyword">if</span> (mw) &#123;</span><br><span class="line">        app.use(mw);</span><br><span class="line">        <span class="keyword">this</span>.options.logger.info(<span class="string">'[egg:loader] Use middleware: %s'</span>, name);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.options.logger.info(<span class="string">'[egg:loader] Disable middleware: %s'</span>, name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过 FileLoader 实例加载指定属性的所有文件并导出，然后将该属性挂载在 app 上</span></span><br><span class="line">loadToApp(directory, property, opt) &#123;</span><br><span class="line">    <span class="keyword">const</span> target = <span class="keyword">this</span>.app[property] = &#123;&#125;;</span><br><span class="line">    opt = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">      directory,</span><br><span class="line">      target,</span><br><span class="line">      inject: <span class="keyword">this</span>.app,</span><br><span class="line">    &#125;, opt);</span><br><span class="line">    <span class="keyword">new</span> FileLoader(opt).load();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="loadController-函数"><a href="#loadController-函数" class="headerlink" title="loadController 函数"></a>loadController 函数</h2><p>controller 中生成的函数最终还是在 router.js 中当作一个中间件使用，所以我们需要将 controller 中内容转换为中间件形式 async function(ctx, next) ，其中 initializer 这个函数就是用来针对不同的情况将 controller 中的内容转换为中间件的，下面是 loadController 的实现逻辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core源码 -&gt; loadController 函数实现源码</span></span><br><span class="line"></span><br><span class="line">loadController(opt) &#123;</span><br><span class="line">    opt = <span class="built_in">Object</span>.assign(&#123;</span><br><span class="line">      caseStyle: <span class="string">'lower'</span>,</span><br><span class="line">      directory: path.join(<span class="keyword">this</span>.options.baseDir, <span class="string">'app/controller'</span>),</span><br><span class="line">      <span class="comment">//这个配置，上文有提到，是为了对导出对象做预处理的函数</span></span><br><span class="line">      initializer: <span class="function">(<span class="params">obj, opt</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">//如果是普通函数，依然直接调用它生成新的对象</span></span><br><span class="line">        <span class="keyword">if</span> (is.function(obj) &amp;&amp; !is.generatorFunction(obj) &amp;&amp; !is.class(obj) &amp;&amp; !is.asyncFunction(obj)) &#123;</span><br><span class="line">          obj = obj(<span class="keyword">this</span>.app);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (is.class(obj)) &#123;</span><br><span class="line">          obj.prototype.pathName = opt.pathName;</span><br><span class="line">          obj.prototype.fullPath = opt.path;</span><br><span class="line">          <span class="comment">//如果是一个 class，class 中的函数转换成 async function(ctx, next) 中间件形式，并用 ctx 去初始化该 class ，所以在 controller 里我们也可以使用 this.ctx.xxx 形式</span></span><br><span class="line">          <span class="keyword">return</span> wrapClass(obj);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (is.object(obj)) &#123;</span><br><span class="line">          <span class="comment">//如果是一个 Object ，会递归的将该 Object 中每个属性对应的函数转换成 async function(ctx, next) 中间件形式形式</span></span><br><span class="line">          <span class="keyword">return</span> wrapObject(obj, opt.path);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (is.generatorFunction(obj) || is.asyncFunction(obj)) &#123;</span><br><span class="line">          <span class="keyword">return</span> wrapObject(&#123; <span class="string">'module.exports'</span>: obj &#125;, opt.path)[<span class="string">'module.exports'</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;, opt);</span><br><span class="line">    <span class="comment">// loadController 函数同样是通过 loadToApp 函数将其导出对象挂载在 app 下，controller 里的内容在 loadRouter 时会将其载入</span></span><br><span class="line">    <span class="keyword">const</span> controllerBase = opt.directory;</span><br><span class="line">    <span class="keyword">this</span>.loadToApp(controllerBase, <span class="string">'controller'</span>, opt);</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<h2 id="loadRouter-函数"><a href="#loadRouter-函数" class="headerlink" title="loadRouter 函数"></a>loadRouter 函数</h2><p>loadRouter 函数特别简单，只是 require 加载一下 app/router 目录下的文件而已，而所有的事情都交给了 EggCore 类上的 router 属性去实现</p>
+<p>而 router 又是 Router 类的实例，Router 类是基于 koa-router 实现的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core 源码 -&gt; loadRouter 函数源码实现</span></span><br><span class="line"></span><br><span class="line">loadRouter() &#123;</span><br><span class="line">    <span class="keyword">this</span>.loadFile(<span class="keyword">this</span>.resolveModule(path.join(<span class="keyword">this</span>.options.baseDir, <span class="string">'app/router'</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//设置 router 属性的 get 方法</span></span><br><span class="line"><span class="keyword">get</span> router() &#123;</span><br><span class="line">    <span class="comment">//缓存设置</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>[ROUTER]) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>[ROUTER];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//新建 Router 实例，其中 Router 类是继承 koa-router 实现的</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="keyword">this</span>[ROUTER] = <span class="keyword">new</span> Router(&#123; <span class="attr">sensitive</span>: <span class="literal">true</span> &#125;, <span class="keyword">this</span>);</span><br><span class="line">    <span class="comment">//在启动前将 router 中间件载入引用</span></span><br><span class="line">    <span class="keyword">this</span>.beforeStart(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.use(router.middleware());</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> router;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将 router 上所有的 method 函数代理到 EggCore 上，这样我们就可以通过 app.get('/async', ...asyncMiddlewares, 'subController.subHome.async1') 的方式配置路由</span></span><br><span class="line">utils.methods.concat([ <span class="string">'all'</span>, <span class="string">'resources'</span>, <span class="string">'register'</span>, <span class="string">'redirect'</span> ]).forEach(<span class="function"><span class="params">method</span> =&gt;</span> &#123;</span><br><span class="line">  EggCore.prototype[method] = <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.router[method](...args);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>Router 类继承了 KoaRouter 类，并对其的 method 相关函数做了扩展，解析 controller 的写法，同时提供了 resources 方法，为了兼容 restAPI 的请求方式</p>
+<p>关于 restAPI 的使用方式和实现源码我们这里就不介绍了，可以看官方文档，有具体的格式要求，下面看一下 Router 类的部分实现逻辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-core源码 -&gt; Router 类实现源码</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Router</span> <span class="keyword">extends</span> <span class="title">KoaRouter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(opts, app) &#123;</span><br><span class="line">    <span class="keyword">super</span>(opts);</span><br><span class="line">    <span class="keyword">this</span>.app = app;</span><br><span class="line">    <span class="comment">//对 method 方法进行扩展</span></span><br><span class="line">    <span class="keyword">this</span>.patchRouterMethod();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  patchRouterMethod() &#123;</span><br><span class="line">    <span class="comment">//为了支持 generator 函数类型，以及获取 controller 类中导出的中间件</span></span><br><span class="line">    methods.concat([ <span class="string">'all'</span> ]).forEach(<span class="function"><span class="params">method</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>[method] = <span class="function">(<span class="params">...args</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// spliteAndResolveRouterParams 主要是为了拆分 router.js 中的路由规则，将其拆分成普通中间件和 controller 生成的中间件部分，请看下文源码</span></span><br><span class="line">        <span class="keyword">const</span> splited = spliteAndResolveRouterParams(&#123; args, <span class="attr">app</span>: <span class="keyword">this</span>.app &#125;);</span><br><span class="line">        args = splited.prefix.concat(splited.middlewares);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>[method](...args);</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//返回 router 里每个路由规则的前缀和中间件部分</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">spliteAndResolveRouterParams</span>(<span class="params">&#123; args, app &#125;</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> prefix;</span><br><span class="line">    <span class="keyword">let</span> middlewares;</span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= <span class="number">3</span> &amp;&amp; (is.string(args[<span class="number">1</span>]) || is.regExp(args[<span class="number">1</span>]))) &#123;</span><br><span class="line">        <span class="comment">// app.get(name, url, [...middleware], controller) 的形式</span></span><br><span class="line">        prefix = args.slice(<span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line">        middlewares = args.slice(<span class="number">2</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// app.get(url, [...middleware], controller) 的形式</span></span><br><span class="line">        prefix = args.slice(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">        middlewares = args.slice(<span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// controller 部分肯定是最后一个</span></span><br><span class="line">      <span class="keyword">const</span> controller = middlewares.pop();</span><br><span class="line">      <span class="comment">// resolveController 函数主要是为了处理 router.js 中关于 controller 的两种写法：</span></span><br><span class="line">      <span class="comment">//写法 1 ：app.get('/async', ...asyncMiddlewares, 'subController.subHome.async1')</span></span><br><span class="line">      <span class="comment">//写法 2 ：app.get('/async', ...asyncMiddlewares, subController.subHome.async1)</span></span><br><span class="line">      <span class="comment">//最终从 app.controller 上获取到真正的 controller 中间件，resolveController 具体函数实现就不介绍了</span></span><br><span class="line">      middlewares.push(resolveController(controller, app));</span><br><span class="line">      <span class="keyword">return</span> &#123; prefix, middlewares &#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上便是我对 egg-core 的大部分源码的实现的学习总结，其中关于源码中一些 debug 代码以及 timing 运行时间记录的代码都删掉了，关于 app 的生命周期管理的那部分代码和 loadUnits 加载逻辑关系不大，所以没有讲到。EggCore 的核心在于 EggLoader，也就是 plugin，config, extend, service, middleware, controller, router 的加载函数，而这几个内容加载必须按照顺序进行加载，存在依赖关系，比如：</p>
+<ul>
+<li>加载 middleware 时会用到 config 关于应用中间件的配置</li>
+<li>加载 router 时会用到关于 controller 的配置</li>
+<li>而 config，extend，service，middleware，controller 的加载都必须依赖于 plugin，通过 plugin 配置获取插件目录</li>
+<li>service，middleware，controller，router 的加载又必须依赖于 extend（对 app 进行扩展），因为如果 exports 是函数的情况下，会将 app 作为参数执行函数</li>
+</ul>
+<p>EggCore 是一个基础框架，其最重要的是需要遵循一定的约束和约定，可以保证一致的代码风格，而且提供了插件和框架机制，能使相同的业务逻辑实现复用，后面看有时间再写一下 Egg 框架的源码学习心得</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/zdplife/article/details/83147615" target="_blank" rel="noopener">egg-core 源码分析</a></li>
+<li><a href="https://link.zhihu.com/?target=https%3A//github.com/eggjs/egg-core" target="_blank" rel="noopener">agg-core 源码</a></li>
+<li><a href="https://link.zhihu.com/?target=https%3A//github.com/eggjs/egg" target="_blank" rel="noopener">egg 源码</a></li>
+<li><a href="https://link.zhihu.com/?target=https%3A//eggjs.org/zh-cn/basics/structure.html" target="_blank" rel="noopener">egg 官方文档</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/" title="Egg 源码分析之 egg-core（二）">https://uestc66.github.io/2020/02/14/Node.js/Egg 源码分析之 egg-core（二）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/14/Node.js/Egg 源码分析之 egg-core（一）/" rel="next" title="Egg 源码分析之 egg-core（一）">
+                <i class="fa fa-chevron-left"></i> Egg 源码分析之 egg-core（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/14/Node.js/如何创建一个可靠稳定的Web服务器/" rel="prev" title="如何创建一个可靠稳定的Web服务器">
+                如何创建一个可靠稳定的Web服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#loadService-函数"><span class="nav-number">1.</span> <span class="nav-text">loadService 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在-Egg-框架中使用-service"><span class="nav-number">2.</span> <span class="nav-text">如何在 Egg 框架中使用 service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FileLoader-类的实现分析"><span class="nav-number">3.</span> <span class="nav-text">FileLoader 类的实现分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContextLoader-类的实现分析"><span class="nav-number">4.</span> <span class="nav-text">ContextLoader 类的实现分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loadService-的实现"><span class="nav-number">5.</span> <span class="nav-text">loadService 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loadMiddleware-函数"><span class="nav-number">6.</span> <span class="nav-text">loadMiddleware 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loadController-函数"><span class="nav-number">7.</span> <span class="nav-text">loadController 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loadRouter-函数"><span class="nav-number">8.</span> <span class="nav-text">loadRouter 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">10.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
