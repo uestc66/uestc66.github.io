@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://uestc66.github.io/2020/02/18/%E5%85%B6%E4%BB%96/Markdown%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2020-02-18</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks/</loc>
+    <lastmod>2020-02-17</lastmod>
+  </url>  <url>
     <loc>https://uestc66.github.io/2020/02/14/Node.js/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%8F%AF%E9%9D%A0%E7%A8%B3%E5%AE%9A%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
     <lastmod>2020-02-14</lastmod>
   </url>  <url>
@@ -44,9 +50,6 @@
     <lastmod>2020-02-11</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2020/02/11/Web%E5%89%8D%E7%AB%AF/JavaScript%E9%87%8C%E7%9A%84%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/</loc>
-    <lastmod>2020-02-11</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks/</loc>
     <lastmod>2020-02-11</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/11/19/Web%E5%89%8D%E7%AB%AF/Web%20Push/</loc>
