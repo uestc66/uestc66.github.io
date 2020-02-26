@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://uestc66.github.io/2020/02/18/%E5%85%B6%E4%BB%96/Markdown%E6%8C%87%E5%8D%97/</loc>
-    <lastmod>2020-02-18</lastmod>
+    <loc>https://uestc66.github.io/2020/02/18/%E5%85%B6%E4%BB%96/Github+jsDelivr+PicGo%20%E6%89%93%E9%80%A0%E7%A8%B3%E5%AE%9A%E5%BF%AB%E9%80%9F%E3%80%81%E9%AB%98%E6%95%88%E5%85%8D%E8%B4%B9%E5%9B%BE%E5%BA%8A/</loc>
+    <lastmod>2020-02-26</lastmod>
   </url>  <url>
-    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks/</loc>
-    <lastmod>2020-02-17</lastmod>
+    <loc>https://uestc66.github.io/2020/02/26/%E5%85%B6%E4%BB%96/%E5%BC%80%E5%A5%BD%E4%B8%80%E5%9C%BA%E4%BC%9A%EF%BC%8C%E6%AF%94%E5%86%991000%E8%A1%8C%E4%BB%A3%E7%A0%81%E6%9B%B4%E9%87%8D%E8%A6%81/</loc>
+    <lastmod>2020-02-26</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2020/02/26/Web%E5%89%8D%E7%AB%AF/%E6%B5%85%E8%B0%88%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E8%B5%8B%E8%83%BD%E4%B8%9A%E5%8A%A1/</loc>
+    <lastmod>2020-02-26</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2020/02/25/Web%E5%89%8D%E7%AB%AF/How%20to%20migrate%20from%20HOCs%20to%20Hooks/</loc>
+    <lastmod>2020-02-25</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2020/02/25/Web%E5%89%8D%E7%AB%AF/Using%20custom%20hooks%20in%20place%20of%20%22render%20props%22/</loc>
+    <lastmod>2020-02-25</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/11/24/Web%E5%89%8D%E7%AB%AF/Understanding%20JavaScript%20%E2%80%94%20Heap,%20Stack,%20Event-loops%20and%20Callback%20Queue/</loc>
+    <lastmod>2020-02-25</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/08/15/Web%E5%89%8D%E7%AB%AF/React%20Hooks%20%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2020-02-25</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2020/02/11/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E6%97%A5%E5%BF%97%E4%B8%8A%E6%8A%A5%E7%9A%84%E6%96%B0%E5%A7%BF%E5%8A%BF%E2%80%9CBeacon%E2%80%9D/</loc>
+    <lastmod>2020-02-24</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2020/02/18/%E5%85%B6%E4%BB%96/Markdown%20%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2020-02-24</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2020/02/24/Web%E5%89%8D%E7%AB%AF/JSBridge%20%E5%88%9D%E6%8E%A2/</loc>
+    <lastmod>2020-02-24</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2020/02/24/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5%E4%B9%8B%E6%95%B0%E6%8D%AE%E5%9F%8B%E7%82%B9%E5%88%86%E6%9E%90%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
+    <lastmod>2020-02-24</lastmod>
+  </url>  <url>
+    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/Chrome%20%E6%8F%92%E4%BB%B6%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2020-02-18</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2020/02/14/Node.js/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%8F%AF%E9%9D%A0%E7%A8%B3%E5%AE%9A%E7%9A%84Web%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
     <lastmod>2020-02-14</lastmod>
@@ -46,16 +76,10 @@
     <loc>https://uestc66.github.io/2020/02/14/Node.js/Egg%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8B%20egg-core%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
     <lastmod>2020-02-14</lastmod>
   </url>  <url>
-    <loc>https://uestc66.github.io/2019/11/24/Web%E5%89%8D%E7%AB%AF/Understanding%20JavaScript%20%E2%80%94%20Heap,%20Stack,%20Event-loops%20and%20Callback%20Queue/</loc>
-    <lastmod>2020-02-11</lastmod>
-  </url>  <url>
     <loc>https://uestc66.github.io/2020/02/11/Web%E5%89%8D%E7%AB%AF/JavaScript%E9%87%8C%E7%9A%84%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/</loc>
     <lastmod>2020-02-11</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/11/19/Web%E5%89%8D%E7%AB%AF/Web%20Push/</loc>
-    <lastmod>2020-02-11</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2020/02/11/Web%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E6%97%A5%E5%BF%97%E4%B8%8A%E6%8A%A5%E7%9A%84%E6%96%B0%E5%A7%BF%E5%8A%BF%E2%80%9CBeacon%E2%80%9D/</loc>
     <lastmod>2020-02-11</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/08/15/Python/Python%20%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%E4%BC%A0%E9%80%81%E9%97%A8/</loc>
@@ -81,9 +105,6 @@
   </url>  <url>
     <loc>https://uestc66.github.io/2019/12/04/Web%E5%89%8D%E7%AB%AF/Service%20Worker%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</loc>
     <lastmod>2019-12-02</lastmod>
-  </url>  <url>
-    <loc>https://uestc66.github.io/2019/09/21/Web%E5%89%8D%E7%AB%AF/Chrome%20%E6%8F%92%E4%BB%B6/</loc>
-    <lastmod>2019-11-19</lastmod>
   </url>  <url>
     <loc>https://uestc66.github.io/2019/10/15/SQL/%E5%AE%9E%E7%94%A8%20SQL%20%E8%AF%AD%E5%8F%A5/</loc>
     <lastmod>2019-10-16</lastmod>

@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="WhatReact v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本正式发布 React Hooks ，其带来的最大的变化在于给予了Function Component (函数式组件)类似组件生命周期的概念，扩大了 Function Component 的应用范围。 目前 Function Component 基本属于 dump 组件，Hooks 的出现使得">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Hooks 指南">
+<meta property="og:url" content="https://uestc66.github.io/2019/08/15/Web前端/React Hooks 指南/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="WhatReact v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本正式发布 React Hooks ，其带来的最大的变化在于给予了Function Component (函数式组件)类似组件生命周期的概念，扩大了 Function Component 的应用范围。 目前 Function Component 基本属于 dump 组件，Hooks 的出现使得">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-02-25T02:30:31.497Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Hooks 指南">
+<meta name="twitter:description" content="WhatReact v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本正式发布 React Hooks ，其带来的最大的变化在于给予了Function Component (函数式组件)类似组件生命周期的概念，扩大了 Function Component 的应用范围。 目前 Function Component 基本属于 dump 组件，Hooks 的出现使得">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2019/08/15/Web前端/React Hooks 指南/">
+
+
+
+
+
+  <title>React Hooks 指南 | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/08/15/Web前端/React Hooks 指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React Hooks 指南</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-15T17:56:24+08:00">
+                2019-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/15/Web前端/React Hooks 指南/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/15/Web前端/React Hooks 指南/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="What"><a href="#What" class="headerlink" title="What"></a>What</h2><p>React v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本正式发布 <a href="https://zh-hans.reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener"><strong>React Hooks</strong></a> ，其带来的最大的变化在于给予了Function Component (函数式组件)类似<strong>组件生命周期</strong>的概念，扩大了 Function Component 的应用范围。</p>
+<p>目前 Function Component 基本属于 dump 组件，Hooks 的出现使得 Function Component 有了自己的状态与业务逻辑，简单逻辑在自己内部处理即可，不再需要通过 Props 的传递，使简单逻辑组件抽离更加方便，也使使用者无需关心组件内部的逻辑，只关心 Hooks 组件返回的结果即可。</p>
+<p><a href="https://reactjs.org/docs/hooks-reference.html" target="_blank" rel="noopener">官方提供的 Hooks</a>：</p>
+<ul>
+<li>基本：<code>useState</code> 、<code>useEffect</code> 、 <code>useContext</code></li>
+<li>额外：<code>useCallback</code> 、 <code>useReducer</code> 、 <code>useMemo</code> 、 <code>useRef</code> 、 <code>useLayoutEffect</code>、 <code>useImperativeHandle</code> 、 <code>useDebugValue</code></li>
+</ul>
+<h3 id="使用条件"><a href="#使用条件" class="headerlink" title="使用条件"></a>使用条件</h3><ul>
+<li>仅从 React 功能组件调用 hooks，不要从常规 js 函数中调用 hooks。</li>
+<li>只能在顶层调用，不能在 <strong>for 循环、if 条件判断</strong>、 *<em>函数嵌套 *</em>中使用。（Ps：<a href="http://react-china.org/t/react-hooks/27122" target="_blank" rel="noopener">React Hooks: 不是魔法只是数组</a> 一文中有解释为什么 hooks 只能在顶层调用。）</li>
+</ul>
+<h3 id="环境条件"><a href="#环境条件" class="headerlink" title="环境条件"></a>环境条件</h3><ul>
+<li>开启 ESLint 插件：<a href="https://link.zhihu.com/?target=https%3A//www.npmjs.com/package/eslint-plugin-react-hooks" target="_blank" rel="noopener">eslint-plugin-react-hooks</a>。</li>
+</ul>
+<h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><blockquote>
+<p>React Hooks 主要解决以下三个主要的问题：</p>
+<ul>
+<li>代码重用：在 Hooks 出来之前，常见的代码重用方式是 HOC 和 render props，这两种方式带来的问题是：<ul>
+<li>你需要解构自己的组件，非常的笨重，同时会带来很深的组件嵌套。</li>
+<li>难以重用和共享组件中的与状态相关的逻辑，造成产生很多巨大的组件。</li>
+</ul>
+</li>
+<li>复杂的组件逻辑：在 class 组件中，有许多的 lifecycle 函数，当我们的组件需要处理多个互不相关的 local state 时，每个生命周期函数中可能会包含着各种互不相关的逻辑在里面，最终导致逻辑复杂的组件难以开发与维护。</li>
+<li>class 组件的困惑：<ul>
+<li>复杂的模式，如渲染道具和高阶组件。</li>
+<li>由于业务变动，函数组件不得不改为类组件</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>一个 React 项目，是由无数个大大小小的组件组合而成的。在 React 的世界中，组件是一等公民。而我们平时拆分组件的依据无非是：尽量的复用代码。组件是<code>UI + 逻辑</code>的复用，但逻辑复用能力等于 0。虽然 React 提供了 HOC 与 Render Props 两种方式来解决逻辑复用的问题，但由于 renderProps 嵌套问题等原因，这种解法并没有让逻辑复用流行起来。</p>
+<p>React Hooks 很好的解决了逻辑复用的问题，同时还解决了<strong>状态共享</strong>的问题，是继 <a href="https://link.zhihu.com/?target=https%3A//reactjs.org/docs/render-props.html" target="_blank" rel="noopener">render-props</a> 和 <a href="https://link.zhihu.com/?target=https%3A//reactjs.org/docs/higher-order-components.html" target="_blank" rel="noopener">higher-order components</a> 之后的第三种状态共享方案，且不会产生 JSX 嵌套地狱问题。</p>
+<blockquote>
+<p>对于 Hooks、Render Props 和高阶组件来说，它们都有各自的使用场景：</p>
+<ul>
+<li><p>Hooks：</p>
+</li>
+<li><ul>
+<li>替代 Class 的大部分用例，除了 <code>getSnapshotBeforeUpdate</code> 和 <code>componentDidCatch</code> 还不支持。</li>
+<li>提取复用逻辑。除了有明确父子关系的，其他场景都可以使用 Hooks。</li>
+</ul>
+</li>
+<li><p>Render Props：在组件渲染上拥有更高的自由度，可以根据父组件提供的数据进行动态渲染。适合有明确父子关系的场景。</p>
+</li>
+<li><p>高阶组件：适合用来做注入，并且生成一个新的可复用组件。适合用来写插件。</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><h3 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h3><ul>
+<li><p>useState(0) 返回是个数组形式，useState(0) 代表 count 的初始值是 0，useState 现阶段只能传入一个初始值。useState 类似 setState，你可以看做是异步的，但 useState 必须保证执行顺序一一致，React 为每一次的 useState 调用分配一个空间，通过 useState 调用顺序辨别各个空间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const Counter = () =&gt; &#123;</span><br><span class="line">  const [count, setCount] = useState(0);</span><br><span class="line">  const increment = () =&gt; setCount(count + 1);</span><br><span class="line">  return (</span><br><span class="line">   &lt;&gt;</span><br><span class="line">     &lt;h1&gt;&#123;count&#125;&lt;/h1&gt;</span><br><span class="line">     &lt;button onClick=&#123;increment&#125;&gt;+&lt;/button&gt;</span><br><span class="line">   &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h3><ul>
+<li><p>如果我们需要在一些特定的生命周期或者值变化后做一些操作的话，必须借助  <code>useEffect</code>  的一些特性去实现。</p>
+</li>
+<li><p><code>useState</code>  产生的 changeState 方法并没有提供类似于  <code>setState</code>  的第二个参数一样的功能，因此如果需要在 State 改变后执行一些方法，必须通过  <code>useEffect</code>  实现。</p>
+</li>
+</ul>
+<p><code>useEffect</code> 的代码既会在初始化时候执行，也会在后续每次 rerender 时执行，接受两个参数：第一个参数为副作用需要执行的回调，生成的回调方法可以返回一个函数（<strong>将在组件卸载时运行</strong>）；第二个为该副作用监听的状态数组，当对应状态发生变动时会执行副作用，<strong>如果第二个参数为空，那么在每一个 State 变化时都会执行该副作用。</strong></p>
+<p>使用 useEffect 实现类组件中生命周期：</p>
+<ul>
+<li><p>useEffect 如果第二个参数数组中的成员变量为空，则表示与该副作用相关联的状态为空，不管其他状态如何变动，该副作用都不会再次执行，即实现了 effect 只会在组件 <code>componentDidMount</code> 和 <code>componentWillUnmout</code> 时期执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line"> 	// 每次componentDidMount会调用这里</span><br><span class="line">&#125;,[])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果需要在 componentWillUnmount 需要执行一些事件，可以 return 返回时候进行操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">  //只有componentDidMount时候调用这里</span><br><span class="line">  return () =&gt; &#123;</span><br><span class="line">    // componentWillUnmount</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>useEffect 模拟 componentDidpdate，该生命周期在每次页面更新后都会被调用，那么可以利用 useEffect <strong>如果第二个参数为空，那么在每一个 State 变化时都会执行该副作用</strong>的特性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const mounted = useRef();</span><br><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">  if(!mounted.current)&#123;</span><br><span class="line">     mounted.current = true;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    // 执行 componentDidpdate</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="useLayoutEffect"><a href="#useLayoutEffect" class="headerlink" title="useLayoutEffect"></a>useLayoutEffect</h3><p>如果副作用是跟 DOM 相关的，需要使用 useLayoutEffect。useLayoutEffect 中的副作用会在 DOM 更新之后同步执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function App() &#123;</span><br><span class="line">    const [width, setWidth] = useState(0);</span><br><span class="line">    useLayoutEffect(() =&gt; &#123;</span><br><span class="line">        const title = document.querySelector(&apos;#title&apos;);</span><br><span class="line">        const titleWidth = title.getBoundingClientRect().width;</span><br><span class="line">        if (width !== titleWidth) &#123;</span><br><span class="line">            setWidth(titleWidth);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    return &lt;div&gt;</span><br><span class="line">        &lt;h1 id=&quot;title&quot;&gt;hello&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;&#123;width&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="useReducer"><a href="#useReducer" class="headerlink" title="useReducer"></a>useReducer</h3><p>useReducer 接收两个参数，一个是 reducer 函数，跟 redux 中的 reducer 是一样的；另外一个是初始的状态值。返回的是一个数组，数组中的第一个元素是状态值，第二个元素是 dispatch 函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">const reducer = (state, action) =&gt; &#123;</span><br><span class="line">    switch(action.type) &#123;</span><br><span class="line">        case &apos;increment&apos;:</span><br><span class="line">            return &#123;count: state.count + 1&#125;;</span><br><span class="line">        case &apos;decrement&apos;:</span><br><span class="line">            return &#123;count: state.count - 1&#125;;</span><br><span class="line">        case &apos;reset&apos;:</span><br><span class="line">            return initState;</span><br><span class="line">        default:</span><br><span class="line">            return state;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">    const [state, dispatch] = useReducer(reducer, initState);</span><br><span class="line">    return &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;&#123;state.count&#125;&lt;/h1&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; dispatch(&#123;type: &apos;increment&apos;&#125;)&#125;&gt;+&lt;/button&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; dispatch(&#123;type: &apos;decrement&apos;&#125;)&#125;&gt;-&lt;/button&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; dispatch(&#123;type: &apos;reset&apos;&#125;)&#125;&gt;reset&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="useRef"><a href="#useRef" class="headerlink" title="useRef"></a>useRef</h3><p>useRef：在函数组件中获取组件或DOM节点的引用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function App() &#123;</span><br><span class="line">    const inputRef = useRef(null);</span><br><span class="line"></span><br><span class="line">    return &lt;div&gt;</span><br><span class="line">        &lt;input type=&quot;text&quot; ref=&#123;inputRef&#125;/&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; inputRef.current.focus()&#125;&gt;focus&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还可以用<code>useRef</code>来保存一些值的引用，并对它进行读写。举个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> useValues = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [values, setValues] = useState(&#123;&#125;);</span><br><span class="line">  <span class="keyword">const</span> latestValues = useRef(values);</span><br><span class="line"></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    latestValues.current = values;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> [updateData] = useCallback(<span class="function">(<span class="params">nextData</span>) =&gt;</span> &#123;</span><br><span class="line">    setValues(&#123;</span><br><span class="line">      data: nextData,</span><br><span class="line">      count: latestValues.current.count + <span class="number">1</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> [values, updateData];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在使用 <code>ref</code> 时要特别小心，因为它可以随意赋值，所以一定要控制好修改它的方法。特别是一些底层模块，在封装的时候千万不要直接暴露 <code>ref</code>，而是提供一些修改它的方法。</p>
+<h3 id="useContext、useReducer"><a href="#useContext、useReducer" class="headerlink" title="useContext、useReducer"></a>useContext、useReducer</h3><p><a href="https://reactjs.org/docs/context.html" target="_blank" rel="noopener">Context</a> 的作用就是对它所包含的组件树提供全局共享数据的一种技术。useReducer 结合 useContext，通过 context 把 dispatch 函数提供给组件树中的所有组件使用 ，而不用通过 props 添加回调函数的方式一层层传递。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">// 定义初始化值</span><br><span class="line">const initState = &#123;</span><br><span class="line">    name: &apos;&apos;,</span><br><span class="line">    pwd: &apos;&apos;,</span><br><span class="line">    isLoading: false,</span><br><span class="line">    error: &apos;&apos;,</span><br><span class="line">    isLoggedIn: false,</span><br><span class="line">&#125;</span><br><span class="line">// 定义state[业务]处理逻辑 reducer函数</span><br><span class="line">function loginReducer(state, action) &#123;</span><br><span class="line">    switch(action.type) &#123;</span><br><span class="line">        case &apos;login&apos;:</span><br><span class="line">            return &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                isLoading: true,</span><br><span class="line">                error: &apos;&apos;,</span><br><span class="line">            &#125;</span><br><span class="line">        case &apos;success&apos;:</span><br><span class="line">            return &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                isLoggedIn: true,</span><br><span class="line">                isLoading: false,</span><br><span class="line">            &#125;</span><br><span class="line">        case &apos;error&apos;:</span><br><span class="line">            return &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                error: action.payload.error,</span><br><span class="line">                name: &apos;&apos;,</span><br><span class="line">                pwd: &apos;&apos;,</span><br><span class="line">                isLoading: false,</span><br><span class="line">            &#125;</span><br><span class="line">        default: </span><br><span class="line">            return state;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 定义 context函数</span><br><span class="line">const LoginContext = React.createContext();</span><br><span class="line">function LoginPage() &#123;</span><br><span class="line">    const [state, dispatch] = useReducer(loginReducer, initState);</span><br><span class="line">    const &#123; name, pwd, isLoading, error, isLoggedIn &#125; = state;</span><br><span class="line">    const login = (event) =&gt; &#123;</span><br><span class="line">        event.preventDefault();</span><br><span class="line">        dispatch(&#123; type: &apos;login&apos; &#125;);</span><br><span class="line">        login(&#123; name, pwd &#125;)</span><br><span class="line">            .then(() =&gt; &#123;</span><br><span class="line">                dispatch(&#123; type: &apos;success&apos; &#125;);</span><br><span class="line">            &#125;)</span><br><span class="line">            .catch((error) =&gt; &#123;</span><br><span class="line">                dispatch(&#123;</span><br><span class="line">                    type: &apos;error&apos;</span><br><span class="line">                    payload: &#123; error: error.message &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    // 利用 context 共享dispatch</span><br><span class="line">    return ( </span><br><span class="line">        &lt;LoginContext.Provider value=&#123;dispatch&#125;&gt;</span><br><span class="line">            &lt;...&gt;</span><br><span class="line">            &lt;LoginButton /&gt;</span><br><span class="line">        &lt;/LoginContext.Provider&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line">function LoginButton() &#123;</span><br><span class="line">    // 子组件中直接通过context拿到dispatch，出发reducer操作state</span><br><span class="line">    const dispatch = useContext(LoginContext);</span><br><span class="line">    const click = () =&gt; &#123;</span><br><span class="line">        if (error) &#123;</span><br><span class="line">            // 子组件可以直接 dispatch action</span><br><span class="line">            dispatch(&#123;</span><br><span class="line">                type: &apos;error&apos;</span><br><span class="line">                payload: &#123; error: error.message &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：局部状态不推荐使用 <code>useReducer</code> ，会导致函数内部状态过于复杂，难以阅读。 <code>useReducer</code> 建议在多组件间通信时，结合 <code>useContext</code> 一起使用。</strong></p>
+<p>参考 <a href="https://github.com/reduxjs/react-redux/blob/master/docs/api/hooks.md?spm=ata.13261165.0.0.7f34afbeFcp7o0&file=hooks.md" target="_blank" rel="noopener"><strong>react-redux</strong></a></p>
+<h3 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h3><p>当状态发生变化时，没有设置关联状态的 <code>useEffect</code> 会全部执行。同样的，<strong>通过计算出来的值或者引入的组件也会重新计算/挂载一遍，即使与其关联的状态没有发生任何变化</strong>。</p>
+<p>为了解决这个问题，引入了 <code>useMemo</code> 来实现类组件中 <code>shouldComponetUpdate</code> 的性能优化。 <code>useMemo</code> 接受两个参数，第一个参数为一个 Getter 方法，<strong>返回值为要缓存的数据或组件</strong>，第二个参数为该返回值相关联的状态，当其中任何一个状态发生变化时就会重新调用 Getter 方法生成新的返回值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useState, useMemo &#125; from &apos;react&apos;;</span><br><span class="line">import &#123; message &#125; from &apos;antd&apos;;</span><br><span class="line"></span><br><span class="line">export default function HookDemo() &#123;</span><br><span class="line">  const [count1, changeCount1] = useState(0);</span><br><span class="line">  const [count2, changeCount2] = useState(10);</span><br><span class="line"></span><br><span class="line">  const calculateCount = useMemo(() =&gt; &#123;</span><br><span class="line">    message.info(&apos;重新生成计算结果&apos;);</span><br><span class="line">    return count1 * 10;</span><br><span class="line">  &#125;, [count1]);</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &#123;calculateCount&#125;</span><br><span class="line">      &lt;button onClick=&#123;() =&gt; &#123; changeCount1(count1 + 1); &#125;&#125;&gt;改变count1&lt;/button&gt;</span><br><span class="line">      &lt;button onClick=&#123;() =&gt; &#123; changeCount2(count2 + 1); &#125;&#125;&gt;改变count2&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h3><p><code>useCallback</code> 用户生成 Callback ，配合<code>useEffect</code> 使用，抽离不同 <code>useEffect</code> 中存在的相同逻辑的封装，减少代码冗余。</p>
+<p><code>useCallback</code> 的使用方法和 <code>useEffect</code> 一致，第一个参数为生成的回调方法，第二个参数为该方法关联的状态，<strong>任一状态发生变动都会重新生成新的回调</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const [count1, changeCount1] = useState(0);</span><br><span class="line">const [count2, changeCount2] = useState(10);</span><br><span class="line"></span><br><span class="line">const calculateCount = useCallback(() =&gt; &#123;</span><br><span class="line">  if (count1 &amp;&amp; count2) &#123;</span><br><span class="line">    return count1 * count2;</span><br><span class="line">  &#125;</span><br><span class="line">  return count1 + count2;</span><br><span class="line">&#125;, [count1, count2])</span><br><span class="line"></span><br><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">    const result = calculateCount(count, count2);</span><br><span class="line">    message.info(`执行副作用，最新值为$&#123;result&#125;`);</span><br><span class="line">&#125;, [calculateCount])</span><br></pre></td></tr></table></figure>
+
+<h3 id="Custom-Hooks"><a href="#Custom-Hooks" class="headerlink" title="Custom Hooks"></a>Custom Hooks</h3><p>举个🌰，自定义监听窗口大小组件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 一个显示目前窗口大小的组件</span><br><span class="line">function responsiveComponent()&#123;</span><br><span class="line">   // custom hooks</span><br><span class="line">   const width = useWindowWidth(); </span><br><span class="line">   return (</span><br><span class="line">       &lt;p&gt;当前窗口的宽度是 &#123;width&#125;&lt;/p&gt;</span><br><span class="line">   )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自定义 useWindowWidth， 窗口调整大小时使用副作用来设置状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useState, useEffect&#125; from &apos;react&apos;;</span><br><span class="line">// custom hooks to listen window width change</span><br><span class="line">function useWindowWidth()&#123;</span><br><span class="line">    const [width, setWidth] = useState(window.innerWidth);</span><br><span class="line"></span><br><span class="line">    useEffect(() =&gt; &#123;</span><br><span class="line">        const handleResize = ()=&gt;&#123;</span><br><span class="line">            setWidth(window.innerWidth);</span><br><span class="line">        &#125;</span><br><span class="line">        window.addEventListener(&apos;resize&apos;, handleResize);</span><br><span class="line">    &#125;, [width]); // width 没有变化则不处理</span><br><span class="line"></span><br><span class="line">    return width;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：</strong> custom hooks 还可以参考一个有意思的 hooks 库 <a href="https://github.com/streamich/react-use" target="_blank" rel="noopener">react-use</a>。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="useState-底层实现"><a href="#useState-底层实现" class="headerlink" title="useState 底层实现"></a>useState 底层实现</h3><blockquote>
+<p><a href="http://react-china.org/t/react-hooks/27122" target="_blank" rel="noopener">React Hooks: 不是魔法，只是数组</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">let state = [];</span><br><span class="line">let setters = [];</span><br><span class="line">let firstRun = true;</span><br><span class="line">let cursor = 0;</span><br><span class="line"></span><br><span class="line">function createSetter(cursor) &#123;</span><br><span class="line">  return function setterWithCursor(newVal) &#123;</span><br><span class="line">    state[cursor] = newVal;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// This is the pseudocode for the useState helper</span><br><span class="line">export function useState(initVal) &#123;</span><br><span class="line">  if (firstRun) &#123;</span><br><span class="line">    state.push(initVal);</span><br><span class="line">    setters.push(createSetter(cursor));</span><br><span class="line">    firstRun = false;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const setter = setters[cursor];</span><br><span class="line">  const value = state[cursor];</span><br><span class="line"></span><br><span class="line">  cursor++;</span><br><span class="line">  return [value, setter];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Our component code that uses hooks</span><br><span class="line">function RenderFunctionComponent() &#123;</span><br><span class="line">  const [firstName, setFirstName] = useState(&quot;Rudi&quot;); // cursor: 0</span><br><span class="line">  const [lastName, setLastName] = useState(&quot;Yardley&quot;); // cursor: 1</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Button onClick=&#123;() =&gt; setFirstName(&quot;Richard&quot;)&#125;&gt;Richard&lt;/Button&gt;</span><br><span class="line">      &lt;Button onClick=&#123;() =&gt; setFirstName(&quot;Fred&quot;)&#125;&gt;Fred&lt;/Button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// This is sort of simulating Reacts rendering cycle</span><br><span class="line">function MyComponent() &#123;</span><br><span class="line">  cursor = 0; // resetting the cursor</span><br><span class="line">  return &lt;RenderFunctionComponent /&gt;; // render</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(state); // Pre-render: []</span><br><span class="line">MyComponent();</span><br><span class="line">console.log(state); // First-render: [&apos;Rudi&apos;, &apos;Yardley&apos;]</span><br><span class="line">MyComponent();</span><br><span class="line">console.log(state); // Subsequent-render: [&apos;Rudi&apos;, &apos;Yardley&apos;]</span><br><span class="line"></span><br><span class="line">// click the &apos;Fred&apos; button</span><br><span class="line"></span><br><span class="line">console.log(state); // After-click: [&apos;Fred&apos;, &apos;Yardley&apos;]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hooks-下的数据流管理"><a href="#Hooks-下的数据流管理" class="headerlink" title="Hooks 下的数据流管理"></a>Hooks 下的数据流管理</h2><p> 社区有一个非常轻量的库 <a href="https://github.com/jamiebuilds/unstated-next/blob/master/src/unstated-next.tsx" target="_blank" rel="noopener">unstate-next</a> ，可以做到管理全局的 state ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;</span><br><span class="line">import &#123; createContainer &#125; from &quot;unstated-next&quot;</span><br><span class="line">import &#123; render &#125; from &quot;react-dom&quot;</span><br><span class="line"></span><br><span class="line">function useCounter(initialState = 0) &#123;</span><br><span class="line">  let [count, setCount] = useState(initialState)</span><br><span class="line">  let decrement = () =&gt; setCount(count - 1)</span><br><span class="line">  let increment = () =&gt; setCount(count + 1)</span><br><span class="line">  return &#123; count, decrement, increment &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let Counter = createContainer(useCounter)</span><br><span class="line"></span><br><span class="line">function CounterDisplay() &#123;</span><br><span class="line">  let counter = Counter.useContainer()</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;button onClick=&#123;counter.decrement&#125;&gt;-&lt;/button&gt;</span><br><span class="line">      &lt;span&gt;&#123;counter.count&#125;&lt;/span&gt;</span><br><span class="line">      &lt;button onClick=&#123;counter.increment&#125;&gt;+&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;Counter.Provider&gt;</span><br><span class="line">      &lt;CounterDisplay /&gt;</span><br><span class="line">      &lt;Counter.Provider initialState=&#123;2&#125;&gt;</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;CounterDisplay /&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/Counter.Provider&gt;</span><br><span class="line">    &lt;/Counter.Provider&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">render(&lt;App /&gt;, document.getElementById(&quot;root&quot;))</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/50953073" target="_blank" rel="noopener">react hooks的诞生</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1360473" target="_blank" rel="noopener">理解 React Hooks</a></li>
+<li><a href="http://react-china.org/t/react-hooks/27122" target="_blank" rel="noopener">React hooks: 不是魔法只是数组</a></li>
+<li><a href="https://github.com/brickspert/blog/issues/26" target="_blank" rel="noopener">React Hooks 原理</a></li>
+<li><a href="https://www.robinwieruch.de/react-hooks-fetch-data/" target="_blank" rel="noopener">How to fetch data with React Hooks</a></li>
+<li><a href="https://www.infoq.cn/article/k1Zb7ahbRmlrwDmkb6wY" target="_blank" rel="noopener">React Hooks 是不能替代 Redux 的</a></li>
+<li><a href="https://juejin.im/post/5d754dbde51d4561cd2466bf" target="_blank" rel="noopener">看完这篇，你也能把 React Hooks 玩出花</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/68434464" target="_blank" rel="noopener">Hooks 时代的 React 状态管理方案</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2019/08/15/Web前端/React Hooks 指南/" title="React Hooks 指南">https://uestc66.github.io/2019/08/15/Web前端/React Hooks 指南/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/15/WebAssembly/WebAssembly 参考资料传送门/" rel="next" title="WebAssembly 传送门">
+                <i class="fa fa-chevron-left"></i> WebAssembly 传送门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/15/Python/Python 参考资料传送门/" rel="prev" title="Python 传送门">
+                Python 传送门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What"><span class="nav-number">1.</span> <span class="nav-text">What</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用条件"><span class="nav-number">1.1.</span> <span class="nav-text">使用条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境条件"><span class="nav-number">1.2.</span> <span class="nav-text">环境条件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why"><span class="nav-number">2.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How"><span class="nav-number">3.</span> <span class="nav-text">How</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#useState"><span class="nav-number">3.1.</span> <span class="nav-text">useState</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useEffect"><span class="nav-number">3.2.</span> <span class="nav-text">useEffect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useLayoutEffect"><span class="nav-number">3.3.</span> <span class="nav-text">useLayoutEffect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useReducer"><span class="nav-number">3.4.</span> <span class="nav-text">useReducer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useRef"><span class="nav-number">3.5.</span> <span class="nav-text">useRef</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useContext、useReducer"><span class="nav-number">3.6.</span> <span class="nav-text">useContext、useReducer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useMemo"><span class="nav-number">3.7.</span> <span class="nav-text">useMemo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useCallback"><span class="nav-number">3.8.</span> <span class="nav-text">useCallback</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Custom-Hooks"><span class="nav-number">3.9.</span> <span class="nav-text">Custom Hooks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">4.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#useState-底层实现"><span class="nav-number">4.1.</span> <span class="nav-text">useState 底层实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hooks-下的数据流管理"><span class="nav-number">5.</span> <span class="nav-text">Hooks 下的数据流管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

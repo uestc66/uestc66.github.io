@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自知乎网络，原文链接：https://zhuanlan.zhihu.com/p/62722892 你是否头疼于，每天做不完的需求和改不完的bug？ 你是否发愁，每天撸业务代码，是否能获得技术成长？ 而追求成就感的你是否想过，你所编写的一行行代码，是在反复的变化中迅速成为遗留代码，还是助公司插上腾飞的翅膀，在你死我活的战场上脱颖而出？ 因此本文会将业务和前端关联起来讨论，探讨业务发展的不同时期，">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈：前端如何赋能业务">
+<meta property="og:url" content="https://uestc66.github.io/2020/02/26/Web前端/浅谈：前端如何赋能业务/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="转载自知乎网络，原文链接：https://zhuanlan.zhihu.com/p/62722892 你是否头疼于，每天做不完的需求和改不完的bug？ 你是否发愁，每天撸业务代码，是否能获得技术成长？ 而追求成就感的你是否想过，你所编写的一行行代码，是在反复的变化中迅速成为遗留代码，还是助公司插上腾飞的翅膀，在你死我活的战场上脱颖而出？ 因此本文会将业务和前端关联起来讨论，探讨业务发展的不同时期，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-9a8981c903bdbcc7bccfbb0a6bd8d663_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-d275b953a21038f60754f558d70574bb_1440w.jpg">
+<meta property="og:updated_time" content="2020-02-26T07:44:56.807Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈：前端如何赋能业务">
+<meta name="twitter:description" content="转载自知乎网络，原文链接：https://zhuanlan.zhihu.com/p/62722892 你是否头疼于，每天做不完的需求和改不完的bug？ 你是否发愁，每天撸业务代码，是否能获得技术成长？ 而追求成就感的你是否想过，你所编写的一行行代码，是在反复的变化中迅速成为遗留代码，还是助公司插上腾飞的翅膀，在你死我活的战场上脱颖而出？ 因此本文会将业务和前端关联起来讨论，探讨业务发展的不同时期，">
+<meta name="twitter:image" content="https://pic4.zhimg.com/80/v2-9a8981c903bdbcc7bccfbb0a6bd8d663_1440w.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/02/26/Web前端/浅谈：前端如何赋能业务/">
+
+
+
+
+
+  <title>浅谈：前端如何赋能业务 | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/02/26/Web前端/浅谈：前端如何赋能业务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅谈：前端如何赋能业务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-26T15:44:02+08:00">
+                2020-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/02/26/Web前端/浅谈：前端如何赋能业务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/02/26/Web前端/浅谈：前端如何赋能业务/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自知乎网络，原文链接：<a href="https://zhuanlan.zhihu.com/p/62722892" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/62722892</a></font></p>
+<p>你是否头疼于，每天<strong>做不完的需求</strong>和改不完的bug？</p>
+<p>你是否发愁，每天撸业务代码，是否能获得<strong>技术成长</strong>？</p>
+<p>而追求成就感的你是否想过，你所编写的一行行代码，是在反复的变化中迅速成为遗留代码，还是<strong>助公司插上腾飞的翅膀</strong>，在你死我活的战场上脱颖而出？</p>
+<p>因此本文会将业务和前端关联起来讨论，探讨业务发展的不同时期，前端所能做的一些事情，既能解业务的困扰，也让前端同学们摆脱码工、切图仔的定位。</p>
+<p>千言万语不如一张图，全文完。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-9a8981c903bdbcc7bccfbb0a6bd8d663_1440w.jpg" alt="img"></p>
+<p>大误，还是得详细说说。</p>
+<h3 id="一、初始阶段"><a href="#一、初始阶段" class="headerlink" title="一、初始阶段"></a>一、初始阶段</h3><p>在业务的初始阶段，在市场定位、用户诉求、产品逻辑已经明确的前提下，此时业务的核心诉求是 『尽快上线』，进行快速验证和产品迭代，当然，质量还得能过得去。 所以此时技术同学的方案侧重点是：</p>
+<h2 id="快、爽"><a href="#快、爽" class="headerlink" title="快、爽"></a><strong>快、爽</strong></h2><p>先说『<strong>快</strong>』，在这种情况下，什么vue/react都见鬼去，老夫只用jQuery一把梭！ 这是反面案例，这样就只能重构火葬场了，项目上线完就打包行李滚蛋……</p>
+<p>此时的<strong>快</strong>，指的是 <strong>尽可能复用集团/业内成熟的方案、架构</strong>，按捺住自己重新造轮子的躁动不安的心情。 这又涉及到一个问题：如何选择一个靠谱的方案？这是一个可以另开文章的话题，但先在此简单说说 根据我个人的经验，主要从<strong>稳定性、可扩展性、性能</strong>去考虑。</p>
+<p><strong>稳定性</strong> 如何去评估？如果一个项目能做到这几项，我是比较放心的。</p>
+<ol>
+<li>项目star数多</li>
+<li>有单测，代码覆盖率90%~95%以上</li>
+<li>文档完备，有常见Q&amp;A</li>
+<li>issue有较快的处理流程和周期，3天内响应、1~4周内关闭。</li>
+<li>有稳定的版本控制，不进行不兼容的升级，非要不兼容升级的话，将迁移工具做到极致。</li>
+</ol>
+<p><strong>可扩展性</strong> 如何评估？主要是指能否根据业务or已有技术方案，自定义部分内容。</p>
+<ol>
+<li>例如组件库，是否能自定义主题、组件的事件回调等，因为有的需求，组件除了完成默认的行为，还需要执行其他逻辑如埋点；</li>
+<li>例如单测工具，能否配置白名单，因为有一些代码是兼容特殊场景，编写用例模拟场景的成本实在比较高。这个主要是根据技术诉求和经验进行判断。</li>
+</ol>
+<p><strong>性能问题</strong>，短期容易被人忽视，因为能跑就行，但一旦埋下隐患，日后有坑就极难解决。容易出现性能问题的地方有：代码构建、长列表/表格滚动、大数据图表、复杂动画、3D全景渲染等，如果所做的业务涉及到这几个方面，选择方案的时候就要特别注意性能。</p>
+<p>如果实在图省事儿，create-react-app、umi开箱即用来一套就完事儿了。</p>
+<p>『<strong>爽</strong>』 这个字我的理解是，一款新产品出现，一定需要在用户体验or交互上有绝对领先对手的地方。</p>
+<p>一个我始终记忆犹新的例子，就是乔布斯发布第一款iPhone时，演示滑动列表时全场的惊呼，一个乔布斯的哥们说：当你滑动页面的时候我就湿了。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-d275b953a21038f60754f558d70574bb_1440w.jpg" alt="img"></p>
+<p>另一个前端领域的例子，就是Ant Design。AntD被广泛使用，很大一部分原因是其出色的视觉设计和动效。至今为止，AntD的官网介绍上仍然说这是一个设计体系。</p>
+<p>所以我觉得，一款新产品，除了提供刚需价值，最好在美观和易用上领先对手一大步，虽然主要还是看设计师和产品的功底，但前端同学的实现上至少不能拖后腿，不能加载太慢、滚动太卡。</p>
+<p>蓝海市场、刚需产品也许不那么看重这一点，但有的蓝海门槛较低，很快就会转变为红海。</p>
+<p>还值得一提的是，账户体系的建设，包括打通三方登录、免登等（客户端登录态透传到h5），网上不少资料，我实在没这方面经验，就不在此多嘴了。</p>
+<h3 id="二、快速扩张"><a href="#二、快速扩张" class="headerlink" title="二、快速扩张"></a>二、快速扩张</h3><p>OK，假设产品如期上线，数据蹭蹭上涨，看起来一切都很完美。 然后问题就来了，业务开始扩张，公司新招了100个运营和10个PD，你会发现需求突然就翻了10倍。这个时候我们怎么办？</p>
+<p>答案只有一个：<strong>提（jia）效（ren）</strong>。所以这个时期的核心是：</p>
+<h2 id="快、稳"><a href="#快、稳" class="headerlink" title="快、稳"></a>快、稳</h2><p>提效最简单的办法是加人，但问题是，让需求翻100倍容易，但是让能接需求的人翻100倍很困难。尤其是能写出靠谱代码的前端不好找，有的时候改别人的代码，比重写一遍更麻烦。看过《人月神话》的同学都知道，加人带来的效率提升是有瓶颈的，人平均效率会随着人数增加而下降。</p>
+<p>此时就需要考虑通过<strong>技术手段</strong>提效，沉淀基础研发体系，包括：</p>
+<ol>
+<li><strong>基础工具库+ 业务工具库</strong>，避免重复写一些简单但是容易出bug的业务逻辑。</li>
+<li><strong>UI规范 + 组件体系</strong>。UI规范很重要，如果设计师不能达成一致，那出来的视觉稿必然是千差万别的，你的公共组件也就难以沉淀了。</li>
+<li><strong>研发工具升级</strong>。主要有 构建性能优化、数据mock工具、环境切换工具、线上问题排查工具等。</li>
+</ol>
+<p>除了技术手段，<strong>人员的技术成长</strong>也很重要，毕竟技术方案是由人来执行的，个人觉得常用的方式有：</p>
+<ol>
+<li>CodeReview，帮助新人快速成长到一定水平，保证新人开发代码的可维护性。</li>
+<li>内部分享。分享好用工具以提升研发效率，分享底层原理避免踩更深的坑浪费大量时间，也可以分享一些编码、调试小技巧。</li>
+</ol>
+<p>当然，还有一个提效的神技，就是——砍需求。</p>
+<p>砍需求也是一门技术活儿，有的高级工程师用嘴就将需求解了。但不是每个团队都采用放权式管理（此处感谢我的历任老板们），给你足够的权力自己砍需求和排期； 有的公司采用的是集权式管理，只有前端leader能够砍需求和进行任务分配，也使得不少同学这方面能力没成长起来。</p>
+<p>那么需求到底怎么砍？听我简单说一下，欢迎更好的套路。</p>
+<ol>
+<li>首先，端正心态。 你砍需求不是为了自己偷懒要早下班，你砍需求是为了业务整体效率的提升。你要砍的是无效需求、重复需求，公司业务的核心需求不能砍。不然你把公司业务都砍死了，自己喝西北风去？公司如果运气好IPO了，你不也爽一波？</li>
+<li>其次，先问问需求<strong>解决的业务问题</strong>是什么？ 搞清楚这一点，就能判断：这个需求的优先级多高、是不是伪/重复需求、是否有其他方式替代解决。此处的伪需求，是指不能实际解决用户问题的需求。</li>
+<li>再其次，数据说话。 相关的数据是怎么样的？如何推导出业务的问题所在？做完这个需求数据会变成什么样？</li>
+<li>最后，这个需求可能需要哪些上下游合作。涉及其他环节的需求，一定要将上下游拉到一起，考虑到所有可能的问题，统一一个方案，才能客观评估工作量。</li>
+<li>最后的最后，也是最重要的，<strong>将共性的需求沉淀</strong>，构建组件体系or业务模块体系。有这个沉淀，才能更进一步，对需求做收敛，例如总不能说，已经有一个slider模块了，你还要再做一个类似的吧，对业务的提升到底在哪？</li>
+</ol>
+<p>一般一个重要的、合理的需求都能比较好回答上面这些的问题。其中第三点，<strong>数据说话</strong>，也对公司的数据化能力提出了要求。</p>
+<ol>
+<li>最基本的pv/uv、uv点击率、停留时长，这是和前端页面相关的指标。</li>
+<li>模块热度、功能使用情况，这是用来和业务方撕逼的时候使用的。（上次做的功能你们又不用！）</li>
+<li>还有业务指标，例如电商的gmv、售罄率，但这些和前端没直接关系。</li>
+<li>高级一点可以玩GrowthHack，全链路监控细分用户群的使用情况，比较适合业务已经增长到一定体量，精细化运营的场景。</li>
+<li>大数据分析+洞察+数据可视化。会在第三部分讲述。</li>
+</ol>
+<p>另一个不能忽视的是，如何变得更『<strong>稳</strong>』，因为大家都很急，一急就容易出线上故障，然后时间都花在处理故障上了，然后时间就更急，一个快速腐化的死循环，然后你能怎么办呢？只能以猝死明志啊……常见的有以下几种方法：</p>
+<ol>
+<li>研发流程管控。不经测试不允许上线，这也是阿里的研发红线，看起来是效率降低的，但其实只是把处理线上问题的时间用来测试了而已。</li>
+<li>基础库、基础组件 上单元测试，代码覆盖率90%+</li>
+<li>监控。线上404、页面白屏、js/接口报错等。</li>
+<li>安全。最基本的xss、csrf做一下，再整体升一下https</li>
+<li>问题复盘、沉淀机制。避免再出同样的问题。</li>
+</ol>
+<p>以上这些问题解决了，前端同学也就算是又快又稳地帮业务度过了快速发展期，迎来业务的精耕细作期。</p>
+<h3 id="三、精耕细作"><a href="#三、精耕细作" class="headerlink" title="三、精耕细作"></a>三、精耕细作</h3><p>俗话说得好：攻城容易守成难，但现在攻城也不那么容易了。现在新兴的独角兽，背后都有AT的影子，例如ofo和摩拜，双方都极难一下子摁死对方。而是互拼内力，最后很可能落得两败俱伤。这个时候我们就需要稳中求快。</p>
+<p>前两个阶段的C端场景看起来和前端关系更加紧密，那么这个阶段和前端有什么关系呢？我觉得能做的事情有：</p>
+<ol>
+<li><strong>中后台系统的构建。</strong> 将运营们的工作线上化，同时减少部分手工操作，达到效率的提升。 虽然说运营们通常excel用得虎虎生风，但有容易出错、贪腐较多的问题，想想<a href="https://link.zhihu.com/?target=https%3A//baijiahao.baidu.com/s%3Fid%3D1566983535896067%26wfr%3Dspider%26for%3Dpc" target="_blank" rel="noopener">ofo被曝贪腐严重的新闻</a>。 在不少缺前端的公司，这部分通常也由后端用jQuery一把梭。但后端撸出来系统，通常都欠缺交互意识（无导航、报错信息等设计）、撸不出稍微复杂的布局（见过被float和flex难住的）、缺少动效、SPA 等，做出来的系统真的差不少，都9012年了，还是让专人来干这活吧。记得加上水印，包括明水印和暗水印，便于公司时候追责，间接防止公司机密外泄。</li>
+<li><strong>大数据可视化</strong>。 不仅仅是消费者端页面的访问数据，还有更深层次的公司运营数据。例如ofo可以实时跟踪自行车的损坏率、监控车辆密集程度等，从而指挥调度车的调度，达到车辆投放和使用率的最佳匹配。虽然这事儿吧，核心还是数据同学产出数据的准确性，但前端同学的配合是不可或缺的。 常见的可以用来做这事儿的有Echarts、HighCharts、G2等等，虽然我们基本不可能再重复自研一套，但取其精华，快速赋能业务，就是业务前端的价值所在。</li>
+<li><strong>平台化</strong>。 此处其实指的是大中台、小前台的概念。因为我们往往已经积累了一批中后台系统，但如何使同一个系统更快支撑新的业务、砍掉/合并重复功能的中后台系统，也是辅助业务的一种手段。</li>
+<li><strong>ABTest</strong>。 根据之前的经验，电商不同行业的不同人群，对于交互设计的偏好真的就不一样，有的喜欢大图，有的喜欢小图。因此通过ABTest方案，对人群进行千人千面的细分展现，对业务也是可以稍微有一定的提升。</li>
+<li><strong>容器技术（hybrid &amp; 内核）&amp; 极致性能</strong>。 其实也就这么提一下，因为对于大多数公司，真没有深入追求浏览器内核提升的价值和可能性。 hybrid方案是有必要的，但应该在急剧扩张时期就做得差不多了。 极致性能也属于比较炫技的东西了（已经做到1~2s页面可交互的前提下），短期内没有特别大的必要，但在追求极致性能的过程中，迫使相关同学深入了解容器技术、服务端、网关、cdn等底层，并推动相关方升级，经过长时间的积累，带来人力储备和技术储备的提升。</li>
+</ol>
+<h3 id="四、新赛道、新增量时期"><a href="#四、新赛道、新增量时期" class="headerlink" title="四、新赛道、新增量时期"></a>四、新赛道、新增量时期</h3><p>基本上做完上面那些东西，公司的业务进入一个稳定的时期，就是到处看看有什么新的东西可以做了。（当然还是可能有各种各样蛋碎的改版） 核心</p>
+<ol>
+<li><p><strong>端的扩展：</strong></p>
+</li>
+<li><ol>
+<li>包括各类小程序。 名义上是便于管控第三方，提供更好的体验，其实就是人为割裂出一个端，同时用流量把这个端喂起来。不过没办法，谁让爸爸们有流量呢。但注意一点，扩展一个端是有维护成本的，且并不会直接带来流量收益，需要配套的运营计划。</li>
+<li>3D、全景、VR / AR 。有可能带来交互根本变化的东西，唯一的缺点是科技还不够先进，做全景素材成本很高，VR/AR的应用场景也不够多。</li>
+<li>Flutter。</li>
+</ol>
+</li>
+<li><p>智能化：</p>
+</li>
+<li><ol>
+<li>业务的智能化。例如活动界面的千人千面，根据算法计算出最佳界面元素组合方式等。</li>
+<li>研发的智能化。例如FB的Aroma、之前业内的psd2html，但这个算法和普通的电商推荐算法相比，最大的区别在于容错率极低，你推荐错了一个商品大不了不买看下一个，但你自动生成错了一句代码，整个系统就跑不起来。</li>
+</ol>
+</li>
+</ol>
+<p>实在不知道前端还有什么新的东西好关注的了，硬掰不出来，就这样吧，欢迎指点。</p>
+<h3 id="五、最后"><a href="#五、最后" class="headerlink" title="五、最后"></a>五、最后</h3><p>读完本文，相信你已经找到了前面三个问题的答案，能够不再被一堆需求推着走，也能够不再只撸业务代码，孕育出属于你们团队的技术方案而获得技术上的提升，最重要的是找到自己的一身本领在这个商业世界中的价值，不忘极客梦，<strong>技术改变世界，Rock the World</strong>。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/02/26/Web前端/浅谈：前端如何赋能业务/" title="浅谈：前端如何赋能业务">https://uestc66.github.io/2020/02/26/Web前端/浅谈：前端如何赋能业务/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/26/其他/开好一场会，比写1000行代码更重要/" rel="next" title="开好一场会，比写1000行代码更重要">
+                <i class="fa fa-chevron-left"></i> 开好一场会，比写1000行代码更重要
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、初始阶段"><span class="nav-number">1.</span> <span class="nav-text">一、初始阶段</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#快、爽"><span class="nav-number"></span> <span class="nav-text">快、爽</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二、快速扩张"><span class="nav-number">1.</span> <span class="nav-text">二、快速扩张</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快、稳"><span class="nav-number"></span> <span class="nav-text">快、稳</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三、精耕细作"><span class="nav-number">1.</span> <span class="nav-text">三、精耕细作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、新赛道、新增量时期"><span class="nav-number">2.</span> <span class="nav-text">四、新赛道、新增量时期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、最后"><span class="nav-number">3.</span> <span class="nav-text">五、最后</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

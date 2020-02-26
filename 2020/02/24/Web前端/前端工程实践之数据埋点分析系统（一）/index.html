@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自掘金网络，原文链接：https://juejin.im/post/5e3fb599f265da573f3563b9 背景随着公司业务的不断增长，平台业务的不断增加，场景复杂度也对应的有所增加。这对平台产品的用户体验，商业场景的深化运营，及过程中对平台用户的使用便捷性，都带来了不小的影响和挑战。为更精准的触达用户痛点，定位转化低点，提升业务赋能，基于数据分析的优化策略势在必行。 政采云前端团队">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端工程实践之数据埋点分析系统（一）">
+<meta property="og:url" content="https://uestc66.github.io/2020/02/24/Web前端/前端工程实践之数据埋点分析系统（一）/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5e3fb599f265da573f3563b9 背景随着公司业务的不断增长，平台业务的不断增加，场景复杂度也对应的有所增加。这对平台产品的用户体验，商业场景的深化运营，及过程中对平台用户的使用便捷性，都带来了不小的影响和挑战。为更精准的触达用户痛点，定位转化低点，提升业务赋能，基于数据分析的优化策略势在必行。 政采云前端团队">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd4d5567f1e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c25f7117?imageslim">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c3c2f8fa?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c44e5c21?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c549fae0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c53130ae?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47983bb56?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd4799e65c0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47bd7ddf9?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47c3ec56f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47d865036?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd4aa257726?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2020-02-24T02:24:04.325Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端工程实践之数据埋点分析系统（一）">
+<meta name="twitter:description" content="转载自掘金网络，原文链接：https://juejin.im/post/5e3fb599f265da573f3563b9 背景随着公司业务的不断增长，平台业务的不断增加，场景复杂度也对应的有所增加。这对平台产品的用户体验，商业场景的深化运营，及过程中对平台用户的使用便捷性，都带来了不小的影响和挑战。为更精准的触达用户痛点，定位转化低点，提升业务赋能，基于数据分析的优化策略势在必行。 政采云前端团队">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2020/2/9/17028dd4d5567f1e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/02/24/Web前端/前端工程实践之数据埋点分析系统（一）/">
+
+
+
+
+
+  <title>前端工程实践之数据埋点分析系统（一） | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/02/24/Web前端/前端工程实践之数据埋点分析系统（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端工程实践之数据埋点分析系统（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-24T10:22:09+08:00">
+                2020-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/02/24/Web前端/前端工程实践之数据埋点分析系统（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/02/24/Web前端/前端工程实践之数据埋点分析系统（一）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自掘金网络，原文链接：<a href="https://juejin.im/post/5e3fb599f265da573f3563b9" target="_blank" rel="noopener">https://juejin.im/post/5e3fb599f265da573f3563b9</a></font></p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>随着公司业务的不断增长，平台业务的不断增加，场景复杂度也对应的有所增加。这对平台产品的用户体验，商业场景的深化运营，及过程中对平台用户的使用便捷性，都带来了不小的影响和挑战。为更精准的触达用户痛点，定位转化低点，提升业务赋能，基于数据分析的优化策略势在必行。</p>
+<p>政采云前端团队（ZooTeam），从去年年底开始，主动主导推进公司业务层面的 Web 数据埋点及分析量化的能力建设（内部产品化命名“浑仪系统”）。希望基于我们过去一段时间的事件和经验，能为正有意实践此方向从 0 到 1 建设的小伙伴们，提供一些思路和帮助。</p>
+<h1 id="系统概览"><a href="#系统概览" class="headerlink" title="系统概览"></a>系统概览</h1><p>数据埋点分析系统都做了些什么？采集了哪些数据？这些数据我们将如何运用和分析？最终又将如何展示呢？</p>
+<p>首先我们看下系统结构。整个系统由以下 4 个部分组成，期望能提供一套完整的用户行为分析的解决方案：</p>
+<ol>
+<li><strong>埋点采集 JSSDK</strong>：收集用户行为数据，并进行上报；</li>
+<li><strong>数据处理服务</strong>：接收上报数据并存储；筛取所需数据，进行数据处理并透出；</li>
+<li><strong>数据可视化平台</strong>：汇总展示详细数据，支持自定义，打通业务；</li>
+<li><strong>Chrome插件工具</strong>：在页面上直观展示坑位数据，提供场景更友好的数据可视化服务；</li>
+</ol>
+<p>其基本协作流程是，用户进入平台任意一个已埋点的 Web 页面，进行的一系列（进入、点击、滚屏等）操作，都会由 JSSDK 进行分类并将数据上报至服务端进行存储，再由站点 / 插件发起查询，服务端将处理后的数据返回，再通过数据可视化平台进行透出展示。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd4d5567f1e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="系统概览.png"></p>
+<h2 id="数据采集"><a href="#数据采集" class="headerlink" title="数据采集"></a>数据采集</h2><p>数据采集一般分为以下三种：</p>
+<ol>
+<li><strong>无埋点（全埋点）</strong>：零埋点成本，抓取用户行为全量数据，任何操作行为都会被上传。数据量大，“噪音”多；</li>
+<li><strong>可视化埋点</strong>：在页面中操作，选择埋点位置/模块，非开发人员也可以进行埋点；</li>
+<li><strong>侵入式埋点</strong>：埋点时需要将数据采集代码写入业务代码中，埋点成本较高，但准确度也更高；</li>
+</ol>
+<p>由于对数据的准确度要求较高，同时希望前期只投入较少的开发资源就可以进行快速试错，并为了满足重点的用户行为数据的采集需求，因此，我们优先采用<strong>代码侵入式埋点方案</strong>。</p>
+<p>同时针对其接入成本较高的劣势，我们也将埋点在搭建系统及组件中采用了自动化的植入方式，这点将不再此详述。为降低接入成本并且更加灵活的捕获数据，我们采用了 DOM 节点挂载特殊属性后自动发送和手动自定义发送两种方式结合，以满足不同场景的需要。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//自动发送埋点方式，举例：</span><br><span class="line">&lt;button data-utm-click=&quot;$&#123;did&#125;&quot; data-utm-data=&quot;$&#123;业务数据&#125;&quot;&gt;</span><br><span class="line">//手动发送埋点方式，举例：</span><br><span class="line">const utmCnt = g_UTM.batchSend(&apos;触发类型（click/browse）等&apos;,[&#123;</span><br><span class="line">    utmCD:[&apos;区块信息&apos;,&apos;位置信息&apos;],</span><br><span class="line">    bdata:&#123;key:&apos;其他业务数据&apos;&#125;</span><br><span class="line">  &#125;,&#123;</span><br><span class="line">    utmCD:[&apos;001&apos;,&apos;008&apos;],</span><br><span class="line">    bdata:&#123;key:&apos;value&apos;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">]);</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>基于用户行为分析这个大目标，我们所采集数据紧紧围绕着两个主题，即：Event（事件/行为）和 User（用户）。</p>
+<p>围绕“事件“我们采集了：事件的类型、发生时间、页面位置等信息，组成事件唯一标识。</p>
+<p>围绕”用户“我们采集了：用户 IP、操作系统、浏览器信息、屏幕分辨率等，并生成用户唯一标识植入 Cookie 中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  bdata: &#123;&#125;, //业务数据</span><br><span class="line">  createTime: &quot;1571038815128&quot;, // 创建时间</span><br><span class="line">  evt: &quot;browse&quot;, // 事件类型</span><br><span class="line">  ipAddr: 122.226.174.195, //ip地址</span><br><span class="line">  logType: 2, // 触发类型</span><br><span class="line">  lver: 1.1.0, //版本</span><br><span class="line">  mx: 0, // 页面位置坐标x</span><br><span class="line">  my: 0, // 页面位置坐标y</span><br><span class="line">  os: &quot;Windows/7&quot;, // 操作系统</span><br><span class="line">  pre: &quot;https://www.zcygov.cn/&quot;, // 来源地址</span><br><span class="line">  scr: &quot;1920x1360&quot;, // 屏幕分辨率</span><br><span class="line">  url: &quot;https://www.zcygov.cn/&quot;, // 页面地址</span><br><span class="line">  userId: &quot;001&quot;, // 用户标识</span><br><span class="line">  utmCnt: &quot;a0004.2ef5001f.0001.0001.d814bf60ee5511e99397b37fe9083257&quot;, // 触发位置</span><br><span class="line">  utmUrl: &quot;a0004.2ef5001f.0001.0001&quot;, // 来源位置</span><br><span class="line">  uuid: &quot;d7fd8de0-ee55-11e9-9397-b37fe9083257&quot;, // 浏览器唯一标识</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>上述一些收集的字段，会在下面案例中使用到。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c25f7117?imageslim" alt="点击发送请求.gif"></p>
+<h2 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h2><p>目前前台站点已经提供了比较丰富的数据展示功能，比如：PV（浏览次数）/UV（浏览人数） 排序或趋势、漏斗分析、路径分析、热图分析、用户画像、自定义看板等等，还有各种业务相关的数据统计及报表导出功能。总体菜单如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c3c2f8fa?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="数据展示.png"></p>
+<ul>
+<li>PV/UV 排序或趋势（PV：PageView，页面浏览次数，用户每打开一次记录一次，多次打开同一页面将累计多次；UV：UserView，浏览页面人数；下文中将直接用PV/UV；）<ul>
+<li>全站的PV/UV单日趋势图：分时段查看访问量的高峰和低谷；</li>
+<li>PV/UV排序：查看Top页面的PV/UV</li>
+<li>按页面、时间区间查询PV/UV</li>
+</ul>
+</li>
+<li>漏斗分析：按流程排序每个阶段的人数，计算出转化率；</li>
+<li>路径分析：查询各个页面的来源和去向；</li>
+<li>热图分析<ul>
+<li>点击热图：按钮及链接点击的热图；</li>
+<li>滚屏热图（即将上线）：用户页面滚屏触达率；</li>
+</ul>
+</li>
+<li>用户画像（即将上线）：针对重点用户的回访次数、浏览路径、用户身份、所在地、操作系统、浏览器等详细信息查询；</li>
+<li>自定义看板：可选择首页看板的展示项；</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c44e5c21?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image.png"></p>
+<h1 id="赋能业务"><a href="#赋能业务" class="headerlink" title="赋能业务"></a>赋能业务</h1><p>采集和分析哪些数据才是对业务有价值的，我们参考了许多业界成熟的用户行为分析解决方案，包括：</p>
+<ol>
+<li>GrowingIO</li>
+<li>神策数据</li>
+<li>数极客</li>
+</ol>
+<p>这些产品在用户行为分析侧的功能可以说是做到了大而全。根据我们的实际需求可以筛选出以下一些重点功能模块：</p>
+<table>
+<thead>
+<tr>
+<th align="center">关键功能点</th>
+<th align="center"><strong>数极客</strong></th>
+<th align="center">神策数据</th>
+<th align="center">GrowingIO</th>
+<th align="center">自研系统</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">表单分析</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">不支持</td>
+</tr>
+<tr>
+<td align="center">页面分析</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">路径分析</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">漏斗分析</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">事件分析</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">事件分布分析</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">用户分群</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">行为预测</td>
+<td align="center">不支持</td>
+<td align="center">支持</td>
+<td align="center">不支持</td>
+<td align="center">不支持</td>
+</tr>
+<tr>
+<td align="center">用户行为序列</td>
+<td align="center">不支持</td>
+<td align="center">支持</td>
+<td align="center">不支持</td>
+<td align="center">不支持</td>
+</tr>
+<tr>
+<td align="center">热图</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">视频回放</td>
+<td align="center">支持</td>
+<td align="center">不支持</td>
+<td align="center">不支持</td>
+<td align="center">不支持</td>
+</tr>
+</tbody></table>
+<p>上面大部分一支持的功能都可以在【数据展示】模块中查看，表单分析及用户行为序列目前已在我们版本的规划中。表单分析是分析一个用户从进入一个表单填写页面到表单提交的过程中各个行为的分析，每个表单项的填写率、重填率、填写时长、放弃率等都是重要的分析指标，会直接影响到整体的转化率。也能帮助开发人员及时发现和定位表单页面中的交互问题，从而提升用户体验，和重要链路中的转化率。</p>
+<p>例如：常见的注册表单的转化，即 10 个用户进入注册页面但最后只有 7 个用户成功注册，这个功能可以有效发掘剩余 3 个注册失败的用户流失的点，找到他们是在填写哪个表单项前离开页面或是找到重填率最高的表单项进行优化。用户行为序列是从单一用户的角度去查看在我们站点上的行为轨迹，从而去分析重点用户的行为喜好。</p>
+<p>基于公司当前的业务发展，除了上述基础功能模块外，系统中还会对应考虑一些定制化的业务能力模块。依据目前系统的能力类型，可分为用户行为分析、链路转化分析、用户体验分析等：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c549fae0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="浑仪系统.png"></p>
+<h2 id="搜索流程埋点案例"><a href="#搜索流程埋点案例" class="headerlink" title="搜索流程埋点案例"></a>搜索流程埋点案例</h2><p>那么在一个页面或者一个流程中我们可以采集到哪些有价值的数据呢？下面我们就以一个简单的流程为例来说明。</p>
+<p>这里流程可以分为三步，首先，用户进入政采云电子卖场首页，并在搜索框中输入想要搜索的关键词，其次，点击搜索按钮后进入搜索结果页，最后，在结果页中找到了目标商品并点击进去了商品详情页查看。这是在一个电商平台中用户操作行为中较为常见的一种流程，也是一个关键流程。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd3c53130ae?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="案例流程.png"></p>
+<p>我们在上述的三个页面中会采集的数据有以下三种：</p>
+<ol>
+<li>页面进入/离开自动埋点</li>
+<li>按钮点击埋点</li>
+<li>链接点击埋点</li>
+</ol>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47983bb56?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="gbjaorgWvUkrL8zz__thumbnail.png"></p>
+<p>如上图所示，通过 Chrome 插件工具，可以在页面上直观的展示链接和按钮的点击次数（数据已脱敏）。</p>
+<p>利用上面说到的三项埋点，我们在单个页面中可以得到用户行为相关的四种数据。</p>
+<ol>
+<li>PV：通过计算日志中所有进入页面日志条数的总和我们可以得到 pv</li>
+<li>UV：以唯一 uuid 将 pv 进行过滤后可以得到 uv ；</li>
+<li>按钮点击数：直接通过统计按钮点击事件上报的日志条数可以得到按钮的点击量；</li>
+<li>链接点击数：与按钮点击有所不同，按钮点击是通过单独发送的点击事件上报来进行统计，而链接点击往往导致的是一次页面跳转，此处即为从电子卖场首页离开进入了搜索结果页，此时我们所统计的就是搜索结果页的页面进入事件中的 utmUrl（即来源按钮的唯一识别码）值，判断出该次搜索结果页的进入是来源于首页常见搜索关键词的点击，从而统计出该位置的的链接点击量。</li>
+</ol>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd4799e65c0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="bVoH1OuCEtA66wys__thumbnail.png"></p>
+<p>再对这些数据进行加工，我们进一步可以得到：停留时长、转化率、热力图；</p>
+<ul>
+<li>热力图：用于反映图中点的密集程度，在此处我们利用点击的坐标（点击的 x,y 坐标位置，再根据屏幕分辨率做一致性的换算）组合成点击热图，如下图所示（数据已脱敏）。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47bd7ddf9?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="3Lq2AEjithQwS1JR__thumbnail.png"></p>
+<ul>
+<li>漏斗分析：由一个元事件/虚拟事件加一个或者多个筛选条件组成，表示一个转化流程中的一个关键性的步骤；在我们平台上创建一个漏斗主要由以下几步：</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47c3ec56f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="漏斗分析.png"></p>
+<p>如下图所示，在这个漏斗中定义了三个事件。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd47d865036?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="1.png"></p>
+<p>将这三个事件串联起来，可以得到完整的漏斗分析图（数据已脱敏）。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/9/17028dd4aa257726?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="2.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文只是对通用类型的数据埋点与分析系统做了下初步的能力项介绍，后续我们将针对每个踩过的坑和做过的优化产出一系列的文章，希望各位能给予意见。</p>
+<ol>
+<li>《如何高效完整的采集数据》</li>
+<li>《埋点数据分析模型设计》</li>
+<li>《Chrome插件之数据可视化》</li>
+</ol>
+<p>作者：政采云前端团队<br>链接：<a href="https://juejin.im/post/5e3fb599f265da573f3563b9" target="_blank" rel="noopener">https://juejin.im/post/5e3fb599f265da573f3563b9</a><br>来源：掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/02/24/Web前端/前端工程实践之数据埋点分析系统（一）/" title="前端工程实践之数据埋点分析系统（一）">https://uestc66.github.io/2020/02/24/Web前端/前端工程实践之数据埋点分析系统（一）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/18/其他/Github+jsDelivr+PicGo 打造稳定快速、高效免费图床/" rel="next" title="Github+jsDelivr+PicGo 打造稳定快速、高效免费图床">
+                <i class="fa fa-chevron-left"></i> Github+jsDelivr+PicGo 打造稳定快速、高效免费图床
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/24/Web前端/JSBridge 初探/" rel="prev" title="JSBridge 初探">
+                JSBridge 初探 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统概览"><span class="nav-number">2.</span> <span class="nav-text">系统概览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据采集"><span class="nav-number">2.1.</span> <span class="nav-text">数据采集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据展示"><span class="nav-number">2.2.</span> <span class="nav-text">数据展示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#赋能业务"><span class="nav-number">3.</span> <span class="nav-text">赋能业务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索流程埋点案例"><span class="nav-number">3.1.</span> <span class="nav-text">搜索流程埋点案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

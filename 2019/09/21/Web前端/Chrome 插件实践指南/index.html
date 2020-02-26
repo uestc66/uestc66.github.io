@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。 什么是 Chrome 插件众所周知，在 Chrome 的多进程架构中，包含这样几种进程：  浏览器主进程。 整个浏览器的主要进程，其他几个进程都是这个进程的子进程，由它来管理和调配；同时你所看到的浏览器的整个窗口，包含地址输入栏，书签栏这些东西也都是它来展示的；  渲染进程。 一般来说一个 Tab 标签页面就是一个渲染进程；每个">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome 插件实践指南">
+<meta property="og:url" content="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件实践指南/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s Blog">
+<meta property="og:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。 什么是 Chrome 插件众所周知，在 Chrome 的多进程架构中，包含这样几种进程：  浏览器主进程。 整个浏览器的主要进程，其他几个进程都是这个进程的子进程，由它来管理和调配；同时你所看到的浏览器的整个窗口，包含地址输入栏，书签栏这些东西也都是它来展示的；  渲染进程。 一般来说一个 Tab 标签页面就是一个渲染进程；每个">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-02-18T16:45:36.793Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chrome 插件实践指南">
+<meta name="twitter:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。 什么是 Chrome 插件众所周知，在 Chrome 的多进程架构中，包含这样几种进程：  浏览器主进程。 整个浏览器的主要进程，其他几个进程都是这个进程的子进程，由它来管理和调配；同时你所看到的浏览器的整个窗口，包含地址输入栏，书签栏这些东西也都是它来展示的；  渲染进程。 一般来说一个 Tab 标签页面就是一个渲染进程；每个">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件实践指南/">
+
+
+
+
+
+  <title>Chrome 插件实践指南 | jerry.zmf's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件实践指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Chrome 插件实践指南</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-21T00:34:24+08:00">
+                2019-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/21/Web前端/Chrome 插件实践指南/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/21/Web前端/Chrome 插件实践指南/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</font></p>
+<h2 id="什么是-Chrome-插件"><a href="#什么是-Chrome-插件" class="headerlink" title="什么是 Chrome 插件"></a>什么是 Chrome 插件</h2><p>众所周知，在 Chrome 的多进程架构中，包含这样几种进程：</p>
+<ul>
+<li><p><strong>浏览器主进程</strong>。</p>
+<p>整个浏览器的主要进程，其他几个进程都是这个进程的子进程，由它来管理和调配；同时你所看到的浏览器的整个窗口，包含地址输入栏，书签栏这些东西也都是它来展示的；</p>
+</li>
+<li><p><strong>渲染进程</strong>。</p>
+<p>一般来说一个 Tab 标签页面就是一个渲染进程；每个渲染进程中会运行 Blink 布局引擎，V8 JavaScript 执行引擎等，单独服务于一个 Tab 标签页；运行在沙盒中无法访问系统资源。</p>
+</li>
+<li><p><strong>插件进程</strong>。</p>
+<p>一个插件单独存在于一个进程当中，同时为了安全性，运行在沙盒中限制其权限。</p>
+</li>
+<li><p><strong>网络进程</strong>。</p>
+<p>发起网络请求访问。</p>
+</li>
+<li><p><strong>GPU 进程</strong>。</p>
+<p>处理 GPU 渲染方面的任务。</p>
+</li>
+</ul>
+<p>Chrome 插件就是运行在 Chrome 浏览器中的拓展程序，所属浏览器插件进程。类似 Electron 是运用 Web 技术加 Electron 提供给我们的 API 开发，Chrome 插件其实就是运用 Web 技术和 Chrome 的 API 开发的能增强 Chrome 功能的 web 软件而已。<a href="https://developers.chrome.com/extensions/api_index" target="_blank" rel="noopener">Chrome Extension API</a> 中已经列出了我们所有能用到的 API，Chrome 插件可以做到但不限于以下功能：</p>
+<ul>
+<li>网络请求控制</li>
+<li>自定义右键</li>
+<li>网页中插入 CSS 、JavaScript 文件</li>
+<li>管理书签</li>
+<li>管理 cookie</li>
+<li>omnibox 管理</li>
+<li>…</li>
+</ul>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="基本组成"><a href="#基本组成" class="headerlink" title="基本组成"></a>基本组成</h3><p>开发一个 Chrome 插件最常用最基本组成包括：</p>
+<ul>
+<li>manifest.json</li>
+<li>background script</li>
+<li>content script</li>
+<li>popup</li>
+</ul>
+<h4 id="manifest-json"><a href="#manifest-json" class="headerlink" title="manifest.json"></a>manifest.json</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;扩展名称&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;manifest_version&quot;: 2,</span><br><span class="line">  &quot;description&quot;: &quot;扩展描述&quot;,</span><br><span class="line">  &quot;icons&quot; : &#123;           // 扩展的icon</span><br><span class="line">    &quot;16&quot; : &quot;icon.png&quot;,</span><br><span class="line">    &quot;48&quot; : &quot;icon.png&quot;,</span><br><span class="line">    &quot;128&quot; : &quot;icon.png&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;browser_action&quot;: &#123;   // 程序图标会出现在地址栏右侧，若要出现在地址栏则写成 page_action</span><br><span class="line">    &quot;default_title&quot;: &quot;日报工具&quot;,</span><br><span class="line">    &quot;default_icon&quot;: &quot;icon.png&quot;,</span><br><span class="line">    &quot;default_popup&quot;: &quot;popup.html&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;background&quot;: &#123;				// background 常驻 Chrome 后台的页面</span><br><span class="line">    &quot;scripts&quot;: [&quot;background.js&quot;] </span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;content_scripts&quot;: [  // content_scripts 是在 Web 页面内运行的 javascript 脚本</span><br><span class="line">    &#123;                   </span><br><span class="line">      &quot;matches&quot;: [</span><br><span class="line">        &quot;http://www.google.com/*&quot;</span><br><span class="line">      ],</span><br><span class="line">      &quot;css&quot;: [</span><br><span class="line">        &quot;custom.css&quot;</span><br><span class="line">      ],</span><br><span class="line">      &quot;js&quot;: [</span><br><span class="line">        &quot;custom.js&quot;</span><br><span class="line">      ],</span><br><span class="line">      &quot;all_frames&quot;: true,</span><br><span class="line">      &quot;run_at&quot;: &quot;document_idle&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;permissions&quot;: [   // 一些权限的配置</span><br><span class="line">    &quot;cookies&quot;,       // cookie权限</span><br><span class="line">    &quot;notifications&quot;  // 系统通知权限</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="background-script"><a href="#background-script" class="headerlink" title="background script"></a>background script</h4><p>background 可以理解为是一个常驻 Chrome 后台的页面，只要浏览器打开它就存在，Chrome 关闭它才关闭，一般把需要一直运行的全局的代码都放在 background 里。</p>
+<h4 id="content-script"><a href="#content-script" class="headerlink" title="content script"></a>content script</h4><p>在 Chrome 插件中使用 Content Scripts 有以下两种方式：</p>
+<ul>
+<li><p>在 manifest.json 文件中声明 Content Scripts</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</span><br><span class="line">  &quot;name&quot;: &quot;welearnmore-content_scripts&quot;,</span><br><span class="line">  &quot;manifest_version&quot;: 2,</span><br><span class="line">  &quot;description&quot;: &quot;welearnmore&quot;,</span><br><span class="line">  &quot;content_scripts&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;matches&quot;: [&quot;https://icepy.me/*&quot;],</span><br><span class="line">      &quot;js&quot;: [&quot;content_scripts.js&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;content_security_policy&quot;: &quot;script-src &apos;self&apos; &apos;unsafe-eval&apos;; object-src &apos;self&apos;;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>动态注入 Content Scripts</p>
+<p>利用  <code>chrome.tabs.executeScript</code> 向页面动态注入一段 Content Scripts 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)&#123;</span><br><span class="line">  chrome.tabs.create(&#123; url: &apos;https://icepy.me&apos;&#125;, function(tab)&#123;</span><br><span class="line">    chrome.tabs.executeScript(tab.id, &#123;file: &apos;dynamic_content_scripts.js&apos;&#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="popup"><a href="#popup" class="headerlink" title="popup"></a>popup</h4><p>Popup 就是一个普通的HTML文件，它可以包含任何内容，比如：<code>HTML</code>，<code>CSS</code>，<code>JavaScript</code>，与普通网页唯一的区别是，它显示在浏览器的右上角。</p>
+<p>如果要开启 Popup 需在 manifest.json 文件中 <a href="https://github.com/welearnmore/chrome-extension-demos/tree/master/popup/manifest.json" target="_blank" rel="noopener">配置入口文件</a> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;我的popup扩展程序&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;2.0&quot;,</span><br><span class="line">  &quot;browser_action&quot;: &#123;</span><br><span class="line">    &quot;default_title&quot;: &quot;popup action page&quot;,</span><br><span class="line">    &quot;default_icon&quot;: &quot;img/logo.png&quot;,</span><br><span class="line">    &quot;default_popup&quot;: &quot;popup.html&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="通信机制"><a href="#通信机制" class="headerlink" title="通信机制"></a>通信机制</h3><h4 id="content-script-gt-background"><a href="#content-script-gt-background" class="headerlink" title="content script =&gt; background"></a>content script =&gt; background</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 在 content-script 端发送消息</span><br><span class="line">chrome.runtime.sendMessege(</span><br><span class="line">    message,</span><br><span class="line">    function(response) &#123;…&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// 在 background 端监听消息</span><br><span class="line">chrome.runtime.onMessege.addListener(</span><br><span class="line">    function(request, sender, sendResponse) &#123;</span><br><span class="line">    	sendResponse(&apos;已收到消息：&apos;+JSON.stringify(request))</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="background-gt-content-script"><a href="#background-gt-content-script" class="headerlink" title="background  =&gt; content script"></a>background  =&gt; content script</h4><p>一个插件里只有一个 background 环境，而 content-script 可以有多个（一个页面一个）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 获取当前选项卡id</span><br><span class="line"> * @param callback - 获取到id后要执行的回调函数</span><br><span class="line"> */</span><br><span class="line">function getCurrentTabId(callback) &#123;</span><br><span class="line">    chrome.tabs.query(&#123;active: true, currentWindow: true&#125;, function (tabs) &#123;</span><br><span class="line">        if (callback) &#123;</span><br><span class="line">            callback(tabs.length ? tabs[0].id: null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">// 在 background 端发送消息</span><br><span class="line">chrome.tabs.sendMessage(tabId, message, function(response) &#123;...&#125;);</span><br><span class="line"></span><br><span class="line">// 在 content-script 端监听消息</span><br><span class="line">chrome.runtime.onMessege.addListener(function(request, sender, sendResponse) &#123;</span><br><span class="line">	…</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="popup-gt-background"><a href="#popup-gt-background" class="headerlink" title="popup =&gt; background"></a>popup =&gt; background</h4><p>popup 与 background 通信，可以使用<code>chrome.runtime.sendMessage</code>和<code>chrome.runtime.onMessage</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// background.js 中，利用消息通信的机制，去打开一个tab，由 Popup 页面中的某个按钮来触发</span><br><span class="line">chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)&#123;</span><br><span class="line">  chrome.tabs.create(&#123; url: &apos;https://icepy.me&apos;&#125;, function(tab)&#123;</span><br><span class="line">    chrome.tabs.executeScript(tab.id, &#123;file: &apos;dynamic_content_scripts.js&apos;&#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在 popup 中也可以直接调用 background 里的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var bg = chrome.extension.getBackgroundPage();</span><br><span class="line">bg.dosomething();    // dosomething 是 background 中一个 method</span><br></pre></td></tr></table></figure>
+
+<h2 id="DNS-缓存清除插件开发"><a href="#DNS-缓存清除插件开发" class="headerlink" title="DNS 缓存清除插件开发"></a>DNS 缓存清除插件开发</h2><h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./</span><br><span class="line">├─ manifest.json //扩展的配置项</span><br><span class="line">├─ Custom.js     //自定义js脚本</span><br><span class="line">├─ Custom.css    //自定义css样式</span><br><span class="line">├─ icon.png      //扩展程序的icon</span><br><span class="line">└─ popup.html    //扩展的展示弹窗</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="manifest-json-1"><a href="#manifest-json-1" class="headerlink" title="manifest.json"></a>manifest.json</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;dns-clear&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;clear chrome dns cache&quot;,</span><br><span class="line">  &quot;manifest_version&quot;: 2,</span><br><span class="line">  &quot;browser_action&quot;: &#123;</span><br><span class="line">    &quot;default_title&quot;: &quot;dns-clear&quot;,</span><br><span class="line">    &quot;default_icon&quot;: &quot;img/logo.png&quot;,</span><br><span class="line">    &quot;default_popup&quot;: &quot;popup.html&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;background&quot;: &#123;</span><br><span class="line">    &quot;scripts&quot;: [&quot;background.js&quot;]</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;permissions&quot;: [&quot;nativeMessaging&quot;, &quot;tabs&quot;, &quot;background&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="popup-1"><a href="#popup-1" class="headerlink" title="popup"></a>popup</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">const CLEAR_DNS = &apos;clear dns&apos;;</span><br><span class="line"></span><br><span class="line">var bmmode = localStorage.getItem(&apos;bmmode&apos;);</span><br><span class="line"></span><br><span class="line">// option</span><br><span class="line">var checkbox = document.getElementById(&apos;clear-checkbox&apos;);</span><br><span class="line">checkbox.checked = bmmode === &apos;true&apos; ? &apos;checked&apos; : &apos;&apos;;</span><br><span class="line">checkbox.addEventListener(&apos;click&apos;, function() &#123;</span><br><span class="line">  bmmode = this.checked;</span><br><span class="line">  localStorage.setItem(&apos;bmmode&apos;, bmmode);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 清除 dns</span><br><span class="line">var btn = document.getElementById(&apos;clear-btn&apos;);</span><br><span class="line">btn.addEventListener(&apos;click&apos;, function() &#123;</span><br><span class="line">  chrome.runtime.sendMessage(</span><br><span class="line">    &#123;</span><br><span class="line">      action: CLEAR_DNS,</span><br><span class="line">      bmmode: bmmode</span><br><span class="line">    &#125;,</span><br><span class="line">    response =&gt; &#123;</span><br><span class="line">      // 处理</span><br><span class="line">      console.log(&apos;response&apos;, response);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="background"><a href="#background" class="headerlink" title="background"></a>background</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">const CLEAR_DNS = &apos;clear dns&apos;;</span><br><span class="line">const SOCKETS_URL = &apos;chrome://net-internals/#sockets&apos;;</span><br><span class="line"></span><br><span class="line">var tabs = chrome.tabs;</span><br><span class="line"></span><br><span class="line">chrome.runtime.onMessage.addListener((request, sender, sendResponse) =&gt; &#123;</span><br><span class="line">  var action = request.action;</span><br><span class="line">  var bmmode = request.bmmode;</span><br><span class="line"></span><br><span class="line">  switch (action) &#123;</span><br><span class="line">    case CLEAR_DNS:</span><br><span class="line">      clearDns(bmmode);</span><br><span class="line">      break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">function clearDns(bmmode) &#123;</span><br><span class="line">  var bm = chrome.benchmarking;</span><br><span class="line">  if (bm &amp;&amp; bmmode === &apos;true&apos;) &#123;</span><br><span class="line">    bm.clearHostResolverCache();</span><br><span class="line">    bm.clearCache();</span><br><span class="line">    bm.closeConnections();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    tabs.query(&#123; url: SOCKETS_URL &#125;, function(tabArr) &#123;</span><br><span class="line">      if (tabArr.length &gt; 0) &#123;</span><br><span class="line">        tabs.update(tabArr[0].id, &#123; active: true &#125;, function() &#123;</span><br><span class="line">          tabs.reload();</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        tabs.create(&#123; url: SOCKETS_URL, active: true &#125;, function() &#123;</span><br><span class="line">          tabs.reload();</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><p>加载完成后，可以看到 <strong>背景页</strong>，点击打开，就看到我们熟悉的调控台了。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
+<li><a href="https://developer.chrome.com/extensions/manifest" target="_blank" rel="noopener">Chrome 官方文档</a></li>
+<li><a href="https://lightningminers.gitbook.io/chrome-extension-book/" target="_blank" rel="noopener">Chrome Extension 入门指南</a></li>
+<li><a href="https://juejin.im/post/5c135a275188257284143418" target="_blank" rel="noopener">一篇文章教你顺利入门和开发chrome扩展程序（插件）</a></li>
+<li><a href="https://juejin.im/post/5b55a98ce51d4519873f57af" target="_blank" rel="noopener">说说Chrome插件从开发调试到打包发布</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件实践指南/" title="Chrome 插件实践指南">https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件实践指南/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+  
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/21/Web前端/250行实现一个简单的MVVM/" rel="next" title="250行实现一个简单的MVVM">
+                <i class="fa fa-chevron-left"></i> 250行实现一个简单的MVVM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/02/Node.js/Puppeteer 初体验/" rel="prev" title="Puppeteer 初体验">
+                Puppeteer 初体验 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-Chrome-插件"><span class="nav-number">1.</span> <span class="nav-text">什么是 Chrome 插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本组成"><span class="nav-number">2.1.</span> <span class="nav-text">基本组成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#manifest-json"><span class="nav-number">2.1.1.</span> <span class="nav-text">manifest.json</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#background-script"><span class="nav-number">2.1.2.</span> <span class="nav-text">background script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#content-script"><span class="nav-number">2.1.3.</span> <span class="nav-text">content script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#popup"><span class="nav-number">2.1.4.</span> <span class="nav-text">popup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通信机制"><span class="nav-number">2.2.</span> <span class="nav-text">通信机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#content-script-gt-background"><span class="nav-number">2.2.1.</span> <span class="nav-text">content script =&gt; background</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#background-gt-content-script"><span class="nav-number">2.2.2.</span> <span class="nav-text">background  =&gt; content script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#popup-gt-background"><span class="nav-number">2.2.3.</span> <span class="nav-text">popup =&gt; background</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS-缓存清除插件开发"><span class="nav-number">3.</span> <span class="nav-text">DNS 缓存清除插件开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">3.1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">3.2.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#manifest-json-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">manifest.json</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#popup-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">popup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#background"><span class="nav-number">3.2.3.</span> <span class="nav-text">background</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">3.3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调试"><span class="nav-number">3.4.</span> <span class="nav-text">调试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number">4.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
