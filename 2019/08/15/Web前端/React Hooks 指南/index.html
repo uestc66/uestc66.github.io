@@ -95,7 +95,7 @@
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
 <meta property="og:description" content="WhatReact v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本正式发布 React Hooks ，其带来的最大的变化在于给予了Function Component (函数式组件)类似组件生命周期的概念，扩大了 Function Component 的应用范围。 目前 Function Component 基本属于 dump 组件，Hooks 的出现使得">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-25T02:30:31.497Z">
+<meta property="og:updated_time" content="2020-02-26T08:02:22.636Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React Hooks 指南">
 <meta name="twitter:description" content="WhatReact v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本正式发布 React Hooks ，其带来的最大的变化在于给予了Function Component (函数式组件)类似组件生命周期的概念，扩大了 Function Component 的应用范围。 目前 Function Component 基本属于 dump 组件，Hooks 的出现使得">
@@ -527,14 +527,20 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;</span><br><span class="line">import &#123; createContainer &#125; from &quot;unstated-next&quot;</span><br><span class="line">import &#123; render &#125; from &quot;react-dom&quot;</span><br><span class="line"></span><br><span class="line">function useCounter(initialState = 0) &#123;</span><br><span class="line">  let [count, setCount] = useState(initialState)</span><br><span class="line">  let decrement = () =&gt; setCount(count - 1)</span><br><span class="line">  let increment = () =&gt; setCount(count + 1)</span><br><span class="line">  return &#123; count, decrement, increment &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let Counter = createContainer(useCounter)</span><br><span class="line"></span><br><span class="line">function CounterDisplay() &#123;</span><br><span class="line">  let counter = Counter.useContainer()</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;button onClick=&#123;counter.decrement&#125;&gt;-&lt;/button&gt;</span><br><span class="line">      &lt;span&gt;&#123;counter.count&#125;&lt;/span&gt;</span><br><span class="line">      &lt;button onClick=&#123;counter.increment&#125;&gt;+&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;Counter.Provider&gt;</span><br><span class="line">      &lt;CounterDisplay /&gt;</span><br><span class="line">      &lt;Counter.Provider initialState=&#123;2&#125;&gt;</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;CounterDisplay /&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/Counter.Provider&gt;</span><br><span class="line">    &lt;/Counter.Provider&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">render(&lt;App /&gt;, document.getElementById(&quot;root&quot;))</span><br></pre></td></tr></table></figure>
 
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
-<li><a href="https://zhuanlan.zhihu.com/p/50953073" target="_blank" rel="noopener">react hooks的诞生</a></li>
-<li><a href="https://cloud.tencent.com/developer/article/1360473" target="_blank" rel="noopener">理解 React Hooks</a></li>
-<li><a href="http://react-china.org/t/react-hooks/27122" target="_blank" rel="noopener">React hooks: 不是魔法只是数组</a></li>
-<li><a href="https://github.com/brickspert/blog/issues/26" target="_blank" rel="noopener">React Hooks 原理</a></li>
-<li><a href="https://www.robinwieruch.de/react-hooks-fetch-data/" target="_blank" rel="noopener">How to fetch data with React Hooks</a></li>
-<li><a href="https://www.infoq.cn/article/k1Zb7ahbRmlrwDmkb6wY" target="_blank" rel="noopener">React Hooks 是不能替代 Redux 的</a></li>
-<li><a href="https://juejin.im/post/5d754dbde51d4561cd2466bf" target="_blank" rel="noopener">看完这篇，你也能把 React Hooks 玩出花</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/68434464" target="_blank" rel="noopener">Hooks 时代的 React 状态管理方案</a></li>
+<li><p><a href="https://cloud.tencent.com/developer/article/1360473" target="_blank" rel="noopener">理解 React Hooks</a></p>
+</li>
+<li><p><a href="http://react-china.org/t/react-hooks/27122" target="_blank" rel="noopener">React hooks: 不是魔法只是数组</a></p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/91935584" target="_blank" rel="noopener">React Hook 解析</a></p>
+</li>
+<li><p><a href="https://www.robinwieruch.de/react-hooks-fetch-data/" target="_blank" rel="noopener">How to fetch data with React Hooks</a></p>
+</li>
+<li><p><a href="https://www.infoq.cn/article/k1Zb7ahbRmlrwDmkb6wY" target="_blank" rel="noopener">React Hooks 是不能替代 Redux 的</a></p>
+</li>
+<li><p><a href="https://juejin.im/post/5d754dbde51d4561cd2466bf" target="_blank" rel="noopener">看完这篇，你也能把 React Hooks 玩出花</a></p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/68434464" target="_blank" rel="noopener">Hooks 时代的 React 状态管理方案</a></p>
+</li>
 </ul>
 
       
@@ -594,8 +600,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/15/WebAssembly/WebAssembly 参考资料传送门/" rel="next" title="WebAssembly 传送门">
-                <i class="fa fa-chevron-left"></i> WebAssembly 传送门
+              <a href="/2019/08/15/Python/Python 参考资料传送门/" rel="next" title="Python 传送门">
+                <i class="fa fa-chevron-left"></i> Python 传送门
               </a>
             
           </div>
@@ -604,8 +610,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/15/Python/Python 参考资料传送门/" rel="prev" title="Python 传送门">
-                Python 传送门 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/08/15/WebAssembly/WebAssembly 参考资料传送门/" rel="prev" title="WebAssembly 传送门">
+                WebAssembly 传送门 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -688,7 +694,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
