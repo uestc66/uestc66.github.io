@@ -76,7 +76,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Web前端,">
 
 
 
@@ -87,17 +87,23 @@
 
 
 
-<meta name="description" content="1234title: AI 传送门date: 2019-09-8 24:50:24tags: AIcategories: AI  Tensorflow Tensorflow.js 官方中文文档 tfjs-examples Deep Learning with JavaScript-Neural networks in TensorFlow.js">
+<meta name="description" content="转载自网络，原文链接：https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/ This is the third chapter of the Writing a JavaScript framework series. In this chapter, I am going to">
+<meta name="keywords" content="Web前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jerry.zmf&#39;s Blog">
-<meta property="og:url" content="https://uestc66.github.io/2019/09/08/AI/AI 参考资料传送门/index.html">
+<meta property="og:title" content="250行实现一个简单的MVVM">
+<meta property="og:url" content="https://uestc66.github.io/2020/03/14/Web前端/Writing a JavaScript framework - Sandboxed Code Evaluation/index.html">
 <meta property="og:site_name" content="jerry.zmf&#39;s Blog">
-<meta property="og:description" content="1234title: AI 传送门date: 2019-09-8 24:50:24tags: AIcategories: AI  Tensorflow Tensorflow.js 官方中文文档 tfjs-examples Deep Learning with JavaScript-Neural networks in TensorFlow.js">
+<meta property="og:description" content="转载自网络，原文链接：https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/ This is the third chapter of the Writing a JavaScript framework series. In this chapter, I am going to">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-16T02:28:48.127Z">
+<meta property="og:image" content="https://blog.risingstack.com/content/images/2019/08/Sandboxed_code_evaluation_simple_with_statement-1470403007416.svg">
+<meta property="og:image" content="https://blog.risingstack.com/content/images/2019/08/Sandboxed_code_evaluation_with_statement_and_proxies-1470403030877.svg">
+<meta property="og:image" content="https://blog.risingstack.com/content/images/2019/08/Sandboxed_code_evaluation_security_issue-1470403047129.svg">
+<meta property="og:image" content="https://blog.risingstack.com/content/images/2019/08/with_statements_and_proxies_has_and_get_traps-1470403073125.svg">
+<meta property="og:updated_time" content="2020-03-12T16:10:08.141Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jerry.zmf&#39;s Blog">
-<meta name="twitter:description" content="1234title: AI 传送门date: 2019-09-8 24:50:24tags: AIcategories: AI  Tensorflow Tensorflow.js 官方中文文档 tfjs-examples Deep Learning with JavaScript-Neural networks in TensorFlow.js">
+<meta name="twitter:title" content="250行实现一个简单的MVVM">
+<meta name="twitter:description" content="转载自网络，原文链接：https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/ This is the third chapter of the Writing a JavaScript framework series. In this chapter, I am going to">
+<meta name="twitter:image" content="https://blog.risingstack.com/content/images/2019/08/Sandboxed_code_evaluation_simple_with_statement-1470403007416.svg">
 
 
 
@@ -127,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://uestc66.github.io/2019/09/08/AI/AI 参考资料传送门/">
+  <link rel="canonical" href="https://uestc66.github.io/2020/03/14/Web前端/Writing a JavaScript framework - Sandboxed Code Evaluation/">
 
 
 
 
 
-  <title> | jerry.zmf's Blog</title>
+  <title>250行实现一个简单的MVVM | jerry.zmf's Blog</title>
   
 
 
@@ -306,7 +312,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/08/AI/AI 参考资料传送门/">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/03/14/Web前端/Writing a JavaScript framework - Sandboxed Code Evaluation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jerry.zmf">
@@ -323,7 +329,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">250行实现一个简单的MVVM</h1>
         
 
         <div class="post-meta">
@@ -335,8 +341,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-08T00:49:39+08:00">
-                2019-09-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T00:10:07+08:00">
+                2020-03-14
               </time>
             
 
@@ -346,6 +352,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -354,8 +382,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/08/AI/AI 参考资料传送门/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/08/AI/AI 参考资料传送门/" itemprop="commentCount"></span>
+                <a href="/2020/03/14/Web前端/Writing a JavaScript framework - Sandboxed Code Evaluation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/03/14/Web前端/Writing a JavaScript framework - Sandboxed Code Evaluation/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -388,13 +416,82 @@
       
 
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: AI 传送门</span><br><span class="line">date: 2019-09-8 24:50:24</span><br><span class="line">tags: AI</span><br><span class="line">categories: AI</span><br></pre></td></tr></table></figure>
+        <p><font color="#00BFFF" size="2">转载自网络，原文链接：<a href="https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/" target="_blank" rel="noopener">https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/</a></font></p>
+<p><strong>This is the third chapter of the Writing a JavaScript framework series. In this chapter, I am going to explain the different ways of evaluating code in the browser and the issues they cause. I will also introduce a method, which relies on some new or lesser known JavaScript features.</strong></p>
+<p><em>The series is about an open-source client-side framework, called NX. During the series, I explain the main difficulties I had to overcome while writing the framework. If you are interested in NX please visit the <a href="http://nx-framework.com/" target="_blank" rel="noopener">home page</a>.</em></p>
+<p>The series includes the following chapters:</p>
+<ol>
+<li><a href="https://blog.risingstack.com/writing-a-javascript-framework-project-structuring/" target="_blank" rel="noopener">Project structuring</a></li>
+<li><a href="https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/" target="_blank" rel="noopener">Execution timing</a></li>
+<li>Sandboxed code evaluation (current chapter)</li>
+<li><a href="https://blog.risingstack.com/writing-a-javascript-framework-data-binding-dirty-checking/" target="_blank" rel="noopener">Data binding introduction</a></li>
+<li><a href="https://blog.risingstack.com/writing-a-javascript-framework-data-binding-es6-proxy/" target="_blank" rel="noopener">Data Binding with ES6 Proxies</a></li>
+<li><a href="https://blog.risingstack.com/writing-a-javascript-framework-the-benefits-of-custom-elements/" target="_blank" rel="noopener">Custom elements</a></li>
+<li><a href="https://blog.risingstack.com/writing-a-javascript-framework-client-side-routing/" target="_blank" rel="noopener">Client-side routing</a></li>
+</ol>
+<h2 id="The-evil-eval"><a href="#The-evil-eval" class="headerlink" title="The evil eval"></a>The evil eval</h2><blockquote>
+<p>The <code>eval()</code> function evaluates JavaScript code represented as a string.</p>
+</blockquote>
+<p>A common solution for code evaluation is the <code>eval()</code> function. Code evaluated by <code>eval()</code> has access to closures and the global scope, which leads to a security issue called <a href="https://en.wikipedia.org/wiki/Code_injection" target="_blank" rel="noopener">code injection</a> and makes <code>eval()</code> one of the most notorious features of JavaScript.</p>
+<p>Despite being frowned upon, <code>eval()</code> is very useful in some situations. Most modern front-end frameworks require its functionality but don’t dare to use it because of the issue mentioned above. As a result, many alternative solutions emerged for evaluating strings in a sandbox instead of the global scope. The sandbox prevents the code from accessing secure data. Usually it is a simple JavaScript object, which replaces the global object for the evaluated code.</p>
+<h2 id="The-common-way"><a href="#The-common-way" class="headerlink" title="The common way"></a>The common way</h2><p>The most common <code>eval()</code> alternative is complete re-implementation - a two-step process, which consists of parsing and interpreting the passed string. First the parser creates an <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree" target="_blank" rel="noopener">abstract syntax tree</a>, then the interpreter walks the tree and interprets it as code inside a sandbox.</p>
+<p>This is a widely used solution, but it is arguably too heavy for such a simple thing. Rewriting everything from scratch instead of patching <code>eval()</code> introduces a lot of bug opportunities and it requires frequent modifications to follow the latest language updates as well.</p>
+<h2 id="An-alternative-way"><a href="#An-alternative-way" class="headerlink" title="An alternative way"></a>An alternative way</h2><p><a href="http://nx-framework.com/" target="_blank" rel="noopener">NX</a> tries to avoid re-implementing native code. Evaluation is handled by a tiny library that uses some new or lesser known JavaScript features.</p>
+<p>This section will progressively introduce these features and use them to explain the <a href="https://github.com/RisingStack/nx-compile" target="_blank" rel="noopener">nx-compile</a> code evaluation library. The library has a function called <code>compileCode()</code>, which works like below.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> code = compileCode(<span class="string">'return num1 + num2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// this logs 17 to the console</span></span><br><span class="line"><span class="built_in">console</span>.log(code(&#123;<span class="attr">num1</span>: <span class="number">10</span>, <span class="attr">num2</span>: <span class="number">7</span>&#125;))</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> globalNum = <span class="number">12</span></span><br><span class="line"><span class="keyword">const</span> otherCode = compileCode(<span class="string">'return globalNum'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// global scope access is prevented</span></span><br><span class="line"><span class="comment">// this logs undefined to the console</span></span><br><span class="line"><span class="built_in">console</span>.log(otherCode(&#123;<span class="attr">num1</span>: <span class="number">2</span>, <span class="attr">num2</span>: <span class="number">3</span>&#125;))</span><br></pre></td></tr></table></figure>
 
-<h3 id="Tensorflow"><a href="#Tensorflow" class="headerlink" title="Tensorflow"></a>Tensorflow</h3><ul>
-<li><a href="https://tensorflow.google.cn/js/tutorials" target="_blank" rel="noopener">Tensorflow.js 官方中文文档</a></li>
-<li><a href="https://github.com/tensorflow/tfjs-examples" target="_blank" rel="noopener"><strong>tfjs-examples</strong></a></li>
-<li><a href="https://www.manning.com/books/deep-learning-with-javascript" target="_blank" rel="noopener">Deep Learning with JavaScript-Neural networks in TensorFlow.js</a></li>
+<p>By the end of this article, we will implement the <code>compileCode()</code> function in less than 20 lines.</p>
+<h3 id="new-Function"><a href="#new-Function" class="headerlink" title="new Function()"></a>new Function()</h3><blockquote>
+<p>The Function constructor creates a new Function object. In JavaScript, every function is actually a Function object.</p>
+</blockquote>
+<p>The <code>Function</code> constructor is an alternative to <code>eval()</code>. <code>new Function(...args, &#39;funcBody&#39;)</code> evaluates the passed <code>&#39;funcBody&#39;</code> string as code and returns a new function that executes that code. It differs from <code>eval()</code> in two major ways.</p>
+<ul>
+<li>It evaluates the passed code just once. Calling the returned function will run the code without re-evaluating it.</li>
+<li>It doesn’t have access to local closure variables, however, it can still access the global scope.</li>
 </ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileCode</span> (<span class="params">src</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Function</span>(src)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>new Function()</code> is a better alternative to <code>eval()</code> for our use case. It has superior performance and security, but global scope access still has to be prevented to make it viable.</p>
+<h3 id="The-‘with’-keyword"><a href="#The-‘with’-keyword" class="headerlink" title="The ‘with’ keyword"></a>The ‘with’ keyword</h3><blockquote>
+<p>The with statement extends the scope chain for a statement.</p>
+</blockquote>
+<p><code>with</code> is a lesser known keyword in JavaScript. It allows a semi-sandboxed execution. The code inside a <code>with</code> block tries to retrieve variables from the passed sandbox object first, but if it doesn’t find it there, it looks for the variable in the closure and global scope. Closure scope access is prevented by <code>new Function()</code> so we only have to worry about the global scope.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileCode</span> (<span class="params">src</span>) </span>&#123;</span><br><span class="line">  src = <span class="string">'with (sandbox) &#123;'</span> + src + <span class="string">'&#125;'</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'sandbox'</span>, src)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>with</code> uses the <code>in</code> operator internally. For every variable access inside the block, it evaluates the <code>variable in sandbox</code> condition. If the condition is truthy, it retrieves the variable from the sandbox. Otherwise, it looks for the variable in the global scope. By fooling <code>with</code> to always evaluate <code>variable in sandbox</code> as truthy, we could prevent it from accessing the global scope.</p>
+<p><img src="https://blog.risingstack.com/content/images/2019/08/Sandboxed_code_evaluation_simple_with_statement-1470403007416.svg" alt="Sandboxed code evaluation: Simple &#39;with&#39; statement"></p>
+<h3 id="ES6-proxies"><a href="#ES6-proxies" class="headerlink" title="ES6 proxies"></a>ES6 proxies</h3><blockquote>
+<p>The Proxy object is used to define custom behavior for fundamental operations like property lookup or assignment.</p>
+</blockquote>
+<p>An ES6 <code>Proxy</code> wraps an object and defines trap functions, which may intercept fundamental operations on that object. Trap functions are invoked when an operation occurs. By wrapping the sandbox object in a <code>Proxy</code> and defining a <code>has</code> trap, we can overwrite the default behavior of the <code>in</code> operator.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileCode</span> (<span class="params">src</span>) </span>&#123;</span><br><span class="line">  src = <span class="string">'with (sandbox) &#123;'</span> + src + <span class="string">'&#125;'</span></span><br><span class="line">  <span class="keyword">const</span> code = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'sandbox'</span>, src)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">sandbox</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> sandboxProxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(sandbox, &#123;has&#125;)</span><br><span class="line">    <span class="keyword">return</span> code(sandboxProxy)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// this trap intercepts 'in' operations on sandboxProxy</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">has</span> (<span class="params">target, key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The above code fools the <code>with</code> block. <code>variable in sandbox</code> will always evaluate to true because the <code>has</code> trap always returns true. The code inside the <code>with</code> block will never try to access the global object.</p>
+<p><img src="https://blog.risingstack.com/content/images/2019/08/Sandboxed_code_evaluation_with_statement_and_proxies-1470403030877.svg" alt="Sandboxed code evaluation: &#39;with&#39; statement and proxies"></p>
+<h3 id="Symbol-unscopables"><a href="#Symbol-unscopables" class="headerlink" title="Symbol.unscopables"></a>Symbol.unscopables</h3><blockquote>
+<p>A symbol is a unique and immutable data type and may be used as an identifier for object properties.</p>
+</blockquote>
+<p><code>Symbol.unscopables</code> is a well-known symbol. A well-known symbol is a built-in JavaScript <code>Symbol</code>, which represents internal language behavior. Well-known symbols can be used to add or overwrite iteration or primitive conversion behavior for example.</p>
+<blockquote>
+<p>The Symbol.unscopables well-known symbol is used to specify an object value of whose own and inherited property names are excluded from the ‘with’ environment bindings.</p>
+</blockquote>
+<p><code>Symbol.unscopables</code> defines the unscopable properties of an object. Unscopable properties are never retrieved from the sandbox object in <code>with</code> statements, instead they are retrieved straight from the closure or global scope. <code>Symbol.unscopables</code> is a very rarely used feature. You can read about the reason it was introduced on <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/unscopables" target="_blank" rel="noopener">this page</a>.</p>
+<p><img src="https://blog.risingstack.com/content/images/2019/08/Sandboxed_code_evaluation_security_issue-1470403047129.svg" alt="Sandboxed code evaluation: &#39;with&#39; statement and proxies. A security issue."></p>
+<p>We can fix above issue by defining a <code>get</code> trap on the sandbox <code>Proxy</code>, which intercepts <code>Symbol.unscopables</code> retrieval and always returns undefined. This will fool the <code>with</code> block into thinking that our sandbox object has no unscopable properties.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileCode</span> (<span class="params">src</span>) </span>&#123;</span><br><span class="line">  src = <span class="string">'with (sandbox) &#123;'</span> + src + <span class="string">'&#125;'</span></span><br><span class="line">  <span class="keyword">const</span> code = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'sandbox'</span>, src)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">sandbox</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> sandboxProxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(sandbox, &#123;has, <span class="keyword">get</span>&#125;)</span><br><span class="line">    return code(sandboxProxy)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function has (target, key) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get</span> (<span class="params">target, key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (key === <span class="built_in">Symbol</span>.unscopables) <span class="keyword">return</span> <span class="literal">undefined</span></span><br><span class="line">  <span class="keyword">return</span> target[key]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://blog.risingstack.com/content/images/2019/08/with_statements_and_proxies_has_and_get_traps-1470403073125.svg" alt="Sandboxed code evaluation: &#39;with&#39; statement and proxies. Has and get traps."></p>
+<h3 id="WeakMaps-for-caching"><a href="#WeakMaps-for-caching" class="headerlink" title="WeakMaps for caching"></a>WeakMaps for caching</h3><p>The code is now secure, but its performance can be still upgraded, since it creates a new <code>Proxy</code> on every invocation of the returned function. This can be prevented by caching and using the same <code>Proxy</code> for every function call with the same sandbox object.</p>
+<p>A proxy belongs to a sandbox object, so we could simply add the proxy to the sandbox object as a property. However, this would expose our implementation details to the public, and it wouldn’t work in case of an immutable sandbox object frozen with <code>Object.freeze()</code>. Using a <code>WeakMap</code> is a better alternative in this case.</p>
+<blockquote>
+<p>The WeakMap object is a collection of key/value pairs in which the keys are weakly referenced. The keys must be objects, and the values can be arbitrary values.</p>
+</blockquote>
+<p>A <code>WeakMap</code> can be used to attach data to an object without directly extending it with properties. We can use <code>WeakMaps</code> to indirectly add the cached <code>Proxies</code> to the sandbox objects.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sandboxProxies = <span class="keyword">new</span> <span class="built_in">WeakMap</span>()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileCode</span> (<span class="params">src</span>) </span>&#123;</span><br><span class="line">  src = <span class="string">'with (sandbox) &#123;'</span> + src + <span class="string">'&#125;'</span></span><br><span class="line">  <span class="keyword">const</span> code = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'sandbox'</span>, src)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">sandbox</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!sandboxProxies.has(sandbox)) &#123;</span><br><span class="line">      <span class="keyword">const</span> sandboxProxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(sandbox, &#123;has, <span class="keyword">get</span>&#125;)</span><br><span class="line">      sandboxProxies.<span class="keyword">set</span>(sandbox, sandboxProxy)</span><br><span class="line">    &#125;</span><br><span class="line">    return code(sandboxProxies.<span class="keyword">get</span>(sandbox))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function has (target, key) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get</span> (<span class="params">target, key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (key === <span class="built_in">Symbol</span>.unscopables) <span class="keyword">return</span> <span class="literal">undefined</span></span><br><span class="line">  <span class="keyword">return</span> target[key]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This way only one <code>Proxy</code> will be created per sandbox object.</p>
+<h3 id="Final-notes"><a href="#Final-notes" class="headerlink" title="Final notes"></a>Final notes</h3><p>The above <code>compileCode()</code> example is a working sandboxed code evaluator in just 19 lines of code. If you would like to see the full source code of the nx-compile library, you can find it in <a href="https://github.com/RisingStack/nx-compile" target="_blank" rel="noopener">this Github repository</a>.</p>
+<p>Apart from explaining code evaluation, the goal of this chapter was to show how new ES6 features can be used to alter the existing ones, instead of re-inventing them. I tried to demonstrate the full power of <code>Proxies</code> and <code>Symbols</code> through the examples.</p>
 
       
     </div>
@@ -415,7 +512,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://uestc66.github.io/2019/09/08/AI/AI 参考资料传送门/" title>https://uestc66.github.io/2019/09/08/AI/AI 参考资料传送门/</a>
+    <a href="https://uestc66.github.io/2020/03/14/Web前端/Writing a JavaScript framework - Sandboxed Code Evaluation/" title="250行实现一个简单的MVVM">https://uestc66.github.io/2020/03/14/Web前端/Writing a JavaScript framework - Sandboxed Code Evaluation/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -438,6 +535,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
 
       
       
@@ -447,8 +550,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/06/Web前端/前端参考资料传送门/" rel="next" title="前端传送门">
-                <i class="fa fa-chevron-left"></i> 前端传送门
+              <a href="/2020/03/12/Web前端/关于跨域，看这一篇文章就够了/" rel="next" title="关于跨域，看这一篇文章就够了">
+                <i class="fa fa-chevron-left"></i> 关于跨域，看这一篇文章就够了
               </a>
             
           </div>
@@ -456,10 +559,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/09/08/Web前端/前端安全系列（一）：如何防止XSS攻击/" rel="prev" title="前端安全系列（一）：如何防止XSS攻击？">
-                前端安全系列（一）：如何防止XSS攻击？ <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -618,7 +717,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tensorflow"><span class="nav-number">1.</span> <span class="nav-text">Tensorflow</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-evil-eval"><span class="nav-number">1.</span> <span class="nav-text">The evil eval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-common-way"><span class="nav-number">2.</span> <span class="nav-text">The common way</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#An-alternative-way"><span class="nav-number">3.</span> <span class="nav-text">An alternative way</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new-Function"><span class="nav-number">3.1.</span> <span class="nav-text">new Function()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-‘with’-keyword"><span class="nav-number">3.2.</span> <span class="nav-text">The ‘with’ keyword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ES6-proxies"><span class="nav-number">3.3.</span> <span class="nav-text">ES6 proxies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Symbol-unscopables"><span class="nav-number">3.4.</span> <span class="nav-text">Symbol.unscopables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WeakMaps-for-caching"><span class="nav-number">3.5.</span> <span class="nav-text">WeakMaps for caching</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Final-notes"><span class="nav-number">3.6.</span> <span class="nav-text">Final notes</span></a></li></ol></li></ol></div>
             
 
           </div>
