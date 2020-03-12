@@ -473,7 +473,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/21/Web前端/250行实现一个简单的MVVM/">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2019/09/21/Web前端/Chrome 插件实践指南/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jerry.zmf">
@@ -492,7 +492,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/21/Web前端/250行实现一个简单的MVVM/" itemprop="url">250行实现一个简单的MVVM</a></h1>
+                <a class="post-title-link" href="/2019/09/21/Web前端/Chrome 插件实践指南/" itemprop="url">Chrome 插件实践指南</a></h1>
         
 
         <div class="post-meta">
@@ -545,8 +545,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/21/Web前端/250行实现一个简单的MVVM/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/21/Web前端/250行实现一个简单的MVVM/" itemprop="commentCount"></span>
+                <a href="/2019/09/21/Web前端/Chrome 插件实践指南/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/21/Web前端/Chrome 插件实践指南/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -576,14 +576,21 @@
       
         
           
-          转载自掘金网络，原文链接：https://saul-mirone.github.io/2016/12/19/simple-mvvm/
-什么是MVVM？MVVM是一种程序架构设计。把它拆开来看应该是Model-View-ViewModel。
-ModelModel指的是数据层，是纯净的数据。对于前端来说，它往往是一个简单的对象。例如：
-123456789&#123;  name: &apos;mirone&apos;,  age: 20,  friends: [&apos;singleDogA&apos;, &apos;singleDogB&apos;],  details: &#123;    
+          著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+什么是 Chrome 插件众所周知，在 Chrome 的多进程架构中，包含这样几种进程：
+
+浏览器主进程。
+整个浏览器的主要进程，其他几个进程都是这个进程的子进程，由它来管理和调配；同时你所看到的浏览器的整个窗口，包含地址输入栏，书签栏这些东西也都是它来展示的；
+
+渲染进程。
+一般来说一个 Tab 标签页面就是一个渲染进程；每个渲染进程中会运行 Blink 布局引擎，V8 JavaScript 执行引擎等，单独服务于一个 Tab 标签页；运行在沙盒中无法访问系统资源。
+
+插件进程。
+一个插件单独存在于一个进程当中，同时为了安
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/09/21/Web前端/250行实现一个简单的MVVM/#more" rel="contents">
+            <a class="btn" href="/2019/09/21/Web前端/Chrome 插件实践指南/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
