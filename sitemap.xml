@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://uestc66.github.io/about/index.html</loc>
+    
+    <lastmod>2020-03-12T16:58:00.433Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://uestc66.github.io/gateway/index.html</loc>
+    
+    <lastmod>2020-03-12T16:57:23.354Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://uestc66.github.io/2020/03/14/Web%E5%89%8D%E7%AB%AF/Writing%20a%20JavaScript%20framework%20-%20Sandboxed%20Code%20Evaluation/</loc>
     
     <lastmod>2020-03-12T16:26:49.758Z</lastmod>
@@ -327,13 +341,6 @@
     <loc>https://uestc66.github.io/categories/index.html</loc>
     
     <lastmod>2019-08-17T10:19:20.752Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://uestc66.github.io/about/index.html</loc>
-    
-    <lastmod>2019-08-17T10:18:19.882Z</lastmod>
     
   </url>
   
