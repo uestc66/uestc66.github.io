@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="微前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自网络 前端大全，原文链接：https://mp.weixin.qq.com/s/o7L_Sxl1s0uKywRy-Ao5fg 本文将针对微前端框架 qiankun 的源码进行深入解析，在源码讲解之前，我们先来了解一下什么是 微前端。 微前端 是一种类似于微服务的架构，它将微服务的理念应用于浏览器端，即将单页面前端应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。各个前端应用还可以独立">
+<meta name="keywords" content="微前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="万字解析微前端、微前端框架qiankun以及源码">
+<meta property="og:url" content="https://uestc66.github.io/2020/05/29/Web前端/万字解析微前端、微前端框架qiankun以及源码/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s blog">
+<meta property="og:description" content="转载自网络 前端大全，原文链接：https://mp.weixin.qq.com/s/o7L_Sxl1s0uKywRy-Ao5fg 本文将针对微前端框架 qiankun 的源码进行深入解析，在源码讲解之前，我们先来了解一下什么是 微前端。 微前端 是一种类似于微服务的架构，它将微服务的理念应用于浏览器端，即将单页面前端应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。各个前端应用还可以独立">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEkfwcVUViaZ53XsR8L3hKzJTELXjrkcax87MeXd7yxd7kpVJmcicCicbjw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEFmTqIxm1GSlLNmiaXeQCCsI0qLrLYZQSH0QiaTlgibVTRyibL9Q2OXVoxA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxERfBaNeHNO3kOnSYovHbb64waxblfcxQ13Bb6vGhnzeYZCGqHSDkPcg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElGlxibb9kO4hhebTx7mCicxrLRNCMcQibgXNafosuCt2WqBI7bibNicNFbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE41d3RVpZRwZQ7DiaVKUmXnLmULURpmg9h7VDs1icwjyVfalffu41AicZw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE3fZLjHP33BhBgcHR1ia9PtUcCKSGiaucWGE4r9pO459Nme1eMGouUOpA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEA6LaBxULJqzWwJngh1rxDSolvibmB3ibyWX4ZyL3Csm2EBXwKD83YDpg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxETOEjPabg9BWMP9vqfaFxaFLJRwJAicGvDxiaGbSofgCzL2MWqibEQZYicg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8CPhlEl5tOW9tiabdqJTEhZegbbexAK5wUiauKGpg94wg6lnniaJVQcGg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE0HREoPhIsTLF5SXicJRp5UCI8LTuSjhTGicDT1K5qttYOGibsJwJ4d01Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE9XJBOWzoZ8AIXp4HJjjN3D3W4ALud4BkMYXSqzb8LicHcRz4vefQ7sw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEPCK61Wic0OZeiciaxSfwK37Xvna2Fs0rhuOK8EOqxn0WeFwymTjrQkY7g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEc8ialupANw7bibnml2xrRROYibJUrrIS9jm6wicMwB7V9jibpSuJ3ib1l3rQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEp8lZe4Fc4UNFJWZhuXtCZpib6oz26KWO58tIhtwAFdRRJ1cibWX5xMjg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEAcsm1lHZiczZBcVXiaySN2z4vYtA9oUC6m7FopwwthNv3h7r3OqReqbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxENZUGPfEABIXZ4piajezGIG3DGBxaibf93zPV0J21SJJrKkBhyFSIheoA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE6s3sPdpcddS2IUaYEMBmgKxFQby3siaCWuh4MuWic6ZicgL3Mq2TaG2Lw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElkKFwTiaDOaaQqgNqXu29dv5ODVw2PYB4fTGfctNFL8YAY5vxePbdTw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEicicxpDezmUAnmsiaaAN4l9TjqvaGmHysSPRz0vo0a7mmUDicPxjjGroEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEW2ZfiaH6LDU9N0PY7HwVdibBS7CycOVLRsCeQuXxYLIP3KMXnEte0ibOg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE0j51wTmOQoQy43Xibz8rI3Zk2nJ0AOyKQwpAOSBraKmbafkZXM89AQA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEChMMIKyZicH074hTtw1jiaVHbPUF311Wicwhiblq2AWMiaE1hOxsrH6jR6g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE5pJ4pXErlLKAR0zQ1fWibhbAdcMmlrb0jKTAvrFoQ4JFjTKlbcHjtSA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEE7eT8ibic4DOQPdNkYQYcgSLdx4eQfm92mH7hicHybnqkTmJ8wfwYlQCQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEsJnuykYP6KSnTpWcQhovpibnibDVxIqOy23xgEDiac5bMibtd3ueIxxHdw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE83dJBqwIad5KGa1ias3NM73aeIr97YhkCv4I5V96mjpnITOIglhh2oQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE608lb6M5yX10yJZOz6eHW85fqkaicicLVTvunK7foAvicOEgyVRo8FXgw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEzIsGWbsP7hewfZoL0AEEaaicOaP41EQymkubGkbg0GqZ9xs8m4RnatQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8JCESg6hic47BEaibb2kS8VmrfEkojX9NNsDvHVEeyLEEgFiba7ecsAUQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8CPhlEl5tOW9tiabdqJTEhZegbbexAK5wUiauKGpg94wg6lnniaJVQcGg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEicVOQtz7hNxicqbVEfZzGBAYPs7ZDIbt0ibEsFVE2KxQN3QLZ1BicYuFcQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElGlxibb9kO4hhebTx7mCicxrLRNCMcQibgXNafosuCt2WqBI7bibNicNFbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEUsviap5y098iaKxelMZN6wamrNe7fiaK3Bdurl1Kbuho5s3yVL0mcNLGQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE9XJBOWzoZ8AIXp4HJjjN3D3W4ALud4BkMYXSqzb8LicHcRz4vefQ7sw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEHHP8KxtZNMgA0VzCkjny2uBVQ6Viaia22Qz6EjEXagugGXeTI3K2zIIg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8PwyVgYuI33iaC8hrPvW8owaWluNIoEebIIPfiaF8Jk8SdyyibGM08g7g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElYUg0KIxR4qibSm2PWgR3KnvJ6cGbGqiaZt3l769uyqvNwo2XKLXicsibQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE4QMvebwsHrvueoSRicpFM3B5ny3FkPGtE9vpUdO5Xl7uQ4jDk9XypLg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEzACAFOLicFePovX980y9MqSFemL23HWzWuaRC1XhKRqB9SkHkUSz9hA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEJfticnPy0rjOWpllRXsZhSIhqaJgR2xEk7BULribiaDwXJXpwmgEzMxPA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEOYcJ9882MSZhGiaD4z7x4tsnMrgEibtApXwic2BV7nBgaMBKR5icadKXCw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:updated_time" content="2020-05-29T01:59:56.326Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="万字解析微前端、微前端框架qiankun以及源码">
+<meta name="twitter:description" content="转载自网络 前端大全，原文链接：https://mp.weixin.qq.com/s/o7L_Sxl1s0uKywRy-Ao5fg 本文将针对微前端框架 qiankun 的源码进行深入解析，在源码讲解之前，我们先来了解一下什么是 微前端。 微前端 是一种类似于微服务的架构，它将微服务的理念应用于浏览器端，即将单页面前端应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。各个前端应用还可以独立">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEkfwcVUViaZ53XsR8L3hKzJTELXjrkcax87MeXd7yxd7kpVJmcicCicbjw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/05/29/Web前端/万字解析微前端、微前端框架qiankun以及源码/">
+
+
+
+
+
+  <title>万字解析微前端、微前端框架qiankun以及源码 | jerry.zmf's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gateway">
+          <a href="/gateway/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            门户
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/05/29/Web前端/万字解析微前端、微前端框架qiankun以及源码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">万字解析微前端、微前端框架qiankun以及源码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T09:40:23+08:00">
+                2020-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/29/Web前端/万字解析微前端、微前端框架qiankun以及源码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/05/29/Web前端/万字解析微前端、微前端框架qiankun以及源码/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自网络 <a href="javascript:void(0);" target="_blank" rel="noopener">前端大全</a>，原文链接：<a href="https://mp.weixin.qq.com/s/o7L_Sxl1s0uKywRy-Ao5fg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/o7L_Sxl1s0uKywRy-Ao5fg</a></font></p>
+<p>本文将针对微前端框架 <code>qiankun</code> 的源码进行深入解析，在源码讲解之前，我们先来了解一下什么是 <code>微前端</code>。</p>
+<p><code>微前端</code> 是一种类似于微服务的架构，它将微服务的理念应用于浏览器端，即将单页面前端应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。各个前端应用还可以独立开发、独立部署。同时，它们也可以在共享组件的同时进行并行开发——这些组件可以通过 <code>NPM</code> 或者 <code>Git Tag、Git Submodule</code> 来管理。</p>
+<p><code>qiankun（乾坤）</code> 就是一款由蚂蚁金服推出的比较成熟的微前端框架，基于 <code>single-spa</code> 进行二次开发，用于将 Web 应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEkfwcVUViaZ53XsR8L3hKzJTELXjrkcax87MeXd7yxd7kpVJmcicCicbjw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>那么，话不多说，我们的源码解析正式开始。</p>
+<h2 id="初始化全局配置-start-opts"><a href="#初始化全局配置-start-opts" class="headerlink" title="初始化全局配置 - start(opts)"></a>初始化全局配置 - <code>start(opts)</code></h2><p>我们从两个基础 API - <code>registerMicroApps(apps, lifeCycles?) - 注册子应用</code> 和 <code>start(opts?) - 启动主应用</code> 开始，由于 <code>registerMicroApps</code> 函数中设置的回调函数较多，并且读取了 <code>start</code> 函数中设置的初始配置项，所以我们从 <code>start</code> 函数开始解析。</p>
+<p>我们从 <code>start</code> 函数开始解析（见下图）：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEFmTqIxm1GSlLNmiaXeQCCsI0qLrLYZQSH0QiaTlgibVTRyibL9Q2OXVoxA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>我们对 <code>start</code> 函数进行逐行解析：</p>
+<ul>
+<li><code>第 196 行</code>：设置 <code>window</code> 的 <code>__POWERED_BY_QIANKUN__</code> 属性为 <code>true</code>，在子应用中使用 <code>window.__POWERED_BY_QIANKUN__</code> 值判断是否运行在主应用容器中。</li>
+<li><code>第 198~199 行</code>：设置配置参数（有默认值），将配置参数存储在 <code>importLoaderConfiguration</code> 对象中；</li>
+<li><code>第 201~203 行</code>：检查 <code>prefetch</code> 属性，如果需要预加载，则添加全局事件 <code>single-spa:first-mount</code> 监听，在第一个子应用挂载后预加载其他子应用资源，优化后续其他子应用的加载速度。</li>
+<li><code>第 205 行</code>：根据 <code>singularMode</code> 参数设置是否为单实例模式。</li>
+<li><code>第 209~217 行</code>：根据 <code>jsSandbox</code> 参数设置是否启用沙箱运行环境，旧版本需要关闭该选项以兼容 IE。（新版本在单实例模式下默认支持 IE，多实例模式依然不支持 IE）。</li>
+<li><code>第 222 行</code>：调用了 <code>single-spa</code> 的 <code>startSingleSpa</code> 方法启动应用，这个在 <code>single-spa</code> 篇我们会单独剖析，这里可以简单理解为启动主应用。</li>
+</ul>
+<p>从上面可以看出，<code>start</code> 函数负责初始化一些全局设置，然后启动应用。这些初始化的配置参数有一部分将在 <code>registerMicroApps</code> 注册子应用的回调函数中使用，我们继续往下看。</p>
+<h2 id="注册子应用-registerMicroApps-apps-lifeCycles"><a href="#注册子应用-registerMicroApps-apps-lifeCycles" class="headerlink" title="注册子应用 - registerMicroApps(apps, lifeCycles?)"></a>注册子应用 - <code>registerMicroApps(apps, lifeCycles?)</code></h2><p>registerMicroApps` 函数的作用是注册子应用，并且在子应用激活时，创建运行沙箱，在不同阶段调用不同的生命周期钩子函数。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxERfBaNeHNO3kOnSYovHbb64waxblfcxQ13Bb6vGhnzeYZCGqHSDkPcg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上面可以看出，在 <code>第 70~71 行</code> 处 <code>registerMicroApps</code> 函数做了个处理，防止重复注册相同的子应用。</p>
+<p>在 <code>第 74 行</code> 调用了 <code>single-spa</code> 的 <code>registerApplication</code> 方法注册了子应用。</p>
+<p>我们直接来看 <code>registerApplication</code> 方法，<code>registerApplication</code> 方法是 <code>single-spa</code> 中注册子应用的核心函数。该函数有四个参数，分别是</p>
+<ul>
+<li><code>name（子应用的名称）</code></li>
+<li><code>回调函数（activeRule 激活时调用）</code></li>
+<li><code>activeRule（子应用的激活规则）</code></li>
+<li><code>props（主应用需要传递给子应用的数据）</code></li>
+</ul>
+<p>这些参数都是由 <code>single-spa</code> 直接实现，这里可以先简单理解为注册子应用（这个我们会在 <code>single-spa</code> 篇展开说）。在符合 <code>activeRule</code> 激活规则时将会激活子应用，执行回调函数，返回一些生命周期钩子函数（见下图）。</p>
+<blockquote>
+<p>注意，这些生命周期钩子函数属于 <code>single-spa</code>，由 <code>single-spa</code> 决定在何时调用，这里我们从函数名来简单理解。（<code>bootstrap</code> - 初始化子应用，<code>mount</code> - 挂载子应用，<code>unmount</code> - 卸载子应用）</p>
+</blockquote>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElGlxibb9kO4hhebTx7mCicxrLRNCMcQibgXNafosuCt2WqBI7bibNicNFbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>如果你还是觉得有点懵，没关系，我们通过一张图来帮助理解。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE41d3RVpZRwZQ7DiaVKUmXnLmULURpmg9h7VDs1icwjyVfalffu41AicZw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h3 id="获取子应用资源-import-html-entry"><a href="#获取子应用资源-import-html-entry" class="headerlink" title="获取子应用资源 - import-html-entry"></a>获取子应用资源 - import-html-entry</h3><p>我们从上面分析可以看出，<code>qiankun</code> 的 <code>registerMicroApps</code> 方法中第一个入参 <code>apps - Array&gt;</code> 有三个参数 <code>name、activeRule、props</code> 都是交给 <code>single-spa</code> 使用，还有 <code>entry</code> 和 <code>render</code> 参数还没有用到。</p>
+<p>我们这里需要关注 <code>entry（子应用的 entry 地址）</code> 和 <code>render（子应用被激活时触发的渲染规则）</code> 这两个还没有用到的参数，这两个参数延迟到 <code>single-spa</code> 子应用激活后的回调函数中执行。</p>
+<p>那我们假设此时我们的子应用已激活，我们来看看这里做了什么。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE3fZLjHP33BhBgcHR1ia9PtUcCKSGiaucWGE4r9pO459Nme1eMGouUOpA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出，在子应用激活后，首先在 <code>第 81~84 行</code> 处使用了 <code>import-html-entry</code> 库从 <code>entry</code> 进入加载子应用，加载完成后将返回一个对象（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEA6LaBxULJqzWwJngh1rxDSolvibmB3ibyWX4ZyL3Csm2EBXwKD83YDpg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>我们来解释一下这几个字段</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>template</code></td>
+<td>将脚本文件内容注释后的 <code>html</code> 模板文件</td>
+</tr>
+<tr>
+<td><code>assetPublicPath</code></td>
+<td>资源地址根路径，可用于加载子应用资源</td>
+</tr>
+<tr>
+<td><code>getExternalScripts</code></td>
+<td>方法：获取外部引入的脚本文件</td>
+</tr>
+<tr>
+<td><code>getExternalStyleSheets</code></td>
+<td>方法：获取外部引入的样式表文件</td>
+</tr>
+<tr>
+<td><code>execScripts</code></td>
+<td>方法：执行该模板文件中所有的 <code>JS</code> 脚本文件，并且可以指定脚本的作用域 - <code>proxy</code> 对象</td>
+</tr>
+</tbody></table>
+<p>我们先将 <code>template 模板</code>、<code>getExternalScripts</code> 和 <code>getExternalStyleSheets</code> 函数的执行结果打印出来，效果如下（见下图）：</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>从上图我们可以看到我们外部引入的三个 <code>js</code> 脚本文件，这个模板文件没有外部 <code>css</code> 样式表，对应的样式表数组也为空。</p>
+<p>然后我们再来分析 <code>execScripts</code> 方法，该方法的作用就是指定一个 <code>proxy</code>（默认是 <code>window</code>）对象，然后执行该模板文件中所有的 <code>JS</code>，并返回 <code>JS</code> 执行后 <code>proxy</code> 对象的最后一个属性（见下图 1）。在微前端架构中，这个对象一般会包含一些子应用的生命周期钩子函数（见下图 2），主应用可以通过在特定阶段调用这些生命周期钩子函数，进行挂载和销毁子应用的操作。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxETOEjPabg9BWMP9vqfaFxaFLJRwJAicGvDxiaGbSofgCzL2MWqibEQZYicg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8CPhlEl5tOW9tiabdqJTEhZegbbexAK5wUiauKGpg94wg6lnniaJVQcGg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>在 <code>qiankun</code> 的 <code>importEntry</code> 函数中还传入了配置项 <code>getTemplate</code>，这个其实是对 <code>html</code> 目标文件的二次处理，这里就不作展开了，有兴趣的可以自行去了解一下。</p>
+<h3 id="主应用挂载子应用-HTML-模板"><a href="#主应用挂载子应用-HTML-模板" class="headerlink" title="主应用挂载子应用 HTML 模板"></a>主应用挂载子应用 HTML 模板</h3><p>我们回到 <code>qiankun</code> 源码部分继续看（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE0HREoPhIsTLF5SXicJRp5UCI8LTuSjhTGicDT1K5qttYOGibsJwJ4d01Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图看出，在 <code>第 85~87 行</code> 处，先对单实例进行检测。在单实例模式下，新的子应用挂载行为会在旧的子应用卸载之后才开始。</p>
+<p>在 <code>第 88 行</code> 中，执行注册子应用时传入的 <code>render</code> 函数，将 <code>HTML Template</code> 和 <code>loading</code> 作为入参，<code>render</code> 函数的内容一般是将 <code>HTML</code> 挂载在指定容器中（见下图）。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE9XJBOWzoZ8AIXp4HJjjN3D3W4ALud4BkMYXSqzb8LicHcRz4vefQ7sw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>在这个阶段，主应用已经将子应用基础的 <code>HTML</code> 结构挂载在了主应用的某个容器内，接下来还需要执行子应用对应的 <code>mount</code> 方法（如 <code>Vue.$mount</code>）对子应用状态进行挂载。</p>
+<p>此时页面还可以根据 <code>loading</code> 参数开启一个类似加载的效果，直至子应用全部内容加载完成。</p>
+<h3 id="沙箱运行环境-genSandbox"><a href="#沙箱运行环境-genSandbox" class="headerlink" title="沙箱运行环境 - genSandbox"></a>沙箱运行环境 - genSandbox</h3><p>我们回到 <code>qiankun</code> 源码部分继续看，此时还是子应用激活时的回调函数部分（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEPCK61Wic0OZeiciaxSfwK37Xvna2Fs0rhuOK8EOqxn0WeFwymTjrQkY7g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>在 <code>第 90~98 行</code> 是 <code>qiankun</code> 比较核心的部分，也是几个子应用之间状态独立的关键，那就是 <code>js</code> 的沙箱运行环境。如果关闭了 <code>useJsSandbox</code> 选项，那么所有子应用的沙箱环境都是 <code>window</code>，就很容易对全局状态产生污染。</p>
+<p>我们进入到 <code>genSandbox</code> 内部，看看 <code>qiankun</code> 是如何创建的 <code>（JS）沙箱运行环境</code>。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEc8ialupANw7bibnml2xrRROYibJUrrIS9jm6wicMwB7V9jibpSuJ3ib1l3rQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出 <code>genSandbox</code> 内部的沙箱主要是通过是否支持 <code>window.Proxy</code> 分为 <code>ProxySandbox</code> 和 <code>SnapshotSandbox</code> 两种（多实例还有一种 <code>LegacySandbox</code> 沙箱，这里我们不作讲解）。</p>
+<h4 id="ProxySandbox"><a href="#ProxySandbox" class="headerlink" title="ProxySandbox"></a>ProxySandbox</h4><p>我们先来看看 <code>ProxySandbox</code> 沙箱是怎么进行状态隔离的（见下图）</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>我们来分析一下 <code>ProxySandbox</code> 类的几个属性：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>updateValueMap</code></td>
+<td>记录沙箱中更新的值，也就是每个子应用中独立的状态池</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>沙箱名称</td>
+</tr>
+<tr>
+<td><code>proxy</code></td>
+<td>代理对象，可以理解为子应用的 <code>global/window</code> 对象</td>
+</tr>
+<tr>
+<td><code>sandboxRunning</code></td>
+<td>当前沙箱是否在运行中</td>
+</tr>
+<tr>
+<td><code>active</code></td>
+<td>激活沙箱，在子应用挂载时启动</td>
+</tr>
+<tr>
+<td><code>inactive</code></td>
+<td>关闭沙箱，在子应用卸载时启动</td>
+</tr>
+<tr>
+<td><code>constructor</code></td>
+<td>构造函数，创建沙箱环境</td>
+</tr>
+</tbody></table>
+<p>我们现在从 <code>window.Proxy</code> 的 <code>set</code> 和 <code>get</code> 属性来详细讲解 <code>ProxySandbox</code> 是如何实现沙箱运行环境的。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEp8lZe4Fc4UNFJWZhuXtCZpib6oz26KWO58tIhtwAFdRRJ1cibWX5xMjg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<blockquote>
+<p>注意：子应用沙箱中的 <code>proxy</code> 对象可以简单理解为子应用的 <code>window</code> 全局对象（代码如下），子应用对全局属性的操作就是对该 <code>proxy</code> 对象属性的操作，带着这份理解继续往下看吧。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 子应用脚本文件的执行过程：</span><br><span class="line">eval(</span><br><span class="line">  // 这里将 proxy 作为 window 参数传入</span><br><span class="line">  // 子应用的全局对象就是该子应用沙箱的 proxy 对象</span><br><span class="line">  (function(window) &#123;</span><br><span class="line">    /* 子应用脚本文件内容 */</span><br><span class="line">  &#125;)(proxy)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>当调用 <code>set</code> 向子应用 <code>proxy/window</code> 对象设置属性时，所有的属性设置和更新都会命中 <code>updateValueMap</code>，存储在 <code>updateValueMap</code> 集合中（<code>第 38 行</code>），从而避免对 <code>window</code> 对象产生影响（旧版本则是通过 <code>diff</code> 算法还原 <code>window</code> 对象状态快照，子应用之间的状态是隔离的，而父子应用之间 <code>window</code> 对象会有污染）。</p>
+<p>当调用 <code>get</code> 从子应用 <code>proxy/window</code> 对象取值时，会优先从子应用的沙箱状态池 <code>updateValueMap</code> 中取值，如果没有命中才从主应用的 <code>window</code> 对象中取值（<code>第 49 行</code>）。对于非构造函数的取值将会对 <code>this</code> 指针绑定到 <code>window</code> 对象后，再返回函数。</p>
+<p>如此一来，<code>ProxySandbox</code> 沙箱应用之间的隔离就完成了，所有子应用对 <code>proxy/window</code> 对象值的存取都受到了控制。设置值只会作用在沙箱内部的 <code>updateValueMap</code> 集合上，取值也是优先取子应用独立状态池（<code>updateValueMap</code>）中的值，没有找到的话，再从 <code>proxy/window</code> 对象中取值。</p>
+<p>我们对 <code>ProxySandbox</code> 沙箱画一张图来加深理解（见下图）</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<h4 id="SnapshotSandbox"><a href="#SnapshotSandbox" class="headerlink" title="SnapshotSandbox"></a>SnapshotSandbox</h4><p>在不支持 <code>window.Proxy</code> 属性时，将会使用 <code>SnapshotSandbox</code> 沙箱，我们来看看其内部实现（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEAcsm1lHZiczZBcVXiaySN2z4vYtA9oUC6m7FopwwthNv3h7r3OqReqbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>我们来分析一下 <code>SnapshotSandbox</code> 类的几个属性：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>name</code></td>
+<td>沙箱名称</td>
+</tr>
+<tr>
+<td><code>proxy</code></td>
+<td>代理对象，此处为 <code>window</code> 对象</td>
+</tr>
+<tr>
+<td><code>sandboxRunning</code></td>
+<td>当前沙箱是否激活</td>
+</tr>
+<tr>
+<td><code>windowSnapshot</code></td>
+<td><code>window</code> 状态快照</td>
+</tr>
+<tr>
+<td><code>modifyPropsMap</code></td>
+<td>沙箱运行期间被修改过的 <code>window</code> 属性</td>
+</tr>
+<tr>
+<td><code>constructor</code></td>
+<td>构造函数，激活沙箱</td>
+</tr>
+<tr>
+<td><code>active</code></td>
+<td>激活沙箱，在子应用挂载时启动</td>
+</tr>
+<tr>
+<td><code>inactive</code></td>
+<td>关闭沙箱，在子应用卸载时启动</td>
+</tr>
+</tbody></table>
+<p><code>SnapshotSandbox</code> 的沙箱环境主要是通过激活时记录 <code>window</code> 状态快照，在关闭时通过快照还原 <code>window</code> 对象来实现的。（见下图）</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>我们先看 <code>active</code> 函数，在沙箱激活时，会先给当前 <code>window</code> 对象打一个快照，记录沙箱激活前的状态（<code>第 38~40 行</code>）。打完快照后，函数内部将 <code>window</code> 状态通过 <code>modifyPropsMap</code> 记录还原到上次的沙箱运行环境，也就是还原沙箱激活期间（历史记录）修改过的 <code>window</code> 属性。</p>
+<p>在沙箱关闭时，调用 <code>inactive</code> 函数，在沙箱关闭前通过遍历比较每一个属性，将被改变的 <code>window</code> 对象属性值（<code>第 54 行</code>）记录在 <code>modifyPropsMap</code> 集合中。在记录了 <code>modifyPropsMap</code> 后，将 <code>window</code> 对象通过快照 <code>windowSnapshot</code> 还原到被沙箱激活前的状态（<code>第 55 行</code>），相当于是将子应用运行期间对 <code>window</code> 造成的污染全部清除。</p>
+<p><code>SnapshotSandbox</code> 沙箱就是利用快照实现了对 <code>window</code> 对象状态隔离的管理。相比较 <code>ProxySandbox</code> 而言，在子应用激活期间，<code>SnapshotSandbox</code> 将会对 <code>window</code> 对象造成污染，属于一个对不支持 <code>Proxy</code> 属性的浏览器的向下兼容方案。</p>
+<p>我们对 <code>SnapshotSandbox</code> 沙箱画一张图来加深理解（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxENZUGPfEABIXZ4piajezGIG3DGBxaibf93zPV0J21SJJrKkBhyFSIheoA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h3 id="挂载沙箱-mountSandbox"><a href="#挂载沙箱-mountSandbox" class="headerlink" title="挂载沙箱 - mountSandbox"></a>挂载沙箱 - <code>mountSandbox</code></h3><p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>我们继续回到这张图，<code>genSandbox</code> 函数不仅返回了一个 <code>sandbox</code> 沙箱，还返回了一个 <code>mount</code> 和 <code>unmount</code> 方法，分别在子应用挂载时和卸载时的时候调用。</p>
+<p>我们先看看 <code>mount</code> 函数内部（见下图）</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>首先，在 <code>mount</code> 内部先激活了子应用沙箱（<code>第 26 行</code>），在沙箱启动后开始劫持各类全局监听（<code>第 27 行</code>），我们这里重点看看 <code>patchAtMounting</code> 内部是怎么实现的。（见下图）</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p><code>patchAtMounting</code> 内部调用了下面四个函数：</p>
+<ul>
+<li><code>patchTimer（计时器劫持）</code></li>
+<li><code>patchWindowListener（window 事件监听劫持）</code></li>
+<li><code>patchHistoryListener（window.history 事件监听劫持）</code></li>
+<li><code>patchDynamicAppend（动态添加 Head 元素事件劫持）</code></li>
+</ul>
+<p>上面四个函数实现了对 <code>window</code> 指定对象的统一劫持，我们可以挑一些解析看看其内部实现。</p>
+<h4 id="计时器劫持-patchTimer"><a href="#计时器劫持-patchTimer" class="headerlink" title="计时器劫持 - patchTimer"></a>计时器劫持 - <code>patchTimer</code></h4><p>我们先来看看 <code>patchTimer</code> 对计时器的劫持（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE6s3sPdpcddS2IUaYEMBmgKxFQby3siaCWuh4MuWic6ZicgL3Mq2TaG2Lw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出，<code>patchTimer</code> 内部将 <code>setInterval</code> 进行重载，将每个启用的定时器的 <code>intervalId</code> 都收集起来（<code>第 23~24 行</code>），以便在子应用卸载时调用 <code>free</code> 函数将计时器全部清除（见下图）。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElkKFwTiaDOaaQqgNqXu29dv5ODVw2PYB4fTGfctNFL8YAY5vxePbdTw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>我们来看看在子应用加载时的 <code>setInterval</code> 函数验证即可（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEicicxpDezmUAnmsiaaAN4l9TjqvaGmHysSPRz0vo0a7mmUDicPxjjGroEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出，在进入子应用时，<code>setInterval</code> 已经被替换成了劫持后的函数，防止全局计时器泄露污染。</p>
+<h4 id="动态添加样式表和脚本文件劫持-patchDynamicAppend"><a href="#动态添加样式表和脚本文件劫持-patchDynamicAppend" class="headerlink" title="动态添加样式表和脚本文件劫持 - patchDynamicAppend"></a>动态添加样式表和脚本文件劫持 - <code>patchDynamicAppend</code></h4><p><code>patchWindowListener</code> 和 <code>patchHistoryListener</code> 的实现都与 <code>patchTimer</code> 实现类似，这里就不作复述了。</p>
+<p>我们需要重点对 <code>patchDynamicAppend</code> 函数进行解析，这个函数的作用是劫持对 <code>head</code> 元素的操作（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEW2ZfiaH6LDU9N0PY7HwVdibBS7CycOVLRsCeQuXxYLIP3KMXnEte0ibOg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出，<code>patchDynamicAppend</code> 主要是对动态添加的 <code>style</code> 样式表和 <code>script</code> 标签做了处理。</p>
+<p>我们先看看对 <code>style</code> 样式表的处理（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE0j51wTmOQoQy43Xibz8rI3Zk2nJ0AOyKQwpAOSBraKmbafkZXM89AQA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出，主要的处理逻辑在 <code>第 68~74 行</code>，如果当前子应用处于激活状态（<code>判断子应用的激活状态主要是因为：当主应用切换路由时可能会自动添加动态样式表，此时需要避免主应用的样式表被添加到子应用</code>head<code>节点中导致出错</code>），那么动态 <code>style</code> 样式表就会被添加到子应用容器内（见下图），在子应用卸载时样式表也可以和子应用一起被卸载，从而避免样式污染。同时，动态样式表也会存储在 <code>dynamicStyleSheetElements</code> 数组中，在后面还会提到其用处。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEChMMIKyZicH074hTtw1jiaVHbPUF311Wicwhiblq2AWMiaE1hOxsrH6jR6g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>我们再来看看对 <code>script</code> 脚本文件的处理（见下图）</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>对动态 <code>script</code> 脚本文件的处理较为复杂一些，我们也来解析一波：</p>
+<p>在 <code>第 83~101 行</code> 处对外部引入的 <code>script</code> 脚本文件使用 <code>fetch</code> 获取，然后使用 <code>execScripts</code> 指定 <code>proxy</code> 对象（作为 <code>window</code> 对象）后执行脚本文件内容，同时也触发了 <code>load</code> 和 <code>error</code> 两个事件。</p>
+<p>在 <code>第 103~106 行</code> 处将注释后的脚本文件内容以注释的形式添加到子应用容器内。</p>
+<p>在 <code>第 109~113 行</code> 是对内嵌脚本文件的执行过程，就不作复述了。</p>
+<p>我们可以看出，对动态添加的脚本进行劫持的主要目的就是为了将动态脚本运行时的 <code>window</code> 对象替换成 <code>proxy</code> 代理对象，使子应用动态添加的脚本文件的运行上下文也替换成子应用自身。</p>
+<p><code>HTMLHeadElement.prototype.removeChild</code> 的逻辑就是多加了个子应用容器判断，其他无异，就不展开说了。</p>
+<p>最后我们来看看 <code>free</code> 函数（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE5pJ4pXErlLKAR0zQ1fWibhbAdcMmlrb0jKTAvrFoQ4JFjTKlbcHjtSA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>这个 <code>free</code> 函数与其他的 <code>patches（劫持函数）</code> 实现不太一样，这里缓存了一份 <code>cssRules</code>，在重新挂载的时候会执行 <code>rebuild</code> 函数将其还原。这是因为样式元素 <code>DOM</code> 从文档中删除后，浏览器会自动清除样式元素表。如果不这么做的话，在重新挂载时会出现存在 <code>style</code> 标签，但是没有渲染样式的问题。</p>
+<h3 id="卸载沙箱-unmountSandbox"><a href="#卸载沙箱-unmountSandbox" class="headerlink" title="卸载沙箱 - unmountSandbox"></a>卸载沙箱 - unmountSandbox</h3><p>我们再回到 <code>mount</code> 函数本身（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEE7eT8ibic4DOQPdNkYQYcgSLdx4eQfm92mH7hicHybnqkTmJ8wfwYlQCQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出，在 <code>patchAtMounting</code> 函数中劫持了各类全局监听，并返回了解除劫持的 <code>free</code> 函数。在卸载应用时调用 <code>free</code> 函数解除这些全局监听的劫持行为（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEsJnuykYP6KSnTpWcQhovpibnibDVxIqOy23xgEDiac5bMibtd3ueIxxHdw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看到 <code>sideEffectsRebuilders</code> 在 <code>free</code> 后被返回，在 <code>mount</code> 的时候又将被调用 <code>rebuild</code> 重建动态样式表。这块环环相扣，是稍微有点绕，没太看明白的同学可以翻上去再看一遍。</p>
+<p>到这里，<code>qiankun</code> 的最核心部分-沙箱机制，我们就已经解析完毕了，接下来我们继续剖析别的部分。</p>
+<p>在这里我们画一张图，对沙箱的创建过程进行一个总梳理（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE83dJBqwIad5KGa1ias3NM73aeIr97YhkCv4I5V96mjpnITOIglhh2oQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h3 id="注册内部生命周期函数"><a href="#注册内部生命周期函数" class="headerlink" title="注册内部生命周期函数"></a>注册内部生命周期函数</h3><p>在创建好了沙箱环境后，在 <code>第 100~106 行</code> 注册了一些内部生命周期函数（见下图）</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>在上图中，<code>第 106 行</code> 的 <code>mergeWith</code> 方法的作用是将内置的生命周期函数与传入的 <code>lifeCycles</code> 生命周期函数。</p>
+<blockquote>
+<p>这里的 <code>lifeCycles</code> 生命周期函数指的是全子应用共享的生命周期函数，可用于执行多个子应用间相同的逻辑操作，例如 <code>加载效果</code> 之类的。（见下图）</p>
+</blockquote>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="qiankun"></p>
+<p>除了外部传入的生命周期函数外，我们还需要关注 <code>qiankun</code> 内置的生命周期函数做了些什么（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE608lb6M5yX10yJZOz6eHW85fqkaicicLVTvunK7foAvicOEgyVRo8FXgw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>我们对上图的代码进行逐一解析：</p>
+<ul>
+<li><code>第 13~15 行</code>：在加载子应用前 <code>beforeLoad</code>（只会执行一次）时注入一个环境变量，指示了子应用的 <code>public</code> 路径。</li>
+<li><code>第 17~19 行</code>：在挂载子应用前 <code>beforeMount</code>（可能会多次执行）时可能也会注入该环境变量。</li>
+<li><code>第 23~30 行</code>：在卸载子应用前 <code>beforeUnmount</code> 时将环境变量还原到原始状态。</li>
+</ul>
+<p>通过上面的分析我们可以得出一个结论，我们可以在子应用中获取该环境变量，将其设置为 <code>__webpack_public_path__</code> 的值，从而使子应用在主应用中运行时，可以匹配正确的资源路径。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEzIsGWbsP7hewfZoL0AEEaaicOaP41EQymkubGkbg0GqZ9xs8m4RnatQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h4 id="触发-beforeLoad-生命周期钩子函数"><a href="#触发-beforeLoad-生命周期钩子函数" class="headerlink" title="触发 beforeLoad 生命周期钩子函数"></a>触发 <code>beforeLoad</code> 生命周期钩子函数</h4><p>在注册完了生命周期函数后，立即触发了 <code>beforeLoad</code> 生命周期钩子函数（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8JCESg6hic47BEaibb2kS8VmrfEkojX9NNsDvHVEeyLEEgFiba7ecsAUQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图可以看出，在 <code>第 108 行</code> 中，触发了 <code>beforeLoad</code> 生命周期钩子函数。</p>
+<p>随后，在 <code>第 110 行</code> 执行了 <code>import-html-entry</code> 的 <code>execScripts</code> 方法。指定了脚本文件的运行沙箱（<code>jsSandbox</code>），执行完子应用的脚本文件后，返回了一个对象，对象包含了子应用的生命周期钩子函数（见下图）。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8CPhlEl5tOW9tiabdqJTEhZegbbexAK5wUiauKGpg94wg6lnniaJVQcGg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>在 <code>第 112~121 行</code> 对子应用的生命周期钩子函数做了个检测，如果在子应用的导出对象中没有发现生命周期钩子函数，会在沙箱对象中继续查找生命周期钩子函数。如果最后没有找到生命周期钩子函数则会抛出一个错误，所以我们的子应用一定要有 <code>bootstrap, mount, unmount</code> 这三个生命周期钩子函数才能被 <code>qiankun</code> 正确嵌入到主应用中。</p>
+<p>这里我们画一张图，对子应用挂载前的初始化过程做一个总梳理（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEicVOQtz7hNxicqbVEfZzGBAYPs7ZDIbt0ibEsFVE2KxQN3QLZ1BicYuFcQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h3 id="进入到-mount-挂载流程"><a href="#进入到-mount-挂载流程" class="headerlink" title="进入到 mount 挂载流程"></a>进入到 <code>mount</code> 挂载流程</h3><p>在一些初始化配置（如 <code>子应用资源、运行沙箱环境、生命周期钩子函数等等</code>）准备就绪后，<code>qiankun</code> 内部将其组装在一起，返回了三个函数作为 <code>single-spa</code> 内部的生命周期函数（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElGlxibb9kO4hhebTx7mCicxrLRNCMcQibgXNafosuCt2WqBI7bibNicNFbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p><code>single-spa</code> 内部的逻辑我们后面再展开说，这里我们可以简单理解为 <code>single-spa</code> 内部的三个生命周期钩子函数：</p>
+<ul>
+<li><code>bootstrap</code>：子应用初始化时调用，只会调用一次；</li>
+<li><code>mount</code>：子应用挂载时调用，可能会调用多次；</li>
+<li><code>unmount</code>：子应用卸载时调用，可能会调用多次；</li>
+</ul>
+<p>我们可以看出，在 <code>bootstrap</code> 阶段调用了子应用暴露的 <code>bootstrap</code> 生命周期函数。</p>
+<p>我们这里对 <code>mount</code> 阶段进行展开，看看在子应用 <code>mount</code> 阶段执行了哪些函数（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEUsviap5y098iaKxelMZN6wamrNe7fiaK3Bdurl1Kbuho5s3yVL0mcNLGQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>我们进行逐行解析：</p>
+<ul>
+<li><p><code>第 127~133 行</code>：对单实例模式进行检测。在单实例模式下，新的子应用挂载行为会在旧的子应用卸载之后才开始。（由于这里是串行顺序执行，所以如果某一处发生阻塞的话，会阻塞所有后续的函数执行）</p>
+</li>
+<li><p><code>第 134 行</code>：执行注册子应用时传入的 <code>render</code> 函数，将 <code>HTML Template</code> 和 <code>loading</code> 作为入参。这里一般是在发生了一次 <code>unmount</code> 后，再次进行 <code>mount</code> 挂载行为时将 <code>HTML</code> 挂载在指定容器中（见下图）</p>
+<blockquote>
+<p>由于初始化的时候已经调用过一次 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; render</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>，所以在首次调用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; mount</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p> 时可能已经执行过一次 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; render</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p> 方法。</p>
+<p>在下面的代码中也有对重复挂载的情况进行判断的语句 - <code>if (frame.querySelector(&quot;div&quot;) === null</code>，防止重复挂载子应用。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE9XJBOWzoZ8AIXp4HJjjN3D3W4ALud4BkMYXSqzb8LicHcRz4vefQ7sw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<ul>
+<li><p><code>第 135 行</code>：触发了 <code>beforeMount</code> 全局生命周期钩子函数；</p>
+</li>
+<li><p><code>第 136 行</code>：挂载沙箱，这一步中激活了对应的子应用沙箱，劫持了部分全局监听（如 <code>setInterval</code>）。此时开始子应用的代码将在沙箱中运行。（反推可知，在 <code>beforeMount</code> 前的部分全局操作将会对主应用造成污染，如 <code>setInterval</code>）</p>
+</li>
+<li><p><code>第 137 行</code>：触发子应用的 <code>mount</code> 生命周期钩子函数，在这一步通常是执行对应的子应用的挂载操作（如 <code>ReactDOM.render、Vue.$mount</code>。（见下图）</p>
+</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEHHP8KxtZNMgA0VzCkjny2uBVQ6Viaia22Qz6EjEXagugGXeTI3K2zIIg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<ul>
+<li><code>第 138 行</code>：再次调用 <code>render</code> 函数，此时 <code>loading</code> 参数为 <code>false</code>，代表子应用已经加载完成。</li>
+<li><code>第 139 行</code>：触发了 <code>afterMount</code> 全局生命周期钩子函数；</li>
+<li><code>第 140~144 行</code>：在单实例模式下设置 <code>prevAppUnmountedDeferred</code> 的值，这个值是一个 <code>promise</code>，在当前子应用卸载时才会被 <code>resolve</code>，在该子应用运行期间会阻塞其他子应用的挂载动作（<code>第 134 行</code>）；</li>
+</ul>
+<p>我们在上面很详细的剖析了整个子应用的 <code>mount</code> 挂载流程，如果你还没有搞懂的话，没关系，我们再画一个流程图来帮助理解。（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE8PwyVgYuI33iaC8hrPvW8owaWluNIoEebIIPfiaF8Jk8SdyyibGM08g7g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h3 id="进入到-unmount-卸载流程"><a href="#进入到-unmount-卸载流程" class="headerlink" title="进入到 unmount 卸载流程"></a>进入到 <code>unmount</code> 卸载流程</h3><p>我们刚才梳理了子应用的 <code>mount</code> 挂载流程，我们现在就进入到子应用的 <code>unmount</code> 卸载流程。在子应用激活阶段， <code>activeRule</code> 未命中时将会触发 <code>unmount</code> 卸载行为，具体的行为如下（见下图）</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxElYUg0KIxR4qibSm2PWgR3KnvJ6cGbGqiaZt3l769uyqvNwo2XKLXicsibQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<p>从上图我们可以看出，<code>unmount</code> 卸载流程要比 <code>mount</code> 简单很多，我们直接来梳理一下：</p>
+<ul>
+<li><code>第 148 行</code>：触发了 <code>beforeUnmount</code> 全局生命周期钩子函数；</li>
+<li><code>第 149 行</code>：这里与 <code>mount</code> 流程的顺序稍微有点不同，这里先执行了子应用的 <code>unmount</code> 生命周期钩子函数，保证子应用仍然是运行在沙箱内，避免造成状态污染。在这里一般是对子应用的一些状态进行清理和卸载操作。（如下图，销毁了刚才创建的 <code>vue</code> 实例）</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxE4QMvebwsHrvueoSRicpFM3B5ny3FkPGtE9vpUdO5Xl7uQ4jDk9XypLg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<ul>
+<li><code>第 150 行</code>：卸载沙箱，关闭了沙箱的激活状态。</li>
+<li><code>第 151 行</code>：触发了 <code>afterUnmount</code> 全局生命周期钩子函数；</li>
+<li><code>第 152 行</code>：触发 <code>render</code> 方法，并且传入的 <code>appContent</code> 为空字符串，此处可以清空主应用容器内的内容。</li>
+<li><code>第 153~156 行</code>：当前子应用卸载完成后，在单实例模式下触发 <code>prevAppUnmountedDeferred.resolve()</code>，使其他子应用的挂载行为得以继续进行，不再阻塞。</li>
+</ul>
+<p>我们对 <code>unmount</code> 卸载流程也画一张图，帮助大家理解（见下图）。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEzACAFOLicFePovX980y9MqSFemL23HWzWuaRC1XhKRqB9SkHkUSz9hA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到这里，我们对 <code>qiankun</code> 框架的总流程梳理就差不多了。这里应该做个总结，大家看了这么多文字，估计大家也看累了，最后用一张图对 <code>qiankun</code> 的总流程进行总结吧。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEJfticnPy0rjOWpllRXsZhSIhqaJgR2xEk7BULribiaDwXJXpwmgEzMxPA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="qiankun"></p>
+<h2 id="展望"><a href="#展望" class="headerlink" title="展望"></a>展望</h2><p>传统的云控制台应用，几乎都会面临业务快速发展之后，单体应用进化成巨石应用的问题。我们要如何维护一个巨无霸中台应用？</p>
+<p>上面这个问题引出了微前端架构理念，所以微前端的概念也越来越火，我们团队最近也在尝试转型微前端架构。</p>
+<p>工欲善其事必先利其器，所以本文针对 <code>qiankun</code> 的源码进行解读，在分享知识的同时也是帮助自己理解。</p>
+<p>这是我们团队对微前端架构的最佳实践（见下图），如果有需求的话，可以在评论区留言，我们会考虑出一篇《微前端框架 <code>qiankun</code> 最佳实践》来帮助大家搭建一套微前端架构。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iawKicic66ubH5U5ZhPSorx5wu8CoRtBbxEOYcJ9882MSZhGiaD4z7x4tsnMrgEibtApXwic2BV7nBgaMBKR5icadKXCw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="架构图"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/05/29/Web前端/万字解析微前端、微前端框架qiankun以及源码/" title="万字解析微前端、微前端框架qiankun以及源码">https://uestc66.github.io/2020/05/29/Web前端/万字解析微前端、微前端框架qiankun以及源码/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微前端/" rel="tag"><i class="fa fa-tag"></i> 微前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/29/其他/你累死累活做业务，绩效还不怎么样，我只能帮你到这/" rel="next" title="你累死累活做业务，绩效还不怎么样，我只能帮你到这了……">
+                <i class="fa fa-chevron-left"></i> 你累死累活做业务，绩效还不怎么样，我只能帮你到这了……
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/29/Web前端/阿里云开放平台微前端方案的沙箱实现/" rel="prev" title="阿里云开放平台微前端方案的沙箱实现">
+                阿里云开放平台微前端方案的沙箱实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化全局配置-start-opts"><span class="nav-number">1.</span> <span class="nav-text">初始化全局配置 - start(opts)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册子应用-registerMicroApps-apps-lifeCycles"><span class="nav-number">2.</span> <span class="nav-text">注册子应用 - registerMicroApps(apps, lifeCycles?)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取子应用资源-import-html-entry"><span class="nav-number">2.1.</span> <span class="nav-text">获取子应用资源 - import-html-entry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主应用挂载子应用-HTML-模板"><span class="nav-number">2.2.</span> <span class="nav-text">主应用挂载子应用 HTML 模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#沙箱运行环境-genSandbox"><span class="nav-number">2.3.</span> <span class="nav-text">沙箱运行环境 - genSandbox</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ProxySandbox"><span class="nav-number">2.3.1.</span> <span class="nav-text">ProxySandbox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SnapshotSandbox"><span class="nav-number">2.3.2.</span> <span class="nav-text">SnapshotSandbox</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂载沙箱-mountSandbox"><span class="nav-number">2.4.</span> <span class="nav-text">挂载沙箱 - mountSandbox</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计时器劫持-patchTimer"><span class="nav-number">2.4.1.</span> <span class="nav-text">计时器劫持 - patchTimer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态添加样式表和脚本文件劫持-patchDynamicAppend"><span class="nav-number">2.4.2.</span> <span class="nav-text">动态添加样式表和脚本文件劫持 - patchDynamicAppend</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载沙箱-unmountSandbox"><span class="nav-number">2.5.</span> <span class="nav-text">卸载沙箱 - unmountSandbox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册内部生命周期函数"><span class="nav-number">2.6.</span> <span class="nav-text">注册内部生命周期函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#触发-beforeLoad-生命周期钩子函数"><span class="nav-number">2.6.1.</span> <span class="nav-text">触发 beforeLoad 生命周期钩子函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入到-mount-挂载流程"><span class="nav-number">2.7.</span> <span class="nav-text">进入到 mount 挂载流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入到-unmount-卸载流程"><span class="nav-number">2.8.</span> <span class="nav-text">进入到 unmount 卸载流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#展望"><span class="nav-number">4.</span> <span class="nav-text">展望</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

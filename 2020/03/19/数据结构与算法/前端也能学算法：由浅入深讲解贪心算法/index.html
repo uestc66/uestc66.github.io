@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Webpack,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自掘金，原文链接：https://juejin.im/post/5e575e02f265da573b0dad5f 贪心算法是一种很常见的算法思想，而且很好理解，因为它符合人们一般的思维习惯。下面我们由浅入深的来讲讲贪心算法。 找零问题我们先来看一个比较简单的问题：  假设你是一个商店老板，你需要给顾客找零n元钱，你手上有的钱的面值为：100元，50元，20元，5元，1元。请问如何找零使得所需要">
+<meta name="keywords" content="Webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端也能学算法：由浅入深讲解贪心算法">
+<meta property="og:url" content="https://uestc66.github.io/2020/03/19/数据结构与算法/前端也能学算法：由浅入深讲解贪心算法/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s blog">
+<meta property="og:description" content="转载自掘金，原文链接：https://juejin.im/post/5e575e02f265da573b0dad5f 贪心算法是一种很常见的算法思想，而且很好理解，因为它符合人们一般的思维习惯。下面我们由浅入深的来讲讲贪心算法。 找零问题我们先来看一个比较简单的问题：  假设你是一个商店老板，你需要给顾客找零n元钱，你手上有的钱的面值为：100元，50元，20元，5元，1元。请问如何找零使得所需要">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/27/1708549aa8564a73?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/27/1708549fc340955d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/28/17089a933b5ba0fd?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://juejin.im/equation?tex=D(n%2C%20W)">
+<meta property="og:image" content="https://juejin.im/equation?tex=D(n-1%2C%20W)">
+<meta property="og:image" content="https://juejin.im/equation?tex=v_n%20%2B%20D(n-1%2C%20W-w_n)">
+<meta property="og:image" content="https://juejin.im/equation?tex=W%20%3E%3D%20w_n">
+<meta property="og:image" content="https://juejin.im/equation?tex=D(n%2C%20W)%20%3D%20max(D(n-1%2C%20W)%2C%20v_n%20%2B%20D(n-1%2C%20W-w_n))">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/27/170854aaec1242c8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/27/170854adb16e808b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/27/170854b27c8177b0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/27/170854b58037fdb1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/27/170854ba87c2a2b7?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2020-03-19T15:14:28.259Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端也能学算法：由浅入深讲解贪心算法">
+<meta name="twitter:description" content="转载自掘金，原文链接：https://juejin.im/post/5e575e02f265da573b0dad5f 贪心算法是一种很常见的算法思想，而且很好理解，因为它符合人们一般的思维习惯。下面我们由浅入深的来讲讲贪心算法。 找零问题我们先来看一个比较简单的问题：  假设你是一个商店老板，你需要给顾客找零n元钱，你手上有的钱的面值为：100元，50元，20元，5元，1元。请问如何找零使得所需要">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2020/2/27/1708549aa8564a73?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/03/19/数据结构与算法/前端也能学算法：由浅入深讲解贪心算法/">
+
+
+
+
+
+  <title>前端也能学算法：由浅入深讲解贪心算法 | jerry.zmf's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gateway">
+          <a href="/gateway/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            门户
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/03/19/数据结构与算法/前端也能学算法：由浅入深讲解贪心算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端也能学算法：由浅入深讲解贪心算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T23:13:45+08:00">
+                2020-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/19/数据结构与算法/前端也能学算法：由浅入深讲解贪心算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/03/19/数据结构与算法/前端也能学算法：由浅入深讲解贪心算法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自掘金，原文链接：<a href="https://juejin.im/post/5e575e02f265da573b0dad5f" target="_blank" rel="noopener">https://juejin.im/post/5e575e02f265da573b0dad5f</a></font></p>
+<p>贪心算法是一种很常见的算法思想，而且很好理解，因为它符合人们一般的思维习惯。下面我们由浅入深的来讲讲贪心算法。</p>
+<h2 id="找零问题"><a href="#找零问题" class="headerlink" title="找零问题"></a>找零问题</h2><p>我们先来看一个比较简单的问题：</p>
+<blockquote>
+<p>假设你是一个商店老板，你需要给顾客找零n元钱，你手上有的钱的面值为：100元，50元，20元，5元，1元。请问如何找零使得所需要的钱币数量最少？</p>
+<p>例子：你需要找零126元，则所需钱币数量最少的方案为100元1找，20元1张，5元1张，1元1张。</p>
+</blockquote>
+<p>这个问题在生活中很常见，买东西的时候经常会遇到，那我们一般是怎么思考的呢？假设我们需要找零126元，我们先看看能找的最大面值是多少，我们发现126比100大，那肯定可以找一张100块，然后剩下26元，再看26能匹配的最大面值是多少，发现是20，那找一张20的，还剩6块，同样的思路，找一张5块的和1块的。这其实就是贪心算法的思想，每次都很贪心的去找最大的匹配那个值，然后再找次大的。这个算法代码也很好写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">const allMoney = [100, 50, 20, 5, 1];  // 表示我们手上有的面值</span><br><span class="line">function changeMoney(n, allMoney) &#123;</span><br><span class="line">  const length = allMoney.length;</span><br><span class="line">  const result = [];    // 存储结果的数组，每项表示对应面值的张数</span><br><span class="line">  for(let i = 0; i &lt; length; i++) &#123;</span><br><span class="line">    if(n &gt;= allMoney[i]) &#123;</span><br><span class="line">      // 如果需要找的钱比面值大，那就可以找，除一下看看能找几张</span><br><span class="line">      result[i] = parseInt(n / allMoney[i]);</span><br><span class="line">      n = n - result[i] * allMoney[i];   // 更新剩下需要找的钱</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      // 否则不能找</span><br><span class="line">      result[i] = 0;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const result = changeMoney(126, allMoney);</span><br><span class="line">console.log(result);   // [1, 0, 1, 1, 1]</span><br></pre></td></tr></table></figure>
+
+<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><p>上面的找零问题就是贪心算法，每次都去贪最大面值的，发现贪不了了，再去贪次大的。从概念上讲，贪心算法是：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/27/1708549aa8564a73?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220105715893"></p>
+<p>从上面的定义可以看出，并不是所有问题都可以用贪心算法来求解的，因为它每次拿到的只是局部最优解，局部最优解组合起来并不一定是全局最优解。下面我们来看一个这样的例子：</p>
+<h2 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h2><p>背包问题也是一个很经典的算法问题，题目如下：</p>
+<blockquote>
+<p>有一个小偷，他进到了一个店里要偷东西，店里有很多东西，每个东西的价值是v，每个东西的重量是w。但是小偷只有一个背包，他背包总共能承受的重量是W。请问怎么拿东西能让他拿到的价值最大？</p>
+</blockquote>
+<p>其实背包问题细分下来又可以分成两个问题：0-1背包和分数背包。</p>
+<blockquote>
+<p><strong>0-1背包</strong>：指的是对于某个商品来说，你要么不拿，要么全拿走，不能只拿一半或者只拿三分之二。可以将商品理解成金砖，你要么整块拿走，要么不拿，不能拿半块。</p>
+</blockquote>
+<blockquote>
+<p><strong>分数背包</strong>：分数背包就是跟0-1背包相反的，你可以只拿一部分，可以拿一半，也可以拿三分之二。可以将商品理解成金砂，可以只拿一部分。</p>
+</blockquote>
+<p>下面来看个例子：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/27/1708549fc340955d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220110835213"></p>
+<p>这个问题用我们平时的思维也很好想，要拿到总价值最大，那我们就贪呗，就拿最贵的，即价值除以重量的数最大的。但是每次都拿最贵的，是不是最后总价值最大呢？我们先假设上面的例子是0-1背包，最贵的是v1，然后是v2，v3。我们先拿v1, 背包还剩40，拿到总价值是60，然后拿v2，背包还剩20，拿到总价值是160。然后就拿不下了，因为v3的重量是30，我们背包只剩20了，装不下了。但是这个显然不是全局最优解，因为我们明显可以看出，如果我们拿v2，v3，背包刚好装满，总价值是220，这才是最优解。<strong>所以0-1背包问题不能用贪心算法。</strong></p>
+<p>但是分数背包可以用贪心，因为我们总是可以拿最贵的。我们先拿了v1, v2，发现v3装不下了，那就不装完了嘛，装三分之二就行了。下面我们用贪心来实现一个分数背包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">const products = [</span><br><span class="line">  &#123;id:1, v: 60, w: 10&#125;, </span><br><span class="line">  &#123;id:2, v: 100, w: 20&#125;, </span><br><span class="line">  &#123;id:3, v: 120, w: 30&#125;</span><br><span class="line">];    // 新建一个数组表示商品列表，每个商品加个id用于标识</span><br><span class="line"></span><br><span class="line">function backpack(W, products) &#123;</span><br><span class="line">  const sortedProducts = products.sort((product1, product2) =&gt; &#123;</span><br><span class="line">    const price1 = product1.v / product1.w;</span><br><span class="line">    const price2 = product2.v / product2.w;</span><br><span class="line">    if(price1 &gt; price2) &#123;</span><br><span class="line">      return -1;</span><br><span class="line">    &#125; else if(price1 &lt; price2) &#123;</span><br><span class="line">      return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">  &#125;);  // 先对商品按照价值从大到小排序</span><br><span class="line">  </span><br><span class="line">  const result = []; // 新建数组接收结果</span><br><span class="line">  let allValue = 0;  // 拿到的总价值</span><br><span class="line">  const length = sortedProducts.length;</span><br><span class="line">  </span><br><span class="line">  for(let i = 0; i &lt; length; i++) &#123;</span><br><span class="line">    const sortedProduct = sortedProducts[i];</span><br><span class="line">    if(W &gt;= sortedProduct.w) &#123;</span><br><span class="line">      // 整个拿完</span><br><span class="line">      result.push(&#123;</span><br><span class="line">        id: sortedProduct.id,</span><br><span class="line">        take: 1,     // 拿的数量</span><br><span class="line">      &#125;);</span><br><span class="line">      W = W - sortedProduct.w;</span><br><span class="line">      allValue = allValue + sortedProduct.v;</span><br><span class="line">    &#125; else if(W &gt; 0) &#123;</span><br><span class="line">      // 只能拿一部分</span><br><span class="line">      result.push(&#123;</span><br><span class="line">        id: sortedProduct.id,</span><br><span class="line">        take: W / sortedProduct.w,     </span><br><span class="line">      &#125;);</span><br><span class="line">      allValue = allValue + sortedProduct.v * (W / sortedProduct.w);</span><br><span class="line">      W = 0; // 装满了</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      // 不能拿了</span><br><span class="line">      result.push(&#123;</span><br><span class="line">        id: sortedProduct.id,</span><br><span class="line">        take: 0,     </span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return &#123;result: result, allValue: allValue&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 测试一下</span><br><span class="line">const result = backpack(50, products);</span><br><span class="line">console.log(result);</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/28/17089a933b5ba0fd?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220113537290"></p>
+<h3 id="0-1背包"><a href="#0-1背包" class="headerlink" title="0-1背包"></a>0-1背包</h3><p>前面讲过0-1背包不能用贪心求解，我们这里还是讲讲他怎么来求解吧。要解这个问题需要用到动态规划的思想，关于动态规划的思想，可以看看<a href="https://juejin.im/post/5e4b472251882549507b015f" target="_blank" rel="noopener">我这篇文章</a>，如果你只想看看贪心算法，可以跳过这一部分。假设我们背包放了n个商品，W是我们背包的总容量，我们这时拥有的总价值是<img src="https://juejin.im/equation?tex=D(n%2C%20W)" alt="D(n, W)">。我们考虑最后一步，</p>
+<blockquote>
+<p>假如我们不放最后一个商品，则总价值为<img src="https://juejin.im/equation?tex=D(n-1%2C%20W)" alt="D(n-1, W)"></p>
+</blockquote>
+<blockquote>
+<p>假设我们放了最后一个商品，则总价值为最后一个商品加上前面已经放了的价值，表示为<img src="https://juejin.im/equation?tex=v_n%20%2B%20D(n-1%2C%20W-w_n)" alt="v_n + D(n-1, W-w_n)">，这时候需要满足的条件是<img src="https://juejin.im/equation?tex=W%20%3E%3D%20w_n" alt="W &gt;= w_n">，即最后一个要放得下。</p>
+</blockquote>
+<p>我们要求的最大解其实就是上述两个方案的最大值，表示如下：</p>
+<p><img src="https://juejin.im/equation?tex=D(n%2C%20W)%20%3D%20max(D(n-1%2C%20W)%2C%20v_n%20%2B%20D(n-1%2C%20W-w_n))" alt="D(n, W) = max(D(n-1, W), v_n + D(n-1, W-w_n))"></p>
+<h4 id="递归解法"><a href="#递归解法" class="headerlink" title="递归解法"></a>递归解法</h4><p>有了递推公式，我们就可以用递归解法了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">const products = [</span><br><span class="line">  &#123;id:1, v: 60, w: 10&#125;, </span><br><span class="line">  &#123;id:2, v: 100, w: 20&#125;, </span><br><span class="line">	&#123;id:3, v: 120, w: 30&#125;</span><br><span class="line">];    // 新建一个数组表示商品列表，每个商品加个id用于标识</span><br><span class="line"></span><br><span class="line">function backpack01(n, W, products) &#123;</span><br><span class="line">  if(n &lt; 0 || W &lt;= 0) &#123;</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  const noLast = backpack01(n-1, W, products);  // 不放最后一个</span><br><span class="line">  </span><br><span class="line">  let getLast = 0;</span><br><span class="line">  if(W &gt;= products[n].w)&#123;  // 如果最后一个放得下</span><br><span class="line">    getLast = products[n].v + backpack01(n-1, W-products[n].w, products);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  const result = Math.max(noLast, getLast);</span><br><span class="line">  </span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 测试一下</span><br><span class="line">const result = backpack01(products.length-1, 50, products);</span><br><span class="line">console.log(result);   // 220</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><p>递归的复杂度很高，我们用动态规划重写一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">const products = [</span><br><span class="line">  &#123;id:1, v: 60, w: 10&#125;, </span><br><span class="line">  &#123;id:2, v: 100, w: 20&#125;, </span><br><span class="line">	&#123;id:3, v: 120, w: 30&#125;</span><br><span class="line">];    // 新建一个数组表示商品列表，每个商品加个id用于标识</span><br><span class="line"></span><br><span class="line">function backpack01(W, products) &#123;</span><br><span class="line">  const d = [];      // 初始化一个数组放计算中间值，其实为二维数组，后面填充里面的数组</span><br><span class="line">  const length = products.length;</span><br><span class="line">  </span><br><span class="line">  // i表示行，为商品个数，数字为 0 -- (length - 1)</span><br><span class="line">  // j表示列，为背包容量，数字为 0 -- W</span><br><span class="line">  for(let i = 0; i &lt; length; i++)&#123;</span><br><span class="line">    d.push([]);</span><br><span class="line">    for(let j = 0; j &lt;= W; j++) &#123;</span><br><span class="line">      if(j === 0) &#123;</span><br><span class="line">        // 背包容量为0</span><br><span class="line">        d[i][j] = 0;</span><br><span class="line">      &#125; else if(i === 0) &#123;</span><br><span class="line">        if(j &gt;= products[i].w) &#123;</span><br><span class="line">          // 可以放下第一个商品</span><br><span class="line">          d[i][j] = products[i].v;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          d[i][j] = 0;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        const noLast = d[i-1][j];</span><br><span class="line">        </span><br><span class="line">        let getLast = 0;</span><br><span class="line">        if(j &gt;= products[i].w) &#123;</span><br><span class="line">          getLast = products[i].v + d[i-1][j - products[i].w];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        if(noLast &gt; getLast) &#123;</span><br><span class="line">          d[i][j] = noLast;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          d[i][j] = getLast;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  console.log(d);</span><br><span class="line">  return d[length-1][W];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 测试一下</span><br><span class="line">const result = backpack01(50, products);</span><br><span class="line">console.log(result);   // 220</span><br></pre></td></tr></table></figure>
+
+<h4 id="回溯最优解"><a href="#回溯最优解" class="headerlink" title="回溯最优解"></a>回溯最优解</h4><p>为了能够输出最优解，我们需要将每个最后放入的商品记录下来，然后从最后往前回溯，将前面的代码改造如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">const products = [</span><br><span class="line">  &#123;id:1, v: 60, w: 10&#125;, </span><br><span class="line">  &#123;id:2, v: 100, w: 20&#125;, </span><br><span class="line">	&#123;id:3, v: 120, w: 30&#125;</span><br><span class="line">];    // 新建一个数组表示商品列表，每个商品加个id用于标识</span><br><span class="line"></span><br><span class="line">function backpack01(W, products) &#123;</span><br><span class="line">  const d = [];      // 初始化一个数组放计算中间值，其实为二维数组，后面填充里面的数组</span><br><span class="line">  const res = [];    // 记录每次放入的最后一个商品, 同样为二维数组</span><br><span class="line">  const length = products.length;</span><br><span class="line">  </span><br><span class="line">  // i表示行，为商品个数，数字为 0 -- (length - 1)</span><br><span class="line">  // j表示列，为背包容量，数字为 0 -- W</span><br><span class="line">  for(let i = 0; i &lt; length; i++)&#123;</span><br><span class="line">    d.push([]);</span><br><span class="line">    res.push([]);</span><br><span class="line">    for(let j = 0; j &lt;= W; j++) &#123;</span><br><span class="line">      if(j === 0) &#123;</span><br><span class="line">        // 背包容量为0</span><br><span class="line">        d[i][j] = 0;</span><br><span class="line">        res[i][j] = null;  </span><br><span class="line">      &#125; else if(i === 0) &#123;</span><br><span class="line">        if(j &gt;= products[i].w) &#123;</span><br><span class="line">          // 可以放下第一个商品</span><br><span class="line">          d[i][j] = products[i].v;</span><br><span class="line">          res[i][j] = products[i];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          d[i][j] = 0;</span><br><span class="line">          res[i][j] = null;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        const noLast = d[i-1][j];</span><br><span class="line">        </span><br><span class="line">        let getLast = 0;</span><br><span class="line">        if(j &gt;= products[i].w) &#123;</span><br><span class="line">          getLast = products[i].v + d[i-1][j - products[i].w];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        if(noLast &gt; getLast) &#123;</span><br><span class="line">          d[i][j] = noLast;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          d[i][j] = getLast;</span><br><span class="line">          res[i][j] = products[i];   // 记录最后一个商品</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  // 回溯res, 得到最优解</span><br><span class="line">  let tempW = W;</span><br><span class="line">  let tempI = length - 1;</span><br><span class="line">  const bestSol = [];</span><br><span class="line">  while (tempW &gt; 0 &amp;&amp; tempI &gt;= 0) &#123;</span><br><span class="line">    const last = res[tempI][tempW];</span><br><span class="line">    bestSol.push(last);</span><br><span class="line">    tempW = tempW - last.w;</span><br><span class="line">    tempI = tempI - 1;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  console.log(d);</span><br><span class="line">  console.log(bestSol);</span><br><span class="line">  return &#123;</span><br><span class="line">    totalValue: d[length-1][W],</span><br><span class="line">    solution: bestSol</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 测试一下</span><br><span class="line">const result = backpack01(50, products);</span><br><span class="line">console.log(result);   // 220</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的输出：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/27/170854aaec1242c8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220144941561"></p>
+<h2 id="数字拼接问题"><a href="#数字拼接问题" class="headerlink" title="数字拼接问题"></a>数字拼接问题</h2><p>再来看一个贪心算法的问题，加深下理解，这个问题如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/27/170854adb16e808b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220153438242"></p>
+<p>这个问题看起来也不难，我们有时候也会遇到类似的问题，我们可以很直观的想到一个解法：看哪个数字的第一个数字大，把他排前面，比如32和94，把第一位是9的94放前面，得到9432，肯定比32放前面的3294大。这其实就是按照字符串大小来排序嘛，字符大的排前面，但是这种解法正确吗？我们再来看两个数字，假如我们有728和7286，按照字符序，7286排前面，得到7286728，但是这个值没有728放前面的7287286大。说明单纯的字符序是搞不定这个的，对于两个数字a,b，如果他们的长度一样，那按照字符序就没问题，如果他们长度不一样，这个解法就不一定对了，那怎么办呢？其实也简单，我们看看a+b和b+a拼成的数字，哪个大就行了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">假设</span><br><span class="line">a = 728</span><br><span class="line">b = 7286</span><br><span class="line">字符串： a + b = &quot;7287286&quot;</span><br><span class="line">字符串： b + a = &quot;7286728&quot;</span><br><span class="line">比较下这两个字符串, a + b比较大，a放前面就行了, 反之放到后面</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>上述算法就是一个贪心，这里贪的是什么的？贪的是<code>a + b</code>的值，要大的那个。在实现的时候，可以自己写个冒泡，也可以直接用数组的sort方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">const nums = [32, 94, 128, 1286, 6, 71];</span><br><span class="line"></span><br><span class="line">function getBigNum(nums) &#123;</span><br><span class="line">  nums.sort((a, b) =&gt; &#123;</span><br><span class="line">    const ab = `$&#123;a&#125;$&#123;b&#125;`;</span><br><span class="line">    const ba = `$&#123;b&#125;$&#123;a&#125;`;</span><br><span class="line">    </span><br><span class="line">    if(ab &gt; ba) &#123;</span><br><span class="line">      return -1;   // ab大，a放前面</span><br><span class="line">    &#125; else if (ab &lt; ba) &#123;</span><br><span class="line">      return 1;  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  return nums;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const res = getBigNum(nums);</span><br><span class="line">console.log(res);    // [94, 71, 6, 32, 1286, 128]</span><br></pre></td></tr></table></figure>
+
+<h2 id="活动选择问题"><a href="#活动选择问题" class="headerlink" title="活动选择问题"></a>活动选择问题</h2><p>活动选择问题稍微难一点，也可以用贪心，但是需要贪的东西没前面的题目那么直观，我们先来看看题目：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/27/170854b27c8177b0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220155950342"></p>
+<p>这个问题应该这么思考：为了能尽量多的安排活动，我们在安排一个活动时，应该尽量给后面的活动多留时间，这样后面有机会可以安排更多的活动。换句话说就是，应该把结束时间最早的活动安排在第一个，再剩下的时间里面继续安排结束时间早的活动。这里的贪心其实贪的就是结束时间早的，这个结论其实可以用数学来证明的：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/27/170854b58037fdb1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220161538654"></p>
+<p>下面来实现下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">const activities = [</span><br><span class="line">  &#123;start: 1, end: 4&#125;,</span><br><span class="line">  &#123;start: 3, end: 5&#125;,</span><br><span class="line">  &#123;start: 0, end: 6&#125;,</span><br><span class="line">  &#123;start: 5, end: 7&#125;,</span><br><span class="line">  &#123;start: 3, end: 9&#125;,</span><br><span class="line">  &#123;start: 5, end: 9&#125;,</span><br><span class="line">  &#123;start: 6, end: 10&#125;,</span><br><span class="line">  &#123;start: 8, end: 11&#125;,</span><br><span class="line">  &#123;start: 8, end: 12&#125;,</span><br><span class="line">  &#123;start: 2, end: 14&#125;,</span><br><span class="line">  &#123;start: 12, end: 16&#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">function chooseActivity(activities) &#123;</span><br><span class="line">  // 先按照结束时间从小到大排序</span><br><span class="line">  activities.sort((act1, act2) =&gt; &#123;</span><br><span class="line">    if(act1.end &lt; act2.end) &#123;</span><br><span class="line">      return -1;</span><br><span class="line">    &#125; else if(act1.end &gt; act2.end) &#123;</span><br><span class="line">      return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  const res = [];  // 接收结果的数组</span><br><span class="line">  let lastEnd = 0; // 记录最后一个活动的结束时间</span><br><span class="line">  </span><br><span class="line">  for(let i = 0; i &lt; activities.length; i++)&#123;</span><br><span class="line">    const act = activities[i];</span><br><span class="line">    if(act.start &gt;= lastEnd) &#123;</span><br><span class="line">      res.push(act);</span><br><span class="line">      lastEnd = act.end</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 测试一下</span><br><span class="line">const result = chooseActivity(activities);</span><br><span class="line">console.log(result);</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的运行结果如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/27/170854ba87c2a2b7?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image-20200220163750591"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>贪心算法的重点就在一个贪字，要找到贪的对象，然后不断的贪，最后把目标贪完，输出最优解。要注意的是，每次贪的时候其实拿到的都只是局部最优解，局部最优解不一定组成全局最优解，比如0-1背包，对于这种问题是不能用贪心的，要用其他方法求解。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/03/19/数据结构与算法/前端也能学算法：由浅入深讲解贪心算法/" title="前端也能学算法：由浅入深讲解贪心算法">https://uestc66.github.io/2020/03/19/数据结构与算法/前端也能学算法：由浅入深讲解贪心算法/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Webpack/" rel="tag"><i class="fa fa-tag"></i> Webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/19/Web前端/useEffect 完整指南/" rel="next" title="useEffect 完整指南">
+                <i class="fa fa-chevron-left"></i> useEffect 完整指南
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/29/其他/你累死累活做业务，绩效还不怎么样，我只能帮你到这/" rel="prev" title="你累死累活做业务，绩效还不怎么样，我只能帮你到这了……">
+                你累死累活做业务，绩效还不怎么样，我只能帮你到这了…… <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#找零问题"><span class="nav-number">1.</span> <span class="nav-text">找零问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贪心算法"><span class="nav-number">2.</span> <span class="nav-text">贪心算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背包问题"><span class="nav-number">3.</span> <span class="nav-text">背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1背包"><span class="nav-number">3.1.</span> <span class="nav-text">0-1背包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#递归解法"><span class="nav-number">3.1.1.</span> <span class="nav-text">递归解法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态规划"><span class="nav-number">3.1.2.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回溯最优解"><span class="nav-number">3.1.3.</span> <span class="nav-text">回溯最优解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数字拼接问题"><span class="nav-number">4.</span> <span class="nav-text">数字拼接问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#活动选择问题"><span class="nav-number">5.</span> <span class="nav-text">活动选择问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

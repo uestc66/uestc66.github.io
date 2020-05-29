@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自 InfoQ，原文链接：https://www.infoq.cn/article/6tLtcBjW1YpzZ9Z4dXRZ 随着前端技术不断从 Web 延伸至各种“端”，大前端的概念早已成为业内共识。伴随着大前端的发展，与之相对应的前端工程体系也在不断拓展边界，仅仅只是构建、工具和规范等常规方式已经不足以表达当下前端工程所涉及的领域。 近日，InfoQ 记者有幸采访了阿里巴巴高级前端技术专家">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="250行实现一个简单的MVVM">
+<meta property="og:url" content="https://uestc66.github.io/2020/03/18/Web前端/从阿里前端工程化中台实践，看中台建设的舍与得/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s blog">
+<meta property="og:description" content="转载自 InfoQ，原文链接：https://www.infoq.cn/article/6tLtcBjW1YpzZ9Z4dXRZ 随着前端技术不断从 Web 延伸至各种“端”，大前端的概念早已成为业内共识。伴随着大前端的发展，与之相对应的前端工程体系也在不断拓展边界，仅仅只是构建、工具和规范等常规方式已经不足以表达当下前端工程所涉及的领域。 近日，InfoQ 记者有幸采访了阿里巴巴高级前端技术专家">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-18T02:11:12.955Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="250行实现一个简单的MVVM">
+<meta name="twitter:description" content="转载自 InfoQ，原文链接：https://www.infoq.cn/article/6tLtcBjW1YpzZ9Z4dXRZ 随着前端技术不断从 Web 延伸至各种“端”，大前端的概念早已成为业内共识。伴随着大前端的发展，与之相对应的前端工程体系也在不断拓展边界，仅仅只是构建、工具和规范等常规方式已经不足以表达当下前端工程所涉及的领域。 近日，InfoQ 记者有幸采访了阿里巴巴高级前端技术专家">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/03/18/Web前端/从阿里前端工程化中台实践，看中台建设的舍与得/">
+
+
+
+
+
+  <title>250行实现一个简单的MVVM | jerry.zmf's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gateway">
+          <a href="/gateway/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            门户
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/03/18/Web前端/从阿里前端工程化中台实践，看中台建设的舍与得/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">250行实现一个简单的MVVM</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-18T10:01:34+08:00">
+                2020-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/18/Web前端/从阿里前端工程化中台实践，看中台建设的舍与得/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/03/18/Web前端/从阿里前端工程化中台实践，看中台建设的舍与得/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自 InfoQ，原文链接：<a href="https://www.infoq.cn/article/6tLtcBjW1YpzZ9Z4dXRZ" target="_blank" rel="noopener">https://www.infoq.cn/article/6tLtcBjW1YpzZ9Z4dXRZ</a></font></p>
+<p>随着前端技术不断从 Web 延伸至各种“端”，<a href="https://www.infoq.cn/article/talking-about-daqianduan" target="_blank" rel="noopener">大前端</a>的概念早已成为业内共识。伴随着大前端的发展，与之相对应的前端工程体系也在不断拓展边界，仅仅只是构建、工具和规范等常规方式已经不足以表达当下前端工程所涉及的领域。</p>
+<p>近日，InfoQ 记者有幸采访了阿里巴巴高级前端技术专家朱华军（阿大），他与我们分享了阿里集团前端工程化中台的实践过程，以及实践背后的经验与思考。他在采访中强调，前端工程化一定是大趋势，但不建议大家盲目地追求工程化，对于大部分规模不大的前端团队而言，工程体系的建设和规范并不是当务之急。接下来，他将在 QCon 全球软件开发大会（北京站）2020 担任<a href="https://qcon.infoq.cn/2020/beijing/track/727" target="_blank" rel="noopener">大前端大工程专题</a>出品人，为大家带来各大厂前端团队在工程领域不断拓展思路、换道创新中沉淀下来的经验和实践，感兴趣的读者可以关注。以下为采访问答实录。</p>
+<p><strong>InfoQ：您从 2013 年开始专注于前端工程化领域，并完成了淘宝近百人前端团队研发模式的整体升级，能否先总体介绍一下淘宝前端团队研发模式的发展历程，期间一些重要的节点。</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>我是 09 年加入的淘宝，那时淘宝前端的研发体系还比较原始，代码管理是基于 SVN 的，所有前端代码都在一个代码仓库里。每周有两个发布窗口期，SCM 会提前拉好开发分支，大家在一个分支上开发、集成和上线。那个时候前端的代码是所写即所得，不需要编译构建什么的，本地的开发环境相对也简单，基本以文本编辑器为主。大概到了 13 年的左右，NodeJS 和 Git 开始流行，淘宝前端联合 SCM 团队基于开源的 Gitlab 在集团内搭建了 Git 托管环境，前端是最早将代码从 SVN 全部迁移到 Git 进行管理的技术岗位，这个决策对后续阿里巴巴前端工程体系建设起到了非常重要的影响。由于 Git 在分支管理特性上的优势，原先前端的集成开发模式慢慢演变成了基于 Git 分支和 Gitlab Web Hook 的半自动化模式。另外 NodeJS 的崛起也快速促进了我们内部前端本地开发工具生态的完善，各种本地 Command Line 工具如雨后春笋般涌现。百花齐放的繁荣之后必然的结果就是规范和一统，彼时刚好集团在推行中台战略，前端研发工程体系顺势走上中台化道路。</p>
+</blockquote>
+<p><strong>InfoQ：集团内部是什么时候确定要做前端工程化中台的？做这个决定的背景是什么样的？面临的最大挑战是什么？期望中台解决什么问题？</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>17 年初的时候吧，在这之前我们已经统一了淘宝前端团队的工程体系，有了完善的本地开发工具生态，标准化了本地的开发和调试。另外还搭建了一套在线发布流程，孵化了如云构建（代码在线构建）、门神（代码静态扫描）等前端工程基础设施。那一年初团队在做规划的时候，大家对前端工程体系接下来发展方向有一些争议：第一个观点认为我们应该将本地的研发工具统统搬上云，包括在线 IDE、在线 Dev 等，在线化一定是未来的趋势；第二个观点认为我们应该输出淘宝前端的工程能力到整个阿里巴巴集团，淘宝前端的工程体系建设已经站在了集团的制高点，应该顺势推进整个集团前端研发体系的规范化。在当时的情况下，集团中大部分 BU 的前端体系或多或少都源自淘宝前端，中间有着千丝万缕的关系，另外还有一个外部因素就是大家已经非常熟悉的阿里提出的中台战略，在集团中台战略大的趋势下我们最终毅然决然地选择了建设阿里巴巴前端工程中台。当然这不是说第一件事情就不重要，恰巧在经历过前端工程中台的建设后，我们目前在做的就是 IDE 和在线研发能力。</p>
+<p>阿里是一个庞大的经济体，各事业群和事业部加起来有几十上百个大大小小的前端团队，推进如此多的团队来规范前端研发体系的阻力是巨大的。加之每个前端团队当下的前端工程体系建设程度不一样，对标准化前端工程开发的理解和需求也都不一样，<strong>如何说服并协调推进如此众多的前端团队，是我们做这件事情遇到的第一个难题。\</strong>简单说下我们是如何解决的，类似的问题我想稍微有规模一点的跨团队协作项目应该都会碰到，我们首先*<em>需要得到自上而下的支持*</em>。阿里巴巴集团内不同的技术栈都有一个技术委员会，前端也有一个阿里前端技术委员会。技术委员会的成员一般都是各事业群较大规模前端团队的 Leader，每年委员会会发起几个技术项目，并协同集团内资源合力推进。经过努力，前端工程中台争取到了委员会其中一个技术项目。有了自上而下的支持，很多事情推进就方便多了。<strong>不过光靠自上而下推动也是不行的，毕竟技术体系的升级改造对日常业务的正常进度肯定是有影响的</strong>。另外<strong>对于大部分规模不大的前端团队而言，工程体系的建设和规范并不是当务之急</strong>。所以我们首先选择集团内规模最大的 TOP 5 前端团队进行推进，这些团队对于规范前端研发的需求更加强烈，并且本身也有一定的工程底子积累，沟通可以更加顺畅，彼此之间也有更多的理解和认可。当几个较大前端团队统一之后，其它团队就轻松很多了，甚至大部分小团队是主动要求接入前端工程中台的。</p>
+<p>大部分的基础技术体系建设逃不开三个关键字：效率、质量和成本。前端工程体系的建设也是紧紧围绕着这三个关键字，通过标准化的研发能力和统一的流程规范来约束研发过程中的不确定性，从而提升研发效率和质量。效率和质量提升了，成本自然就降了。而前端工程中台的目的是期望降低所有前端团队达成这一目标的门槛，不管团队在什么阶段、是何种规模，都能借助前端工程中台快速落地适合自身组织形态和技术特点的前端工程方案。</p>
+</blockquote>
+<p><strong>InfoQ：阿里前端工程化中台能够提供哪些服务和技术能力？在通过中台提高前端研发效率上，能否列举一个具体示例进行说明？</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>在我个人的理解里，<strong>标准化和开放一定是任何一个中台必须具备的能力</strong>。这两者看上去似乎有点矛盾，却是我们在建设前端工程中台时切实的感受和总结。比如我们统一了静态源站和发布流程，规范了本地工具命令入口和装载更新模式，更是推进了标准化的在线构建体系与代码检查体系的建设。关于开放，前面有讲到前端工程中台的目的是降低所有前端团队工程体系建设的门槛，所以赋能必然是中台的使命之一，开放是赋能最直接有效的方式。</p>
+<p>完善的工程体系必然会帮助团队提升研发效率，而工程中台的使命是帮助每个团队更高效的完善工程体系的建设。对于中台而言，研发效率的提升其实并不是最直接的收益，而是全局性的收敛和管控能力。我举个收敛管控方面的例子：18 年集团整体推进安全生产策略，所有的线上变更必须接入统一的变更管控平台，提交变更单后允许进行线上变更。这个时候工程中台的价值就体现出来了，因为我们已经经过一年多的努力收敛了所有前端的发布流程，整个集团所有前端的发布接入统一变更管控几乎没有成本地实现了，这在推进前端工程中台之前是无法想象的，如果没有前期的收敛根本无从下手。</p>
+</blockquote>
+<p><strong>InfoQ：阿里前端工程化中台目前推进情况如何？与您的预期相符吗？您理想的状态应该是什么样的？</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>目前的整体进展还是比较符合预期的，在流程规范和标准化方面我们已经取得了非常好的效果，并且在推进工程中台的实践过程中积累了不少优秀的能力平台，这些都是宝贵的资产。</p>
+<p>当然等着我们去做的事情还很多，有两件事情是我们后续的重点。第一件事是开放的 IDE 生态建设，经过大半年的封闭开发我们已经完成了代号为 “开天” 的 IDE Framework 的研发，IDE Framework 是 IDE 的核心，通过 “开天” IDE Framework 构建的各种 IDE 实现（Web 或本地）来打通研发生态。待再进一步完善后，我们将开源整体的 IDE 解决方案，包括开放的扩展生态体系、Web IDE 容器侧能力等。未来阿里前端的工程体系一定是围绕着 IDE 展开的。</p>
+<p>第二件事情跟开放相关，目前我们所有的工程能力都是服务于内部员工的，我们期望借助阿里云能够以平台化、体系化和产品化地方式输出阿里的前端工程实践，服务社区服务行业，为推进国内前端的发展出一份力。</p>
+</blockquote>
+<p><strong>InfoQ：在前端工程化中台推进过程中，来自前端团队的反馈是什么？有没有遇到什么困难，你们是如何解决的？</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>困难肯定有，前面也有讲到，在阿里巴巴如此庞大的体系内，多部门的协调和落到遇到阻碍在所难免，关键是找到正确的解决方法。<strong>在每个前端团队中，对于工程化带来的收益在个体与团队整体的体感差异是很大的</strong>，这个怎么理解呢？我在很多场合表达过，<strong>越是完善的工程体系对个体的约束往往是越强的，带来的结果可能是个体的效率反而是下降</strong>。所以我们在推进工程中台时，来自一线的反对和抱怨声是蛮常见的。但如果我们换个视角，从团队整体的角度去看待效率这个问题，一定是能达到 1+ 1 大于 2 的效果的，特别是规模越大的团队效果越明显。所以在前端工程中台的建设和推进中，我们优先考虑的都是如何帮助团队整体获得更高的收益。</p>
+</blockquote>
+<p><strong>InfoQ：您认为前端工程化中台是大势所趋吗？推进过程中可能还会遇到哪些挑战？</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p><strong>前端工程不是万金油</strong>，它是在特定场景及特定时期的针对性解决方案，越是完美、越是高效的工程解决方案越是被所服务的组织结构和技术架构所约束，所以对我合适的前端工程解决方案对你未必合适。</p>
+<p><strong>前端工程化一定是大趋势，但不建议大家盲目地追求工程化</strong>。任何体系或平台的建设都是需要投入成本的，还是要结合自身组织特点，先清楚地认识自己所处的阶段，计算清楚投入产出比。如果是 10 人以下的小规模的团队，适当制定研发规范即可；10 - 30 人规模的团队可以制定一些研发规范、落地工具和流程；30 人以上团队规模就要开始体系化思考前端工程能力的建设了。中台亦是如此，不要为了中台而中台，先想明白要解决什么问题。</p>
+</blockquote>
+<p><strong>InfoQ：机器学习在大前端领域也正成为一项越来越重要的技术能力，阿里前端团队在智能化方向上还有哪些探索工作？您如何看待前端智能化的现状和未来发展？</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>阿里前端布局机器学习领域相对较早，前端智能化体系建设已经连续两年作为经济体前端委员会的技术项目之一了。并且也已经有了相关的成型产品：imgcook（<a href="https://www.imgcook.com/" target="_blank" rel="noopener"> https://www.imgcook.com/ </a>）。imgcook 基于大数据机器学习，可以智能地将设计稿转换成前端代码，在 2019 年双十一开始就已经大量应用到会场页面的开发。还原精度业界领先，并且支持自定义扩展 DSL，大家有兴趣可以访问官网详细了解。</p>
+<p><strong>基于机器学习的智能化辅助开发是前端领域的下一个技术风口</strong>，我所知道的国内国外不少大公司都在做。这个领域在基础技术方面的发展已经比较完备，不过目前前端在这方面的人才储备还非常不足，有兴趣的前端同学可以多了解了解。</p>
+</blockquote>
+<p><strong>InfoQ：**</strong>您将在本次 QCon 北京 2020 上担任“大前端大工程”专题的出品人，能否跟我们详细谈谈所谓“大前端大工程”指的是什么？这个专题将会跟大家重点分享哪些内容？**</p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>大前端的概念应该不需要过多介绍了，传统的 HTML、CSS 和 JS 已经完全无法定义当下的前端。大工程其实是跟大前端相对应的，仅仅只是构建、工具和规范等常规方式也已经不足以表达当下前端工程所涉及的领域。为了提升研发效率、为了保障大规模协同、为了激发业务创新，各大厂的前端团队在工程领域不断拓展思路，突破界限；优秀的初创企业也从中另辟蹊径，换道创新。如此繁荣的前端工程生态也只有叫大工程才配得上了。本届 QCon 该专题将遵循 “大前端大工程” 的定位彻底打开前端工程实践领域，我们会邀请国内各大厂的优秀前端团队来分享如何通过创新工程等手段来解决极限业务诉求。除了实践之外还会有几个前端工程相关的基础技术（Webpack 等）分享，这块以海外嘉宾为主。</p>
+</blockquote>
+<p><strong>InfoQ：大前端领域涉及的工程能力越来越多样化、复杂化，这是否意味着前端将进入一个新的阶段？前端工程师如何做好准备？</strong></p>
+<p><strong>朱华军（阿大）：</strong></p>
+<blockquote>
+<p>其实前端一直在不停的进入新阶段，“学不动了” 这个笑话很好地阐释了前端技术领域的迭代变化之快。我认为工程能力的完备程度，可以非常直接地体现一个技术的成熟度。完善的工程能力必然催生工作内容的细分，并有效降低细分领域的入门门槛。同时也会必然会淘汰大量低级劳动力，特别是在自动化、智能化方向的工程实践，未来一定会淘汰一大批入门级的前端工程师。如果一定要给建议的话，对于那些目前已经在前端岗位的同学，我建议要找到自己在前端的细分领域，然后持续深入下去。</p>
+</blockquote>
+<p><strong>采访嘉宾介绍：</strong></p>
+<p>朱华军（阿大），阿里巴巴高级前端技术专家。2009 年加入淘宝网，负责过淘宝交易、商品等基础业务及机票彩票、一淘等创新业务。2013 年开始专注于前端工程化领域，推动开发工具、流程和规范的统一，完成淘宝近百人前端团队研发模式的整体升级。目前负责阿里集团前端工程化中台的建设。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/03/18/Web前端/从阿里前端工程化中台实践，看中台建设的舍与得/" title="250行实现一个简单的MVVM">https://uestc66.github.io/2020/03/18/Web前端/从阿里前端工程化中台实践，看中台建设的舍与得/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/18/Node.js/基于 Egg.js 框架的 Node.js 服务构建之用户管理设计/" rel="next" title="基于 Egg.js 框架的 Node.js 服务构建之用户管理设计">
+                <i class="fa fa-chevron-left"></i> 基于 Egg.js 框架的 Node.js 服务构建之用户管理设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/18/Web前端/defer 和 async 的区别/" rel="prev" title="defer 和 async 的区别">
+                defer 和 async 的区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
