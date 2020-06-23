@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自 Alibaba F2E，原文链接：https://mp.weixin.qq.com/s/nMcgc1Gaj7NU0vOY399nYg 搭建在互联网技术领域算是一个非常宽泛的概念，从早期大部分人都有接触过的  wordpress 个人网站搭建，到一些文章类 CMS 系统的图文编排搭建，再到更复杂的 UI 搭建，特别是 React/Vue 出现后，从框架层面也提供了很多包括视图结构化（vdom">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何设计阿里经济体都在用的搭建服务-天马">
+<meta property="og:url" content="https://uestc66.github.io/2020/06/23/Web前端/如何设计阿里经济体都在用的搭建服务-天马/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s blog">
+<meta property="og:description" content="转载自 Alibaba F2E，原文链接：https://mp.weixin.qq.com/s/nMcgc1Gaj7NU0vOY399nYg 搭建在互联网技术领域算是一个非常宽泛的概念，从早期大部分人都有接触过的  wordpress 个人网站搭建，到一些文章类 CMS 系统的图文编排搭建，再到更复杂的 UI 搭建，特别是 React/Vue 出现后，从框架层面也提供了很多包括视图结构化（vdom">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3moTibdxVI8gwh9cSA0hib4EQPBbvXT49alKP20zLdIFPOmRRpY5f1GJAA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mT36oSCP5QdkTsUNliaXdZ1LPOicWyRMQBkGaOHG5fgTUl3uIcroS353A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mvCZ4Tg3xdEN2726rbgfdOl5g4nbtz1BhibJTuQmiajqxkFrKBvyUk0WQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mHL7IPFEZkgNWZmSDMP1J4FffcQickjtgwXE1lR0uwQKLar3YEuPFZFA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3m549yVhbvNsAviac5Pb3zQoia7vf1QBxJ7qufoVpTXXx9ENZ21Yia1VJhg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3m4CpWNYXCbKG4mxRbYWzibc2ShkCoicJ1srHQvic5urdBDWJkj7tUnT1Xw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mbMQp2LKoeFj6lZY7LTS8DtWJDcOQoh8BDJdgMmjEickWiaXyQM2Ebxbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mP6uDuECqssDEro6n0zZd0ayw0dBpR9aYbdHDFG4k54T4hACt8OmpIQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mHEibGnBFBCnOpwFgSJT3dDMBW3EmXoZic336s8gzNmwibrfapg5x0Wegw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mh0RPzNjX465PMY0T8iaT6SWatD3q3bCG6Pt464iaS96VDZl0FxibGzgxg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mibDcSDqCMK2MD58v2TdlcBqJq79Zeia1lsv5NOwzD1NlplSpDeqoWy0A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mopKianjvO2fV6iaXVOVfySSSM03MVgHu7rXlBTbCnN6Y8EvvIJAbOovw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3meZDnQo7O3kcWhD7LVdkaWD3qPrEXVH24ovpEPAwfYw6AUU2dznuZcQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:updated_time" content="2020-06-23T01:51:39.314Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何设计阿里经济体都在用的搭建服务-天马">
+<meta name="twitter:description" content="转载自 Alibaba F2E，原文链接：https://mp.weixin.qq.com/s/nMcgc1Gaj7NU0vOY399nYg 搭建在互联网技术领域算是一个非常宽泛的概念，从早期大部分人都有接触过的  wordpress 个人网站搭建，到一些文章类 CMS 系统的图文编排搭建，再到更复杂的 UI 搭建，特别是 React/Vue 出现后，从框架层面也提供了很多包括视图结构化（vdom">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3moTibdxVI8gwh9cSA0hib4EQPBbvXT49alKP20zLdIFPOmRRpY5f1GJAA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/06/23/Web前端/如何设计阿里经济体都在用的搭建服务-天马/">
+
+
+
+
+
+  <title>如何设计阿里经济体都在用的搭建服务-天马 | jerry.zmf's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gateway">
+          <a href="/gateway/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            门户
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/06/23/Web前端/如何设计阿里经济体都在用的搭建服务-天马/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何设计阿里经济体都在用的搭建服务-天马</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-23T09:51:23+08:00">
+                2020-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/23/Web前端/如何设计阿里经济体都在用的搭建服务-天马/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/23/Web前端/如何设计阿里经济体都在用的搭建服务-天马/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自 <a href="javascript:void(0);" target="_blank" rel="noopener">Alibaba F2E</a>，原文链接：<a href="https://mp.weixin.qq.com/s/nMcgc1Gaj7NU0vOY399nYg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/nMcgc1Gaj7NU0vOY399nYg</a></font></p>
+<p>搭建在互联网技术领域算是一个非常宽泛的概念，从早期大部分人都有接触过的  wordpress 个人网站搭建，到一些文章类 CMS 系统的图文编排搭建，再到更复杂的 UI 搭建，特别是 React/Vue 出现后，从框架层面也提供了很多包括视图结构化（vdom），视图和数据关联（数据绑定）等等能力，把原本非常复杂的搭建画布进行了简化。</p>
+<p>在淘宝，2008年的时候就已经有了第一个搭建系统 TMS（Template Management System），当时的设计也非常大地影响了接下来十几年的搭建体系设计。</p>
+<p>这些设计包括了：</p>
+<ol>
+<li>前端操作和运营操作分离</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3moTibdxVI8gwh9cSA0hib4EQPBbvXT49alKP20zLdIFPOmRRpY5f1GJAA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<ol>
+<li>基于模板的数据挖坑</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mT36oSCP5QdkTsUNliaXdZ1LPOicWyRMQBkGaOHG5fgTUl3uIcroS353A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<ol>
+<li>页面渲染的抽象</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mvCZ4Tg3xdEN2726rbgfdOl5g4nbtz1BhibJTuQmiajqxkFrKBvyUk0WQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>从上面的页面抽象看，还是有非常多 PC 时代的影子，随着公司的战略调整，无线化、个性化的发展，搭建系统也随着一起拥抱变化，衍生出了各个面向不同场景、诉求的搭建应用，背后必然也意味着非常多的重复建设。在2019年，随着淘宝、天猫技术部的合并，最终在阿里前端委员会的支持下，启动了搭建技术方向，从减少重复建设，提升业务互通的角度，进行搭建应用/服务分层的抽象，天马也作为经济体搭建域的统一服务，然后各个 BU、业务都可以基于统一的服务和规范，建设贴合自己业务的搭建系统。</p>
+<p><strong>天马在上个财年完成了十几个 BU 的接入和搭建支持，整体产出了上万个模块，发布了上百万张页面，覆盖了3万+阿里运营及几十万的商家。</strong></p>
+<p>**<br>**</p>
+<p><strong>搭建的名词与概念</strong></p>
+<p>搭建是一个多角色复合参与的流程，这是搭建和其他技术方向差异比较大的地方。所以设计搭建的时候，需要先明确重点用户是谁，需要围绕什么角色来设计流程。</p>
+<p>为了帮助大家能够更好地理解后面的内容，首先把一些名词做一下对齐：</p>
+<ol>
+<li>模块：非技术同学搭建页面依赖的最小单位</li>
+<li>页面搭建：从模块到页面的组合过程</li>
+<li>数据投放：数据的变化频率远高于页面，所以单独提取出数据投放的概念</li>
+<li>终端：目标运行环境</li>
+</ol>
+<p><strong>搭建的设计</strong></p>
+<p><strong>流程设计</strong></p>
+<p>无论在几年前的 PC 时代，还是现在的无线时代，业务的运作是离不开纷繁复杂的页面制作的，比如淘宝，从早期不同的行业类目，到现在的不同的导购营销方式，背后都是需要制作大量的页面支撑。</p>
+<p>整个页面制作过程，经过抽象。主要是包含几个步骤：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mHL7IPFEZkgNWZmSDMP1J4FffcQickjtgwXE1lR0uwQKLar3YEuPFZFA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>这些步骤应该是可以由运营独立完成，不需要研发同学介入的。重点讲下设置、搭建、投放三个步骤。</p>
+<ol>
+<li>设置页面：页面标题、keywords、description 之类的可能会影响到 html 文档直接变化的设置</li>
+<li>搭建页面：页面结构的调整，添加模块、删除模块、交互模块位置等等</li>
+<li>投放数据：针对单个、多个模块进行数据设置</li>
+</ol>
+<p>这些能力背后就是对页面、模块、数据的抽象方式，决定了一个搭建的物料应该如何设计。</p>
+<p>当然这些流程只是一个顺序，不代表这些操作必须人工进行，即使是自动化生产和搭建页面，背后系统的流程也是类似的。</p>
+<p><strong>搭建核心物料-模块</strong></p>
+<p>模块是天马定义的页面搭建最小单位，页面由模块组成，模块可以和数据进行关联。</p>
+<p>天马的搭建模块有几个核心的设计原则：</p>
+<ol>
+<li>扁平化</li>
+<li>跨终端</li>
+<li>面向标准数据研发</li>
+</ol>
+<p><strong>扁平化</strong></p>
+<p>在前面介绍 TMS 的时候，有介绍 TMS 是如何设计页面渲染的，除了上下模块搭建之外，还提供了横向的模块搭建能力，当时也叫做栅格模块。</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="image.png"></p>
+<p>但天马对这部分进行了简化，只支持了从上到下积木式搭建的能力，也就是一维扁平的模块结构。</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="image.png"></p>
+<p>积木式搭建</p>
+<p>对应到页面就是如下图：</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="image.png"></p>
+<p>为什么对这部分进行简化呢？</p>
+<ul>
+<li><strong>对运营友好：</strong>从运营同学作为搭建主要用户的角度来思考，以及无线化场景下，手机屏幕的特征，一维存储的模块列表是比较友好的。这个设计也对搭建服务本身带来了很大的简化，整个页面结构就是一维数组，每次操作都可以转变成一次简单的数组操作。当然，一维的存储不代表一维的展示，开发者依然可以在展示的时候，通过一些父子关系，来把一维的存储结构转变为树状结构。目前我们是判断把复杂度给开发者，简单的操作给到非技术同学，还是一个比较合适的方式。</li>
+<li><strong>方便建立多端对应关系：</strong>因为无线化，公司在无线上的投入比桌面端大很多（主要是消费者侧），那么如果能搭建无线页面，然后桌面端自动生成，或者反一下，对搭建用户来说可以省掉很多时间。特别是当下极端一些的场景，用户搭建一个无线端页面，需要同时额外生成 pc、weex、小程序的版本。一维存储的模块结构可以较好地建立不同终端页面模块的对应关系。</li>
+<li><strong>方便建立服务端与模块的关系</strong>：因为算法的普及，页面的个性化不局限于某个商品模块内部，而是不同人群访问同个页面，整个页面的顺序都有可能因为个性化而调整。那么对于后端算法来说，就需要感知到页面结构，并和后端的算法模型进行关联。一维的结构对于这部分还是非常友好的</li>
+</ul>
+<p><strong>跨终端</strong></p>
+<p>最早在12年的时候，天猫就已经有了跨终端的概念。如前面的概念定义，这里不严格定义来区分终端、容器等等，先用比较简单的概念，称为终端，也就是目标的运行环境。终端包括桌面版 chrome、移动端 safari、tv盒子的 UC 浏览器、手机淘宝的 webview/weex 容器、支付宝小程序容器甚至到服务端的 ssr 渲染引擎等等。</p>
+<p>为什么不用响应式？响应式只是跨终端的一种解决方案，响应式解决不了代码运行在服务端的问题，并且响应式本身也过于注重效率，而不是去面对本质上的差异。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3m549yVhbvNsAviac5Pb3zQoia7vf1QBxJ7qufoVpTXXx9ENZ21Yia1VJhg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>桌面端端导航模块                   无线端导航模块</p>
+<p>比如图里的导航模块，无线端是一个 tab ，而在桌面端是一个随屏滚动且悬浮的模块，这是一个交互差异的案例，而实际上，更多还有内容、业务逻辑上的差异，所以不必拘泥于响应式，该写两套逻辑就写。</p>
+<p>当然，跨终端是模块的能力，如果我的模块就是只面向一个端服务，就可以只写一个端。</p>
+<p>实际的情况会更复杂一些，目前淘系选择了 Rax 作为统一 DSL，基于上面的搭建设计，加上 Rax 本身一次开发多端运行的能力，就可以实现我只需要写一份无线端 web 的代码，分别转出 weex、小程序的版本，这样我的模块投放到 webview 里就是 web 模式，投放到小程序里就是原生小程序，投放到 weex 就可以以 weex 形式渲染。所以一个模块发布后，会同时同步到 CDN 和 npm 上，CDN 版本给到纯浏览器和服务端使用，tnpm 部分给到小程序和源码页面等其他有页面级构建能力的场景使用。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3m4CpWNYXCbKG4mxRbYWzibc2ShkCoicJ1srHQvic5urdBDWJkj7tUnT1Xw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p><strong>面向标准数据研发</strong></p>
+<p>这个原则比较容易让人困扰，但实际上，大家在日常研发中，或多或少都在做着相关的事情，比如如何校验一个表单，如何和后端一起定义一个新的数据接口，以及现在比较流行的 TypeScript 也是在定义数据格式。我们把这个原则分成两个部分：</p>
+<ol>
+<li>面向数据研发</li>
+<li>数据标准化</li>
+</ol>
+<p>数据格式就是一个符合 JSON schema 规范的 schema.json 数据描述，来描述模块接受哪些入参，也就是模块面向什么数据研发。这些入参内部，也做了更多的约定，比如如何让模块能够换肤（和中后台换肤的机制有比较大的差异），如何能够让模块能够接受一些配置，以及如何给模块传递核心渲染需要的数据。</p>
+<p>而标准化的数据格式通过先定义数据模型，然后模块尽可能去引用已有的数据模型，解决开发者都是写同一个商品模块，字段却不同的问题。否则对于后端来说，得做一套非常复杂的系统来把同样的商品数据塞到不同的模块里，同时还要适配各个模块不同的字段定义。通常后端同学也不会愿意做这个事情。</p>
+<p>这些设计背后也就是我们期望开发者研发模块时尽量脱离业务场景，尽量少的与特定的后端接口交互，把模块写的更像一个纯做渲染的组件，这样模块的流通能力才能得到保障。</p>
+<p>下面是一个 schema.json 的案例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">	&quot;type&quot;: &quot;object&quot;,  </span><br><span class="line">	&quot;properties&quot;: &#123;    </span><br><span class="line">		&quot;$attr&quot;: &#123;      </span><br><span class="line">			&quot;type&quot;: &quot;object&quot;,      </span><br><span class="line">			&quot;properties&quot;: &#123;        </span><br><span class="line">				&quot;hidden&quot;: &#123;          </span><br><span class="line">						&quot;type&quot;: &quot;boolean&quot;        </span><br><span class="line">					&#125;      </span><br><span class="line">				&#125;    </span><br><span class="line">			&#125;,    </span><br><span class="line">			&quot;$theme&quot;: &#123;      </span><br><span class="line">				&quot;type&quot;: &quot;object&quot;,      </span><br><span class="line">				&quot;properties&quot;: &#123;        </span><br><span class="line">					&quot;themeColor&quot;: &#123;          </span><br><span class="line">						&quot;type&quot;: &quot;string&quot;        </span><br><span class="line">						&#125;      </span><br><span class="line">					&#125;    </span><br><span class="line">				&#125;,    </span><br><span class="line">			&quot;items&quot;: &#123;      </span><br><span class="line">					&quot;type&quot;: &quot;array&quot;,      </span><br><span class="line">					&quot;items&quot;: &#123;        </span><br><span class="line">							&quot;type&quot;: &quot;object&quot;,        </span><br><span class="line">							&quot;properties&quot;: &#123;          </span><br><span class="line">									“itemId”: &#123;            </span><br><span class="line">											&quot;type&quot;: &quot;string&quot;          </span><br><span class="line">										&#125;        </span><br><span class="line">								&#125;      </span><br><span class="line">						&#125;    </span><br><span class="line">				&#125;  </span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而那些和业务场景相关的逻辑，就放到页面级处理，不同的页面可以共享一套页面初始化逻辑。</p>
+<p><strong>数据标准化</strong></p>
+<p>继续展开讲面向标准数据研发，因为搭建本身的特殊性，以及模块对应的数据不会只是简单的进行表单投放，特别是在千人千面、个性化普及的今天，大部分模块背后，不仅仅是静态数据，而是一些动态数据服务，这些接口可能会来自于公司大大小小各种不同的系统。对于模块开发者而言，我定义的数据描述应该面向哪个接口？同样都是商品接口，A应用和B应用接口返回的字段，一个是下划线风格，一个是驼峰怎么办。</p>
+<p>数据标准化解决的就是这个问题，我们应该面向一个标准的数据进行研发。这个标准数据就是基于目前最底层的这些系统，商品库、用户库等等，统一命名规范后的结果。大家都遵守这个规范来给模块传递数据就可以了。</p>
+<p>但实际情况比这个还要复杂，比如有一个模块，有一行文字描述，部分场景下显示的是商品标题，部分场景下显示的是商家写的宣传文案，UI 本身是有二义性的。这个时候，我们在数据描述里就会定义一个叫 title 的字段，具体这个 title 对应实际是 itemTitle 还是 itemDescription，就要看实际的场景。</p>
+<p>最后也就是说一个面向搭建域的数据接口，给到前端渲染前，实际可能会经过两次标准化，一次领域模型的标准化，确保字段是没有二义性的，然后再是一次VO的标准化，再基于视图的需求，映射到可能有二义性的模块展示上。</p>
+<p>通常我们会要求后端同学来做好领域模型的标准化，然后前端在 FaaS 或者维护一个类似网关的应用进行视图模型的标准化。当然也可以前端直接从数据源直接映射到 UI 模型，只是抽象的层次不同。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mbMQp2LKoeFj6lZY7LTS8DtWJDcOQoh8BDJdgMmjEickWiaXyQM2Ebxbw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p><strong>如何编写一个模块</strong></p>
+<p>前面有提到，我们还是比较推荐模块只是做渲染，尽量少的和特定的场景绑定。那么简化一下模块开发，就是：</p>
+<ol>
+<li>定义我需要什么格式的数据</li>
+<li>准备好一份 mock 数据</li>
+<li>写一段逻辑，输入 mock 数据，返回渲染结果</li>
+</ol>
+<p>听起来很像是一个传统函数的定义了。</p>
+<p>以下是一个 rax 模块的范例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import &#123; createElement &#125; from &apos;rax&apos;;import View from &apos;rax-view&apos;;import Text from &apos;rax-text&apos;;</span><br><span class="line">export default function Mod(props) &#123;  let defaultTheme = &#123;    themeColor: &apos;#fff&apos;  &#125;;  let defaultAttr = &#123;    hidden: false  &#125;;  let &#123;    items = [],    $theme: &#123;themeColor&#125; = defaultTheme,    $attr: &#123;hidden&#125; = defaultAttr,  &#125; = props.data;</span><br><span class="line">  return (    &lt;View className=&quot;mod&quot; style=&#123;&#123;      backgroundColor: themeColor    &#125;&#125;&gt;      &#123;        hidden !== &apos;true&apos; ? &lt;Text&gt;欢迎使用天马模块！&lt;/Text&gt; : null      &#125;      &lt;View className=&quot;keys&quot;&gt;        &#123;          items.map(element =&gt; &#123;            return (&lt;Text&gt;&#123;element.key&#125;&lt;/Text&gt;);          &#125;)        &#125;      &lt;/View&gt;    &lt;/View&gt;  );&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，一定会有部分模块，更复杂，比如有点赞、关注等不只是一次渲染能解决的事情，这部分一方面是可以组件化的，写模块的开发者并不需要关心到这部分逻辑，还是只需要传递一些用户信息给到组件就行。另一角度考虑，如果一个点赞接口就有N份实现，对于后端服务设计来说是不是也有问题，是不是推进统一会更好？</p>
+<p><strong>模块研发链路的设计</strong></p>
+<p>模块的研发链路其实和正常开发一个 npm 包差别不大，基于很多约定，我们提供了一些便捷的脚手架，以及有支持插件化的构建器，可以提供给各种不同但有限的 DSL 模块进行构建操作。</p>
+<p>同时由于开发者有 ISV、外包、内部员工，可视化研发还是非常重要的环节，尽量把哪些和开发一个 npm 模块有差异的点，都通过可视化研发的方式抹平。我们也提供了包括本地模块管理、调试、预览、schema 编辑器等能力，以及代码扫描、资源存储等发布流程的保障。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mP6uDuECqssDEro6n0zZd0ayw0dBpR9aYbdHDFG4k54T4hACt8OmpIQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p><strong>如何研发模块</strong></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mHEibGnBFBCnOpwFgSJT3dDMBW3EmXoZic336s8gzNmwibrfapg5x0Wegw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<h5 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h5><p>因为服务端也是模块的目标运行环境，目前在服务端运行模块的方式主要有比较老派的纯模板渲染方式（需要开发者单独写一个模板文件用于生成 html)，以及现在逐渐普及的 SSR 方案。前者足够简单且有确定性，后者面向未来但是需要有足够多稳定性的保障。</p>
+<h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><p>前面也有提到的，为了让模块研发足够简单且保证流通性，页面级需要承担更多包括数据请求、页面容器初始化等操作。</p>
+<p>数据请求逻辑是页面逻辑中非常核心的部分，现在会有一些数据驱动 UI 展示的概念，特别是接口合并、分页分屏、容灾打底这些非常重要的功能。分页分屏决定了首屏需要展示哪些内容，请求哪些数据，然后接口合并负责减少请求数，加速首屏展示，然后容灾打底确保最后一定是可以有内容展示给用户，即使有各种网络、服务的问题。</p>
+<p>而页面容器渲染，主要还是包括滚动容器的初始化，多维模块列表的渲染。比如把一维的模块列表渲染成多tab的父子关系，以及最后需要单独初始化一个个模块。</p>
+<p><strong>搭建的核心设计-依赖去重</strong></p>
+<p>上面的大部分内容和中后台搭建还是比较类似，只是各自有一些约定。接下来就是天马的设计中比较有差异的地方了。中后台搭建通常都只需要在 npm 包组件的基础上，加上一个 schema 描述，就可以用于在搭建系统中生成对应的表单配置了，npm 组件会在发布的时候构建到页面 bundle 中。而是消费者端的不行，目前每个模块需要单独进行构建，为什么这么做？</p>
+<p><strong>背景</strong></p>
+<ol>
+<li>某次活动，大概用到了100+的模块，搭建出了1000+的页面。然后有个功能需要在短时间内对特定几个模块进行版本升级操作。如果每个页面都需要构建才能生效，短时间内进行大量构建的可操作性是比较低的，特别是复杂的 webpack 构建耗时还是非常长的。</li>
+<li>在个性化、千人前面普及后，页面的展示是由数据来驱动的，如果用传统的构建方案，无法准确做到首屏只加载首屏模块，因为首屏本身包含哪个模块不是由 bundle 决定，而是由数据决定的。</li>
+</ol>
+<p><strong>数据驱动展现</strong></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mh0RPzNjX465PMY0T8iaT6SWatD3q3bCG6Pt464iaS96VDZl0FxibGzgxg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>因为搭建的最小单位是模块，且业务上有大量动态性的要求，比如某一天10点需要升级1000个页面的其中5个模块的版本，把这1000个页面进行重新构建发布操作性较低，所以组装模块的过程是通过线上渲染服务计算 assets combo uri 实现的，只要在操作后台点击一下模块升级，这1000个页面会自动更新模块版本而不需要重新走一次构建逻辑。这也意味着每个模块需要单独打包，给出一个已经可以在浏览器上运行的 web 版本。</p>
+<p>但是由于每个模块单独打包，如果啥都不做，会造成依赖重复加载的问题。那么就需要把模块的依赖 dependecies 都 external 掉（也支持主动选择部分打包），为了确保不重复加载依赖模块造成页面大小不可控，引入了 seed 描述依赖的机制。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;  &quot;modules&quot;: &#123;    &quot;@ali/pmod-ark-butian-test/index&quot;: &#123;      &quot;requires&quot;: [        &quot;@ali/rax-pkg-rax/index&quot;,        &quot;@ali/rax-pkg-rax-view/index&quot;,        &quot;@ali/rax-pkg-rax-text/index&quot;      ]    &#125;  &#125;,  &quot;packages&quot;: &#123;    &quot;@ali/rax-pkg-rax&quot;: &#123;      &quot;path&quot;: &quot;//g.alicdn.com/rax-pkg/rax/1.0.15/&quot;,    &#125;,    &quot;@ali/rax-pkg-rax-view&quot;: &#123;      &quot;path&quot;: &quot;//g.alicdn.com/rax-pkg/rax-view/1.0.1/&quot;,    &#125;,    &quot;@ali/rax-pkg-rax-text&quot;: &#123;      &quot;path&quot;: &quot;//g.alicdn.com/rax-pkg/rax-text/1.0.2/&quot;,    &#125;,    “@ali/pmod-module-test”: &#123;      &quot;path&quot;: &quot;//g.alicdn.com/pmod/module-test/0.0.9/&quot;,    &#125;  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>光有一个描述肯定不够，核心还需要确定一个策略，模块依赖同个 npm 包的不同版本，应该如何选择。npm 安装的方式是兼容版本取最大，不兼容或者指定版本的时候安装多份的策略。web 上的策略也是类似的，只是内部的研发更可控，所以把这个策略做了更多的简化（以x,y,z版本为例）：</p>
+<ol>
+<li>x 位大版本可以共存（也可以选择不共存）</li>
+<li>y，z位版本变化都是向前兼容的，会自动取兼容下的最新，即使指定了版本。</li>
+</ol>
+<p>从 web 和用户侧的角度考虑，加载大量同组件的不同版本只会造成页面体积的膨胀，带来带宽、流量的浪费，以及用户侧较差的体验。</p>
+<p>本质上，就是把原本 webpack 帮开发者做的内部依赖管理，抽象提取出来，在页面级统一进行管理。</p>
+<p><strong>seed 机制与 webpack</strong></p>
+<h5 id="seed-json-依赖关系的问题"><a href="#seed-json-依赖关系的问题" class="headerlink" title="seed.json 依赖关系的问题"></a>seed.json 依赖关系的问题</h5><h6 id="第一个，私有实现带来的理解和构建成本"><a href="#第一个，私有实现带来的理解和构建成本" class="headerlink" title="第一个，私有实现带来的理解和构建成本"></a>第一个，私有实现带来的理解和构建成本</h6><p>天马目前的 seed 配置核心问题在于这是一个非常私有的实现，所有组件要进入天马体系并且有去重能力，就得重新构建以此生成 seed。</p>
+<p>这个问题在新业务接入天马的时候会比较明显，因为页面级去重能力是基于 seed 配置来的，而 seed 的原始来源是组件内部的 seed.json，也就是说你要先把组件内的 package.json dependencies 转成 seed.json，然后这个组件才能被收集依赖。这也是为什么需要把组件在天马上注册一次，注册的过程也就是生成对应 seed 的过程。目前这个过程是手动引入组件然后提交一份到天马。后续天马模块中心会提供自动注册的能力。</p>
+<p>那为什么没有直接根据 package.json 来进行注册的方式呢，毕竟 seed 也是由 package.json dependencies 生成的。</p>
+<p>主要原因有：</p>
+<ol>
+<li>package.json 里声明的依赖并不一定会用到，还需要读取真实的 import 引用情况</li>
+<li>package.json 里声明的依赖并不一定都是公共依赖，内部依赖就直接打包掉了，不然不公共的依赖放到 seed 里，seed 本身的体系会非常大</li>
+<li>公共组件需要发布一份到 cdn，并转成 Web 上可运行的 CMD/UMD/AMD 等等，本身也需要一个构建过程。</li>
+</ol>
+<h6 id><a href="#" class="headerlink" title=" "></a> </h6><h6 id="第二个，对复杂-loader-的依赖"><a href="#第二个，对复杂-loader-的依赖" class="headerlink" title="第二个，对复杂 loader 的依赖"></a>第二个，对复杂 loader 的依赖</h6><p>由于 seed 文件的存在并且包含比较多的关系描述，需要一个相对复杂的 loader 来解析这个描述，尝试过基于 SystemJs 进行扩展，但是动态性上还是无法和原本自研的 loader 相提并论。有兴趣的同学也可以看下 KISSY 3 的 loader 实现。</p>
+<h5 id="webpack-Module-Federation-可能的问题"><a href="#webpack-Module-Federation-可能的问题" class="headerlink" title="webpack Module Federation 可能的问题"></a>webpack Module Federation 可能的问题</h5><h6 id="1-HTML-的组织"><a href="#1-HTML-的组织" class="headerlink" title="1. HTML 的组织"></a>1. HTML 的组织</h6><p>基于 seed json 格式， wormhole 集成了通过 seed.json 生成 HTML 的能力。开发者可以不需要关注 HTML 如何生成，因为 loader 的保障，顺序也没有那么重要。</p>
+<p>在 Module Federation 的使用情况下，HTML 还是依赖页面级构建，如果需要在类似搭建场景下动态拼装 HTML，要不就加载所有的 remoteEntry 文件，要不就是得自己提出一个依赖关系出来给到服务端生成。</p>
+<p>当然，也可以直接用 SSR，这样的话，就需要另外一个配置来打包一个 SSR 版本的代码，毕竟服务端按需意义没有那么大，并且，SSR 大概率也只能覆盖页面的部分内容，剩下的还是要面临如何组织 HTML 的资源引用的问题。</p>
+<h6 id="2-冗余的代码"><a href="#2-冗余的代码" class="headerlink" title="2. 冗余的代码"></a>2. 冗余的代码</h6><p>因为 Module Federation 把依赖都通过代码的方式打包到了 remoteEntry 文件里，那么必然会存在很多重复定义的代码。比如 <strong>webpack _require</strong> 下的一堆函数，remoteEntry 加载多了，这个问题会相对严重一些。</p>
+<p>不过对比目前天马依赖处理体系来说，feloader 本身因为历史原因+支持了KMD/CMD/AMD等多种模块格式，也有点尺寸过大，所以也有类似的问题。</p>
+<h6 id="3-CDN-combo"><a href="#3-CDN-combo" class="headerlink" title="3. CDN combo"></a>3. CDN combo</h6><p>通过 seed.json 描述的依赖关系，是可以快速解析到一个 combo 格式上的，通过一个请求把依赖的脚本合并取到。而目前 Module Federation 每个 remoteEntry 都是独立处理，虽然对比 SystemJs 或者其他 webpack 分包插件，有能力处理深度依赖（依赖的依赖不重复加载），但是缺乏一个合并能力，可能会出现串行加载依赖的情况，不过这个问题扩展下 trunk loader，合并依赖组件 promise 函数的处理，不是很难解决。</p>
+<p><strong>搭建的核心设计-渲染服务</strong></p>
+<p>上面讲的更多还是围绕搭建的物料，天马还提供了通用的 Node.js 在线渲染引擎，用于提供统一的渲染服务，只要通过天马搭建的产物，都可以被渲染服务消费，并渲染出最后的结果给到用户访问。</p>
+<p>模板渲染本身没有特别的点，主要说一些不同的。</p>
+<p><strong>多终端的缓存</strong></p>
+<p>面向阿里大流量的场景，我们设计了一套多终端的缓存方案：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mibDcSDqCMK2MD58v2TdlcBqJq79Zeia1lsv5NOwzD1NlplSpDeqoWy0A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>模块是支持跨终端的，那页面也肯定是跨终端的。而这背后是需要统一的终端识别架构来支撑的。目前搭建产物的页面都是托管在一套缓存+源站架构下的，不同的端会有一份对应的缓存副本，避免每次访问都需要重新渲染。</p>
+<p>基于这样一套架构，我们也可以实现运营只需要投放一个地址或者二维码，在不同的端就有不同的展现方式。</p>
+<p><strong>高性能保障</strong></p>
+<p>在支持跨终端的同时，渲染引擎也承担着类似 webpack HtmlWebpackPlugin 的职责，搭建系统发布出来的结果是一个包含页面结构、依赖关系的描述。渲染引擎通过这个描述渲染出 HTML、weex bundle 等。当然这个过程会有一些耗时，主要是在以下两个部分：</p>
+<ol>
+<li>拉取模块的资源文件，文件需要从 OSS 远程拉取</li>
+<li>计算整个页面最终的依赖关系</li>
+</ol>
+<p>因为渲染服务是在线的，算是基于 CDN 缓存架构的实时渲染（每隔一段时间自动更新回源），如果与 webpack 一样构建速度缓慢的话，还是非常糟糕的事情。所以在这里也做了很多包括依赖关系计算的缓存、文件的缓存等等。然后再通过 CDN 缓存的能力，提升整体的访问速度。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3mopKianjvO2fV6iaXVOVfySSSM03MVgHu7rXlBTbCnN6Y8EvvIJAbOovw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>同时为了提升用户访问体验，渲染引擎的部署范围是大于搭建服务的，特别是在国际化场景下，渲染引擎已经部署到了亚欧美，并且为这些国家专门做了 OSS 文件同步优化。</p>
+<p><strong>未来展望</strong></p>
+<p><strong>seed 体系与 webpack 的长期融合方案</strong></p>
+<p>天马独有的这套 seed 依赖关系机制，因为没有像 webpack 那样把依赖关系隐藏起来，还是有一定的学习成本的，并且也容易造成一些问题（当然 webpack 也有他自己的复杂和学习成本 ）。</p>
+<p>所以那些页面量不大，且没有淘系这样相对比较变态的更新诉求下，因为模块本身也是一个标准的 npm 包，天马也支持了离线构建的方式，这个方案就更贴近 react 源码app的开发，可以做更多的构建时的优化，同时产物也脱离了 seed 体系，渲染过程得到了简化。</p>
+<p>长期来说，随着 webpack 本身的发展，最终还是期望能够逐渐合并到社区方案上，在页面构建和动态化能力之间达到一个科学的平衡。</p>
+<p><strong>动态化</strong></p>
+<p>而对于淘系自己来说，动态化始终是一个重要的能力，我自己的设想是，如果今天我们可以不用打包模块，直接把源文件发布到 CDN，把 CDN 当做目录，直接在浏览器上跑一个类似 webpack 的能力，就可以在保留动态性的同时，也不会带来额外的复杂度（复杂度都在方案本身了，对开发者来说，就不需要了解太多）。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QRibyjewM1IBhswuLvdyI0kIFXozIBh3meZDnQo7O3kcWhD7LVdkaWD3qPrEXVH24ovpEPAwfYw6AUU2dznuZcQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>为什么这只是一个展望呢，要这么做，还是需要面临一些问题：</p>
+<ol>
+<li>浏览器的性能是否足够做这样的编译，特别是目前在 webpack 本身编译就是一件耗时的事情，把这部分时间扔给用户侧还是有点可怕的。</li>
+<li>远程文件系统在网络上的时间消耗，虽然可以设计很多缓存机制，但是首次依然是个问题，并且绕开浏览器本身的缓存机制，做一套文件缓存还是会有很多问题，特别是在无线端 app webview 内，空间是非常有限的。</li>
+<li>包管理的复杂度，当前的 seed 机制已经做了类似的事情，不会带来太多包管理方式上的变化。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/06/23/Web前端/如何设计阿里经济体都在用的搭建服务-天马/" title="如何设计阿里经济体都在用的搭建服务-天马">https://uestc66.github.io/2020/06/23/Web前端/如何设计阿里经济体都在用的搭建服务-天马/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/23/Web前端/分分钟教会你搭建企业级的 npm 私有仓库/" rel="next" title="分分钟教会你搭建企业级的 npm 私有仓库">
+                <i class="fa fa-chevron-left"></i> 分分钟教会你搭建企业级的 npm 私有仓库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/23/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/" rel="prev" title>
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端"><span class="nav-number">1.</span> <span class="nav-text">服务端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端"><span class="nav-number">2.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#seed-json-依赖关系的问题"><span class="nav-number">3.</span> <span class="nav-text">seed.json 依赖关系的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#第一个，私有实现带来的理解和构建成本"><span class="nav-number">3.1.</span> <span class="nav-text">第一个，私有实现带来的理解和构建成本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#null"><span class="nav-number">3.2.</span> <span class="nav-text"> </span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#第二个，对复杂-loader-的依赖"><span class="nav-number">3.3.</span> <span class="nav-text">第二个，对复杂 loader 的依赖</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#webpack-Module-Federation-可能的问题"><span class="nav-number">4.</span> <span class="nav-text">webpack Module Federation 可能的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-HTML-的组织"><span class="nav-number">4.1.</span> <span class="nav-text">1. HTML 的组织</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-冗余的代码"><span class="nav-number">4.2.</span> <span class="nav-text">2. 冗余的代码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-CDN-combo"><span class="nav-number">4.3.</span> <span class="nav-text">3. CDN combo</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
