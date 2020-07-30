@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自前端真好玩，原文链接：https://mp.weixin.qq.com/s/LvuB7PGBRmWHmQ6YcLrDkQ  今天讲⼀些让您按捺不住和欲求不满的反浏览器追踪技术，揭开你是如果被互联网巨头监控的。  场景一：在⽹站上浏览了某个商品，了解了相关的商品信息，但并没有下单购买，甚⾄没有进⾏登录操作，过两天⽤同台电脑访问其他⽹站的时候却发现很多同类商品的⼴告。 场景二：在某博客中你有多个">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏">
+<meta property="og:url" content="https://uestc66.github.io/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s blog">
+<meta property="og:description" content="转载自前端真好玩，原文链接：https://mp.weixin.qq.com/s/LvuB7PGBRmWHmQ6YcLrDkQ  今天讲⼀些让您按捺不住和欲求不满的反浏览器追踪技术，揭开你是如果被互联网巨头监控的。  场景一：在⽹站上浏览了某个商品，了解了相关的商品信息，但并没有下单购买，甚⾄没有进⾏登录操作，过两天⽤同台电脑访问其他⽹站的时候却发现很多同类商品的⼴告。 场景二：在某博客中你有多个">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_jpg/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolz4SPFxcAgmQ0lwSicozRcvRh9fQN4B6sjZzY8GIVbFsT1jLVcV15nNA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol8brAhYq5wJkbMG22zh5fuzZpz6MEZ6NsVIEj6SpaVAyp3ichnhxgAFQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolhgkjBtFuYt8A9cJxYYBGE0k2uEoKVwFb8LMpM4sfJ9lhHaTqjGGW0w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolsXhdOiaKCLDL5Ze2lz76KMMNhKDD4G5YoHp1gibrtJicBzyfZlKjQAib6g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolqw8knE3B8jTWoTvlwS8FN32eyh9docWThiaR5oOQpEicwnvjTeba2SuQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol9v3k0BdSpEgQ0A5wcqD4AUoGauz8ns5vXQRS7JSPrVeEuWraydMoMA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolQ7TrG2EOXXuX2lv8AgicDw93h3DicwflsDbyobEqBfMpoqqiacXqwBwZA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol374VGL5qaRRVQQKlAOHbrABvKmpz9Ap0bqRHdP2AHg8qz9UZ4ibP7wg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWoldl0GCxypLm5SWcyU1xTRz9qfuonUbsPOEaFf7cxVjfCZm1Kjq9iaURg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol6NhyBlQ57Xg7mld0vYIpwJtoNicJKX8KqEgFIDMvrBF88g2M7P4suQg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWollJN68hUVyA3hxqmkZ4HicWWSHxpZIBT343JsVr2qbsA1n80WsGzx0zg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:updated_time" content="2020-07-24T02:03:15.605Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏">
+<meta name="twitter:description" content="转载自前端真好玩，原文链接：https://mp.weixin.qq.com/s/LvuB7PGBRmWHmQ6YcLrDkQ  今天讲⼀些让您按捺不住和欲求不满的反浏览器追踪技术，揭开你是如果被互联网巨头监控的。  场景一：在⽹站上浏览了某个商品，了解了相关的商品信息，但并没有下单购买，甚⾄没有进⾏登录操作，过两天⽤同台电脑访问其他⽹站的时候却发现很多同类商品的⼴告。 场景二：在某博客中你有多个">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/sz_mmbiz_jpg/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolz4SPFxcAgmQ0lwSicozRcvRh9fQN4B6sjZzY8GIVbFsT1jLVcV15nNA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/">
+
+
+
+
+
+  <title>浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏 | jerry.zmf's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gateway">
+          <a href="/gateway/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            门户
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-24T10:02:24+08:00">
+                2020-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自<a href>前端真好玩</a>，原文链接：<a href="https://mp.weixin.qq.com/s/LvuB7PGBRmWHmQ6YcLrDkQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/LvuB7PGBRmWHmQ6YcLrDkQ</a></font></p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolz4SPFxcAgmQ0lwSicozRcvRh9fQN4B6sjZzY8GIVbFsT1jLVcV15nNA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p>今天讲⼀些让您按捺不住和欲求不满的反浏览器追踪技术，揭开你是如果被互联网巨头监控的。</p>
+<ul>
+<li>场景一：在⽹站上浏览了某个商品，了解了相关的商品信息，但并没有下单购买，甚⾄没有进⾏登录操作，过两天⽤同台电脑访问其他⽹站的时候却发现很多同类商品的⼴告。</li>
+<li>场景二：在某博客中你有多个小号（水军），这些小号的存在就是为了刷某个帖子的热度或者进行舆论引导，又或者纯粹进行流量交易，即便你在切换账号的时候清空了cookie、本地缓存，重开路由器甚至使用 vpn 来进行操作，你觉得自己足够小心，并尽可能提高水军的真实性，但是管理人员可能还是知道这是同一个人在操作，从而被打击。</li>
+</ul>
+<p>一般情况下，网站或者广告商都想要一种技术可以在网络上精确的定位到每一个个体，就算你没有账号，没有登录，也可以通过收集这些个体的数据，然后加以分析之后更加精确的去推送广告和其他的一些活动。</p>
+<p>而这个技术就是浏览器指纹，这还是用前端技术来实现的。</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol8brAhYq5wJkbMG22zh5fuzZpz6MEZ6NsVIEj6SpaVAyp3ichnhxgAFQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a><strong>定义</strong></h2><p>游览器指纹，就像现实生活中人的指纹一样，特异地标记着每个上网用户。</p>
+<p>浏览器指纹：是一种通过浏览器对网站可见的配置和设置信息来跟踪Web浏览器的方法，浏览器指纹就像我们人手上的指纹一样，具有个体辨识度，只不过现阶段浏览器指纹辨别的是浏览器。</p>
+<p>人手上的指纹之所以具有唯一性，是因为每个指纹具有独特的纹路、这个纹路由凹凸的皮肤所形成。每个人指纹纹路的差异造就了其独一无二的特征。</p>
+<p>那么浏览器指纹也是同理，获取浏览器具有辨识度的信息，进行一些计算得出一个值，那么这个值就是浏览器指纹。</p>
+<p>辨识度的信息可以是UA、时区、地理位置或者是你使用的语言等等，你所选取的信息决定了浏览器指纹的准确性。</p>
+<h2 id="指纹技术历史"><a href="#指纹技术历史" class="headerlink" title="指纹技术历史"></a><strong>指纹技术历史</strong></h2><ol>
+<li>第 1 代：服务端在客户端设置标志</li>
+</ol>
+<p>第一代指纹追踪是 cookie 这类的服务端在客户端设置标志的追踪技术，evercookie 是 cookie 的加强版。</p>
+<ol>
+<li>第 2 代：单浏览器指纹</li>
+</ol>
+<p>第二代指纹追踪是设备指纹技术，发现 IP 背后的设备。</p>
+<p>通过 js 获取操作系统、分辨率、像素比等等一系列信息，传到后台计算，然后归并设备。</p>
+<ol>
+<li>第 2.5 代：跨浏览器指纹识别技术。</li>
+</ol>
+<p>跨浏览器之后，第二代技术中很重要的 canvas 指纹、浏览器插件指纹都变了，所以很难把跨浏览器指纹归并到同一设备上。</p>
+<p>因为设备指纹相同，很大概率上是同一台设备；但是，设备指纹不同时，不一定不是同一台设备。</p>
+<ol>
+<li>第三代：跨设备指纹</li>
+</ol>
+<p>第三代指纹追踪技术，则是发现设备后面的人。通过人的习惯、人的行为等等来对人进行归并，此项技术比较复杂。</p>
+<ol>
+<li>总 结</li>
+</ol>
+<p>第一代、第二代的指纹追踪技术是可以直接通过 js 收集信息的，第三代指纹追踪技术目前可看到的案例是 2017 年 RSA 创新沙盒的冠军 unifyid 技术，unifyid 在移动端安装软件、收集信息，不仅仅是通过 js。</p>
+<p>至于利用于 web 上，还任重而道远。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a><strong>应用</strong></h2><ul>
+<li>分析可能导致识别欺诈者和其他需要调查的可疑活动</li>
+<li>⼴告营销机器获取您的数据，以便跟踪您的在线活动</li>
+<li>银⾏使⽤此⽅法来识别潜在的欺诈案件</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolhgkjBtFuYt8A9cJxYYBGE0k2uEoKVwFb8LMpM4sfJ9lhHaTqjGGW0w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<h2 id="是什么让你暴露身份"><a href="#是什么让你暴露身份" class="headerlink" title="是什么让你暴露身份"></a><strong>是什么让你暴露身份</strong></h2><p>当你使⽤浏览器访问某个⽹站的时候，浏览器【必定会暴露】某些信息给这个⽹站。</p>
+<p>有些是跟 HTTP 协议相关的。</p>
+<p>只要你基于 HTTP 协议访问⽹站，浏览器就【必定】会传输这些信息给⽹站的服务器。</p>
+<p>因此，Web ⽹站的服务器必定可以获取到跟你的浏览器相关的某些信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;headers&quot;: &#123;</span><br><span class="line">    &quot;Accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3&quot;,</span><br><span class="line">    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;,</span><br><span class="line">    &quot;Accept-Language&quot;: &quot;zh-CN,zh;q=0.9,en;q=0.8&quot;,</span><br><span class="line">    &quot;Host&quot;: &quot;httpbin.org&quot;,</span><br><span class="line">    &quot;Sec-Fetch-Mode&quot;: &quot;navigate&quot;,</span><br><span class="line">    &quot;Sec-Fetch-Site&quot;: &quot;none&quot;,</span><br><span class="line">    &quot;Sec-Fetch-User&quot;: &quot;?1&quot;,</span><br><span class="line">    &quot;Upgrade-Insecure-Requests&quot;: &quot;1&quot;,</span><br><span class="line">    &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基本的浏览器指纹"><a href="#基本的浏览器指纹" class="headerlink" title="基本的浏览器指纹"></a><strong>基本的浏览器指纹</strong></h2><p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolsXhdOiaKCLDL5Ze2lz76KMMNhKDD4G5YoHp1gibrtJicBzyfZlKjQAib6g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<h3 id="指纹采集"><a href="#指纹采集" class="headerlink" title="指纹采集"></a>指纹采集</h3><blockquote>
+<p>信息熵（entropy）是接收的每条消息中包含的信息的平均量，熵越高，则能传输越多的信息，熵越低，则意味着传输的信息越少。</p>
+</blockquote>
+<p>浏览器指纹是由许多浏览器的特征信息综合起来的，其中特征值的信息熵也是不尽相同。</p>
+<p>点击 这里 查看自己的浏览器指纹ID和基本信息。</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolqw8knE3B8jTWoTvlwS8FN32eyh9docWThiaR5oOQpEicwnvjTeba2SuQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p>这个网站也可以查看你浏览器的指纹相关信息：<a href="https://amiunique.org/fp。" target="_blank" rel="noopener">https://amiunique.org/fp。</a></p>
+<p>它可查看到哪些信息呢？如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol9v3k0BdSpEgQ0A5wcqD4AUoGauz8ns5vXQRS7JSPrVeEuWraydMoMA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWolQ7TrG2EOXXuX2lv8AgicDw93h3DicwflsDbyobEqBfMpoqqiacXqwBwZA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol374VGL5qaRRVQQKlAOHbrABvKmpz9Ap0bqRHdP2AHg8qz9UZ4ibP7wg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWoldl0GCxypLm5SWcyU1xTRz9qfuonUbsPOEaFf7cxVjfCZm1Kjq9iaURg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWol6NhyBlQ57Xg7mld0vYIpwJtoNicJKX8KqEgFIDMvrBF88g2M7P4suQg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/icLlxzKkLGIee7pHUQmp3Lht8OibsIjWollJN68hUVyA3hxqmkZ4HicWWSHxpZIBT343JsVr2qbsA1n80WsGzx0zg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p>而且浏览器指纹还有一个开源项目了，纯 JS 实现的，只有引用这个项目就可以获取浏览器的各种信息或者系统的配置了。</p>
+<p>现代而灵活的浏览器指纹库：<a href="https://github.com/Valve/fingerprintjs2。" target="_blank" rel="noopener">https://github.com/Valve/fingerprintjs2。</a></p>
+<p>使用也很简单，如下：</p>
+<p><strong>安装（Installation）</strong></p>
+<ul>
+<li>Bower: bower install fingerprintjs2</li>
+<li>NPM: npm install fingerprintjs2</li>
+<li>Yarn: yarn add fingerprintjs2</li>
+</ul>
+<p><strong>使用（Usage）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">if (window.requestIdleCallback) &#123;</span><br><span class="line">    requestIdleCallback(function () &#123;</span><br><span class="line">        Fingerprint2.get(function (components) &#123;</span><br><span class="line">          console.log(components) // an array of components: &#123;key: ..., value: ...&#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    setTimeout(function () &#123;</span><br><span class="line">        Fingerprint2.get(function (components) &#123;</span><br><span class="line">          console.log(components) // an array of components: &#123;key: ..., value: ...&#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;, 500)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还有一个用纯JavaScript编写的设备信息和数字指纹的开源项目：<a href="https://github.com/jackspirou/clientjs。" target="_blank" rel="noopener">https://github.com/jackspirou/clientjs。</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>科技公司通过大数据，会对你进行一个大体的画像，然后按照你的喜好推送信息。</p>
+<ul>
+<li><p>比如一些精准的广告，刺激你荷尔蒙的小视频等。</p>
+</li>
+<li><p>就拿你在玩的抖音来说，你其实可以匿名使用，但是你爱抖胸妹子的喜好，不会因为重装抖音而消失，它已熟知了你的癖好。</p>
+</li>
+<li><p>这些收集你浏览器信息的动作，默默的在后台发生，用户根本毫无觉察。</p>
+</li>
+<li><p>你的每一次点击，都无情的出卖了你，这些信息会被综合分析，相关网站和部门，能够对你进行唯一性识别，进而锁定、追踪。</p>
+</li>
+<li><p>你虽然没有注册账号，平台却为你分配了身份。</p>
+</li>
+<li><p>这是识别方式，用于识别你这个个体，而收集的内容，可能更让人瞠目结舌，不要觉得垃圾数据多，存不下，行为数据比那些廉价的磁盘，值钱的多。</p>
+</li>
+<li><p>包括你的每一次点击，停留的时长，阅读、观看的位置，都在全方位的展示你的个体。</p>
+</li>
+<li><p>设备、IP、位置、操作习惯，都在不同的角度绘制你的指纹，让你在匿名的互联网上，无处可藏。</p>
+</li>
+</ul>
+<p>如果你没有足够专业的知识或者非常频繁更换浏览器信息的话，几乎 100% 可以通过浏览器指纹定位到一个用户，当然这也不见得全是坏事。</p>
+<ul>
+<li>泄露的隐私非常片面，只能说泄露了用户部分浏览网页时的行为。</li>
+<li>价值不够，用户行为并未将实际的账户或者具体的人对应起来，产生的价值有限。</li>
+<li>有益利用，利用浏览器指纹可以隔离部分黑产用户，防止刷票或者部分恶意行为。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/" title="浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏">https://uestc66.github.io/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/23/Web前端/如何让不受信任代码“安全”运行？/" rel="next" title="如何让不受信任代码“安全”运行？">
+                <i class="fa fa-chevron-left"></i> 如何让不受信任代码“安全”运行？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/" rel="prev" title>
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指纹技术历史"><span class="nav-number">2.</span> <span class="nav-text">指纹技术历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">3.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#是什么让你暴露身份"><span class="nav-number">4.</span> <span class="nav-text">是什么让你暴露身份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的浏览器指纹"><span class="nav-number">5.</span> <span class="nav-text">基本的浏览器指纹</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指纹采集"><span class="nav-number">5.1.</span> <span class="nav-text">指纹采集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

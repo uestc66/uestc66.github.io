@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自 https://indepth.dev/，原文链接：https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/ Inside Fiber: in-depth overview of the new reconciliation algorithm in Re">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jerry.zmf&#39;s blog">
+<meta property="og:url" content="https://uestc66.github.io/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/index.html">
+<meta property="og:site_name" content="jerry.zmf&#39;s blog">
+<meta property="og:description" content="转载自 https://indepth.dev/，原文链接：https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/ Inside Fiber: in-depth overview of the new reconciliation algorithm in Re">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://res.cloudinary.com/indepth-dev/image/fetch/w_1000,f_auto/https://admin.indepth.dev/content/images/2019/07/react-fiber.png">
+<meta property="og:image" content="https://admin.indepth.dev/content/images/2020/04/Nx_WebAd_April24.png">
+<meta property="og:image" content="https://admin.indepth.dev/content/images/2019/07/tmp1.gif">
+<meta property="og:image" content="https://admin.indepth.dev/content/images/2019/07/image-51.png">
+<meta property="og:image" content="https://admin.indepth.dev/content/images/2019/07/image-52.png">
+<meta property="og:image" content="https://admin.indepth.dev/content/images/2019/07/image-53.png">
+<meta property="og:image" content="https://admin.indepth.dev/content/images/2019/08/tmp2.gif">
+<meta property="og:updated_time" content="2020-07-24T02:10:47.136Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jerry.zmf&#39;s blog">
+<meta name="twitter:description" content="转载自 https://indepth.dev/，原文链接：https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/ Inside Fiber: in-depth overview of the new reconciliation algorithm in Re">
+<meta name="twitter:image" content="https://res.cloudinary.com/indepth-dev/image/fetch/w_1000,f_auto/https://admin.indepth.dev/content/images/2019/07/react-fiber.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/">
+
+
+
+
+
+  <title> | jerry.zmf's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gateway">
+          <a href="/gateway/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            门户
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-24T10:09:08+08:00">
+                2020-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自 <a href="https://indepth.dev/" target="_blank" rel="noopener">https://indepth.dev/</a>，原文链接：<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/" target="_blank" rel="noopener">https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/</a></font></p>
+<h1 id="Inside-Fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-React"><a href="#Inside-Fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-React" class="headerlink" title="Inside Fiber: in-depth overview of the new reconciliation algorithm in React"></a>Inside Fiber: in-depth overview of the new reconciliation algorithm in React</h1><p><a href="https://indepth.dev/author/maxkoretskyi/" target="_blank" rel="noopener">Max Koretskyi</a>15 March, 202019 min read</p>
+<p><img src="https://res.cloudinary.com/indepth-dev/image/fetch/w_1000,f_auto/https://admin.indepth.dev/content/images/2019/07/react-fiber.png" alt="Inside Fiber: in-depth overview of the new reconciliation algorithm in React"></p>
+<p>Dive deep into React’s new architecture called Fiber and learn about two main phases of the new reconciliation algorithm. We’ll take a detailed look at how React updates state and props and processes children.</p>
+<p>React is a JavaScript library for building user interfaces. At its core lies <a href="https://indepth.dev/what-every-front-end-developer-should-know-about-change-detection-in-angular-and-react/" target="_blank" rel="noopener">the mechanism</a> that tracks changes in a component state and projects the updated state to the screen. In React we know this process as <strong><em>\</em>reconciliation**</strong>. We call the <code>setState</code> method and the framework checks if the state or props have changed and re-renders a component on UI.</p>
+<p>React’s docs provide <a href="https://reactjs.org/docs/reconciliation.html" target="_blank" rel="noopener">a good high-level overview</a> of the mechanism: the role of React elements, lifecycle methods and the <code>render</code> method, and the diffing algorithm applied to a component’s children. The tree of immutable React elements returned from the <code>render</code> method is commonly known as the “virtual DOM”. That term helped explain React to people early on, but it also caused confusion and isn’t used in the React documentation anymore. In this article I’ll stick to calling it a tree of React elements.</p>
+<p>Besides the tree of React elements, the framework has always had a tree of internal instances (components, DOM nodes etc.) used to keep the state.Starting from version 16, React rolled out a new implementation of that internal instances tree and the algorithm that manages it code-named <strong><em>\</em>Fiber**</strong>. To learn about the advantages which the Fiber architecture brings check out <a href="https://indepth.dev/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-to-walk-the-components-tree/" target="_blank" rel="noopener">The how and why on React’s usage of linked list in Fiber</a>.</p>
+<p>This is the first article in the series aimed at teaching you internal architecture of React. In this article I want to provide an in-depth overview of important concepts and data structures relevant to the algorithm. Once we have enough background, we’ll explore the algorithm and main functions used to traverse and process the fiber tree. Next articles in the series will demonstrate how React uses the algorithm to perform initial render and process state and props updates. From there we’ll move on to the details of the scheduler, the child reconciliation process, and the mechanism of building an effects list.</p>
+<p>I’m going to give you some pretty advanced knowledge here ?‍. I encourage you to read it to understand the magic behind the inner workings of Concurrent React. This series of articles will also serve you as a great guide if you plan to start contributing to React. I’m <a href="https://indepth.dev/level-up-your-reverse-engineering-skills/" target="_blank" rel="noopener">a strong believer in reverse-engineering</a>, so there will be a lot of links to the sources from the recent version 16.6.0.</p>
+<p>It’s definitely quite a lot to take in, so don’t feel stressed if you don’t understand something right away. It takes time as everything worthwhile. <strong><em>\</em>Note that you don’t need to know any of it to use React. This article is about how React works internally.**</strong></p>
+<p><img src="https://admin.indepth.dev/content/images/2020/04/Nx_WebAd_April24.png" alt="img"></p>
+<p>THIS AD MAKES CONTENT FREE. HIDE</p>
+<h2 id="Setting-the-background"><a href="#Setting-the-background" class="headerlink" title="Setting the background#"></a>Setting the background<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#setting-the-background" target="_blank" rel="noopener">#</a></h2><p>Here’s a simple application that I’ll use throughout the series. We have a button that simply increments a number rendered on the screen:</p>
+<p><img src="https://admin.indepth.dev/content/images/2019/07/tmp1.gif" alt="img"></p>
+<p>And here’s the implementation:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClickCounter</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="keyword">super</span>(props);</span><br><span class="line">        <span class="keyword">this</span>.state = &#123;<span class="attr">count</span>: <span class="number">0</span>&#125;;</span><br><span class="line">        <span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    handleClick() &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(<span class="function">(<span class="params">state</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="attr">count</span>: state.count + <span class="number">1</span>&#125;;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            &lt;button key=<span class="string">"1"</span> onClick=&#123;<span class="keyword">this</span>.handleClick&#125;&gt;Update counter&lt;<span class="regexp">/button&gt;,</span></span><br><span class="line"><span class="regexp">            &lt;span key="2"&gt;&#123;this.state.count&#125;&lt;/</span>span&gt;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>You can play with it <a href="https://stackblitz.com/edit/react-t4rdmh" target="_blank" rel="noopener">here</a>. As you can see, it’s a simple component that returns two child elements <code>button</code> and <code>span</code> from the <code>render</code> method. As soon as you click on the button, the state of the component is updated inside the handler. This, in turn, results in the text update for the <code>span</code> element.</p>
+<p>There are various activities React performs during <strong><em>\</em>reconciliation**</strong>. For example, here are the high-level operations React performs during the first render and after state update in our simple application:</p>
+<ul>
+<li>updates <code>count</code> property in the <code>state</code> of <code>ClickCounter</code></li>
+<li>retrieves and compares children of <code>ClickCounter</code> and their props</li>
+<li>updates props for the <code>span</code> element</li>
+</ul>
+<p>There are other activities performed during <strong><em>\</em>reconciliation**</strong> like calling <a href="https://reactjs.org/docs/react-component.html#updating" target="_blank" rel="noopener">lifecycle methods</a> or updating <a href="https://reactjs.org/docs/refs-and-the-dom.html" target="_blank" rel="noopener">refs</a>. <strong><em>\</em>All these activities are collectively referred to as “work” in the Fiber architecture.**</strong> The type of work usually depends on the type of React element. For example, for a class component, React needs to create an instance, while it doesn’t do that for a functional component. As you know, we have many kinds of elements in React, e.g. class and functional components, host components (DOM nodes), portals etc. The type of React element is defined by the first parameter to the <a href="https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react/src/ReactElement.js#L171" target="_blank" rel="noopener">createElement</a> function. This function is generally used in the <code>render</code> method to create an element.</p>
+<p>Before we begin our exploration of the activities and the main fiber algorithm, let’s first get ourselves familiar with the data structures used internally by React.</p>
+<h2 id="From-React-Elements-to-Fiber-nodes"><a href="#From-React-Elements-to-Fiber-nodes" class="headerlink" title="From React Elements to Fiber nodes#"></a>From React Elements to Fiber nodes<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#from-react-elements-to-fiber-nodes" target="_blank" rel="noopener">#</a></h2><p>Every component in React has a UI representation we can call a view or a template that’s returned from the <code>render</code> method. Here’s the template for our <code>ClickCounter</code> component:</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;button key=<span class="string">"1"</span> onClick=&#123;<span class="keyword">this</span>.onClick&#125;&gt;Update counter&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;span key="2"&gt;&#123;this.state.count&#125;&lt;/</span>span&gt;<span class="xml"><span class="tag">&lt;&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="React-Elements"><a href="#React-Elements" class="headerlink" title="React Elements#"></a>React Elements<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#react-elements" target="_blank" rel="noopener">#</a></h3><p>Once a template goes through the JSX compiler, you end up with a bunch of React elements. This is what’s really returned from the <code>render</code> method of React components, not HTML. Since we’re not required to use JSX, the <code>render</code> method for our <code>ClickCounter</code> component could be re-written like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClickCounter</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            React.createElement(</span><br><span class="line">                <span class="string">'button'</span>,</span><br><span class="line">                &#123;</span><br><span class="line">                    key: <span class="string">'1'</span>,</span><br><span class="line">                    onClick: <span class="keyword">this</span>.onClick</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">'Update counter'</span></span><br><span class="line">            ),</span><br><span class="line">            React.createElement(</span><br><span class="line">                <span class="string">'span'</span>,</span><br><span class="line">                &#123;</span><br><span class="line">                    key: <span class="string">'2'</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">this</span>.state.count</span><br><span class="line">            )</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The calls to <code>React.createElement</code> in the <code>render</code> method will create two data structures like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        $$<span class="keyword">typeof</span>: <span class="built_in">Symbol</span>(react.element),</span><br><span class="line">        type: <span class="string">'button'</span>,</span><br><span class="line">        key: <span class="string">"1"</span>,</span><br><span class="line">        props: &#123;</span><br><span class="line">            children: <span class="string">'Update counter'</span>,</span><br><span class="line">            onClick: <span class="function"><span class="params">()</span> =&gt;</span> &#123; ... &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        $$<span class="keyword">typeof</span>: <span class="built_in">Symbol</span>(react.element),</span><br><span class="line">        type: <span class="string">'span'</span>,</span><br><span class="line">        key: <span class="string">"2"</span>,</span><br><span class="line">        props: &#123;</span><br><span class="line">            children: <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>You can see that React adds the property <code>$$typeof</code> to these objects to uniquely identify them as React elements. Then we have properties <code>type</code>, <code>key</code> and <code>props</code> that describe the element. The values are taken from what you pass to the <code>React.createElement</code> function. Notice how React represents text content as children of the <code>span</code> and <code>button</code> nodes. And how the click handler is part of the <code>button</code> element props. There are other fields on React elements like the <code>ref</code> field that are beyond the scope of this article.</p>
+<p>The React element for <code>ClickCounter</code> doesn’t have any props or a key:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    $$<span class="keyword">typeof</span>: <span class="built_in">Symbol</span>(react.element),</span><br><span class="line">    key: <span class="literal">null</span>,</span><br><span class="line">    props: &#123;&#125;,</span><br><span class="line">    ref: <span class="literal">null</span>,</span><br><span class="line">    type: ClickCounter</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Fiber-nodes"><a href="#Fiber-nodes" class="headerlink" title="Fiber nodes#"></a>Fiber nodes<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#fiber-nodes" target="_blank" rel="noopener">#</a></h3><p>During <strong><em>\</em>reconciliation**</strong> data from every React element returned from the <code>render</code> method is merged into the tree of fiber nodes.Every React element has a corresponding fiber node. Unlike React elements, fibers aren’t re-created on every render.These are mutable data structures that hold components state and DOM.</p>
+<p>We discussed earlier that depending on the type of a React element the framework needs to perform different activities. In our sample application, for the class components <code>ClickCounter</code> it calls lifecycle methods and the <code>render</code> method, whereas for the <code>span</code> host component (DOM node) it performs DOM mutation. So each React element is converted into a Fiber node of <a href="https://github.com/facebook/react/blob/769b1f270e1251d9dbdce0fcbd9e92e502d059b8/packages/shared/ReactWorkTags.js" target="_blank" rel="noopener">corresponding type</a> that describes the work that needs to be done.</p>
+<p><strong><em>\</em>You can think of a fiber as a data structure that represents some work to do or, in other words, a unit of work. Fiber’s architecture also provides a convenient way to track, schedule, pause and abort the work.**</strong></p>
+<p>When a React element is converted into a fiber node for the first time, React uses the data from the element to create a fiber in the <a href="https://github.com/facebook/react/blob/769b1f270e1251d9dbdce0fcbd9e92e502d059b8/packages/react-reconciler/src/ReactFiber.js#L414" target="_blank" rel="noopener">createFiberFromTypeAndProps</a> function. In the consequent updates React reuses the fiber node and just updates the necessary properties using data from a corresponding React element. React may also need to move the node in the hierarchy based on the <code>key</code> prop or delete it if the corresponding React element is no longer returned from the <code>render</code> method.</p>
+<blockquote>
+<p>Check out the <a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactChildFiber.js#L239" target="_blank" rel="noopener"><strong><em>\</em>ChildReconciler**</strong></a> function to see the list of all activities and corresponding functions React performs for existing fiber nodes.</p>
+</blockquote>
+<p>Because React creates a fiber for each React element and since we have a tree of those elements, we’re going to have a tree of fiber nodes. In the case of our sample application it looks like this:</p>
+<p><img src="https://admin.indepth.dev/content/images/2019/07/image-51.png" alt="img"></p>
+<p>All fiber nodes are connected through a linked list using the following properties on fiber nodes: <code>child</code>, <code>sibling</code> and <code>return</code>. For more details on why it works this way, check out my article <a href="https://medium.com/dailyjs/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-67f1014d0eb7" target="_blank" rel="noopener">The how and why on React’s usage of linked list in Fiber</a> if you haven’t read it already.</p>
+<h3 id="Current-and-work-in-progress-trees"><a href="#Current-and-work-in-progress-trees" class="headerlink" title="Current and work in progress trees#"></a>Current and work in progress trees<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#current-and-work-in-progress-trees" target="_blank" rel="noopener">#</a></h3><p>After the first render, React ends up with a fiber tree that reflects the state of the application that was used to render the UI. This tree is often referred to as <strong>current</strong>. When React starts working on updates it builds a so-called <code>workInProgress</code> tree that reflects the future state to be flushed to the screen.</p>
+<p>All work is performed on fibers from the <code>workInProgress</code> tree. As React goes through the <code>current</code> tree, for each existing fiber node it creates an alternate node that constitutes the <code>workInProgress</code> tree. This node is created using the data from React elements returned by the <code>render</code> method. Once the updates are processed and all related work is completed, React will have an alternate tree ready to be flushed to the screen. Once this <code>workInProgress</code> tree is rendered on the screen, it becomes the <code>current</code> tree.</p>
+<p>One of React’s core principles is consistency. React always updates the DOM in one go — it doesn’t show partial results. The <code>workInProgress</code> tree serves as a “draft” that’s not visible to the user, so that React can process all components first, and then flush their changes to the screen.</p>
+<p>In the sources you’ll see a lot of functions that take fiber nodes from both the <code>current</code> and <code>workInProgress</code> trees. Here’s the signature of one such function:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateHostComponent</span>(<span class="params">current, workInProgress, renderExpirationTime</span>) </span>&#123;...&#125;</span><br><span class="line">&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Each fiber node holds a reference to its counterpart from the other tree in the <strong><em>\</em>alternate**</strong> field. A node from the <code>current</code> tree points to the node from the <code>workInProgress</code> tree and vice versa.</p>
+<h3 id="Side-effects"><a href="#Side-effects" class="headerlink" title="Side-effects#"></a>Side-effects<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#side-effects" target="_blank" rel="noopener">#</a></h3><p>We can think of a component in React as a function that uses the state and props to compute the UI representation.Every other activity like mutating the DOM or calling lifecycle methods should be considered a side-effect or, simply, an effect. Effects are also mentioned <a href="https://reactjs.org/docs/hooks-overview.html#️-effect-hook" target="_blank" rel="noopener">in the docs</a>:</p>
+<blockquote>
+<p>You’ve likely performed data fetching, subscriptions, or manually <strong><em>\</em>changing the DOM**</strong> from React components before. We call these operations “side effects” (or “effects” for short) because they can affect other components and can’t be done during rendering.</p>
+</blockquote>
+<p>You can see how most state and props updates will lead to side-effects. And since applying effects is a type of work, a fiber node is a convenient mechanism to track effects in addition to updates. Each fiber node can have effects associated with it. They are encoded in the <code>effectTag</code> field.</p>
+<p>So effects in Fiber basically define the <a href="https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/shared/ReactSideEffectTags.js" target="_blank" rel="noopener">work</a> that needs to be done for instances after updates have been processed. For host components (DOM elements) the work consists of adding, updating or removing elements. For class components React may need to update refs and call the <code>componentDidMount</code> and <code>componentDidUpdate</code> lifecycle methods. There are also other effects corresponding to other types of fibers.</p>
+<h3 id="Effects-list"><a href="#Effects-list" class="headerlink" title="Effects list#"></a>Effects list<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#effects-list" target="_blank" rel="noopener">#</a></h3><p>React processes updates very quickly and to achieve that level of performance it employs a few interesting techniques. <strong><em>\</em>One of them is building a linear list of fiber nodes with effects for quick iteration.**</strong> Iterating the linear list is much faster than a tree, and there’s no need to spend time on nodes without side-effects.</p>
+<p>The goal of this list is to mark nodes that have DOM updates or other effects associated with them. This list is a subset of the <code>finishedWork</code> tree and is linked using the <code>nextEffect</code> property instead of the <code>child</code> property used in the <code>current</code> and <code>workInProgress</code> trees.</p>
+<p><a href="https://medium.com/u/a3a8af6addc1?source=post_page---------------------------" target="_blank" rel="noopener">Dan Abramov</a> offered an analogy for an effects list. He likes to think of it as a Christmas tree, with “Christmas lights” binding all effectful nodes together. To visualize this, let’s imagine the following tree of fiber nodes where the highlighted nodes have some work to do. For example, our update caused <code>c2</code> to be inserted into the DOM, <code>d2</code> and <code>c1</code> to change attributes, and <code>b2</code> to fire a lifecycle method. The effect list will link them together so React can skip other nodes later:</p>
+<p><img src="https://admin.indepth.dev/content/images/2019/07/image-52.png" alt="img"></p>
+<p>You can see how the nodes with effects are linked together. When going over the nodes, React uses the <code>firstEffect</code> pointer to figure out where the list starts. So the diagram above can be represented as a linear list like this:</p>
+<p><img src="https://admin.indepth.dev/content/images/2019/07/image-53.png" alt="img"></p>
+<h3 id="Root-of-the-fiber-tree"><a href="#Root-of-the-fiber-tree" class="headerlink" title="Root of the fiber tree#"></a>Root of the fiber tree<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#root-of-the-fiber-tree" target="_blank" rel="noopener">#</a></h3><p>Every React application has one or more DOM elements that act as containers. In our case it’s the <code>div</code> element with the ID <code>container</code>.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> domContainer = <span class="built_in">document</span>.querySelector(<span class="string">'#container'</span>);</span><br><span class="line">ReactDOM.render(React.createElement(ClickCounter), domContainer);<span class="xml"><span class="tag">&lt;&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>React creates a <a href="https://github.com/facebook/react/blob/0dc0ddc1ef5f90fe48b58f1a1ba753757961fc74/packages/react-reconciler/src/ReactFiberRoot.js#L31" target="_blank" rel="noopener">fiber root</a> object for each of those containers. You can access it using the reference to the DOM element:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fiberRoot = query(<span class="string">'#container'</span>)._reactRootContainer._internalRoot</span><br><span class="line">&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>This fiber root is where React holds the reference to a fiber tree. It is stored in the <code>current</code> property of the fiber root:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hostRootFiberNode = fiberRoot.current&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The fiber tree starts with <a href="https://github.com/facebook/react/blob/cbbc2b6c4d0d8519145560bd8183ecde55168b12/packages/shared/ReactWorkTags.js#L34" target="_blank" rel="noopener">a special type</a> of fiber node which is <code>HostRoot</code>. It’s created internally and acts as a parent for your topmost component. There’s a link from the <code>HostRoot</code> fiber node back to the <code>FiberRoot</code> through the <code>stateNode</code> property:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fiberRoot.current.stateNode === fiberRoot; <span class="comment">// true&lt;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>You can explore the fiber tree by accessing the topmost <code>HostRoot</code> fiber node through the fiber root. Or you can get an individual fiber node from a component instance like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compInstance._reactInternalFiber&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Fiber-node-structure"><a href="#Fiber-node-structure" class="headerlink" title="Fiber node structure#"></a>Fiber node structure<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#fiber-node-structure" target="_blank" rel="noopener">#</a></h3><p>Let’s now take a look at the structure of fiber nodes created for the <code>ClickCounter</code> component:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    stateNode: <span class="keyword">new</span> ClickCounter,</span><br><span class="line">    type: ClickCounter,</span><br><span class="line">    alternate: <span class="literal">null</span>,</span><br><span class="line">    key: <span class="literal">null</span>,</span><br><span class="line">    updateQueue: <span class="literal">null</span>,</span><br><span class="line">    memoizedState: &#123;<span class="attr">count</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    pendingProps: &#123;&#125;,</span><br><span class="line">    memoizedProps: &#123;&#125;,</span><br><span class="line">    tag: <span class="number">1</span>,</span><br><span class="line">    effectTag: <span class="number">0</span>,</span><br><span class="line">    nextEffect: <span class="literal">null</span></span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>and the <code>span</code> DOM element:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    stateNode: <span class="keyword">new</span> HTMLSpanElement,</span><br><span class="line">    type: <span class="string">"span"</span>,</span><br><span class="line">    alternate: <span class="literal">null</span>,</span><br><span class="line">    key: <span class="string">"2"</span>,</span><br><span class="line">    updateQueue: <span class="literal">null</span>,</span><br><span class="line">    memoizedState: <span class="literal">null</span>,</span><br><span class="line">    pendingProps: &#123;<span class="attr">children</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    memoizedProps: &#123;<span class="attr">children</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    tag: <span class="number">5</span>,</span><br><span class="line">    effectTag: <span class="number">0</span>,</span><br><span class="line">    nextEffect: <span class="literal">null</span></span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>There’s quite a lot of fields on fiber nodes. I’ve described the purpose of the fields <code>alternate</code>, <code>effectTag</code> and <code>nextEffect</code> in previous sections. Let’s now see why we need others.</p>
+<h3 id="stateNode"><a href="#stateNode" class="headerlink" title="stateNode#"></a>stateNode<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#statenode" target="_blank" rel="noopener">#</a></h3><p>Holds the reference to the class instance of a component, a DOM node or other React element type associated with the fiber node. In general, we can say that this property is used to hold the local state associated with a fiber.</p>
+<h3 id="type"><a href="#type" class="headerlink" title="type#"></a>type<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#type" target="_blank" rel="noopener">#</a></h3><p>Defines the function or class associated with this fiber. For class components, it points to the constructor function and for DOM elements it specifies the HTML tag. I use this field quite often to understand what element a fiber node is related to.</p>
+<h3 id="tag"><a href="#tag" class="headerlink" title="tag#"></a>tag<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#tag" target="_blank" rel="noopener">#</a></h3><p>Defines <a href="https://github.com/facebook/react/blob/769b1f270e1251d9dbdce0fcbd9e92e502d059b8/packages/shared/ReactWorkTags.js" target="_blank" rel="noopener">the type of the fiber</a>. It’s used in the reconciliation algorithm to determine what work needs to be done. As mentioned earlier, the work varies depending on the type of React element. The function <a href="https://github.com/facebook/react/blob/769b1f270e1251d9dbdce0fcbd9e92e502d059b8/packages/react-reconciler/src/ReactFiber.js#L414" target="_blank" rel="noopener">createFiberFromTypeAndProps</a> maps a React element to the corresponding fiber node type. In our application, the property <code>tag</code> for the <code>ClickCounter</code> component is <code>1</code> which denotes a <code>ClassComponent</code> and for the <code>span</code> element it’s <code>5</code> denoting a <code>HostComponent</code>.</p>
+<h3 id="updateQueue"><a href="#updateQueue" class="headerlink" title="updateQueue#"></a>updateQueue<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#updatequeue" target="_blank" rel="noopener">#</a></h3><p>A queue of state updates, callbacks and DOM updates.</p>
+<h3 id="memoizedState"><a href="#memoizedState" class="headerlink" title="memoizedState#"></a>memoizedState<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#memoizedstate" target="_blank" rel="noopener">#</a></h3><p>State of the fiber that was used to create the output. When processing updates it reflects the state that’s currently rendered on the screen.</p>
+<h3 id="memoizedProps"><a href="#memoizedProps" class="headerlink" title="memoizedProps#"></a>memoizedProps<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#memoizedprops" target="_blank" rel="noopener">#</a></h3><p>Props of the fiber that were used to create the output during the previous render.</p>
+<h3 id="pendingProps"><a href="#pendingProps" class="headerlink" title="pendingProps#"></a>pendingProps<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#pendingprops" target="_blank" rel="noopener">#</a></h3><p>Props that have been updated from new data in React elements and need to be applied to child components or DOM elements.</p>
+<h3 id="key"><a href="#key" class="headerlink" title="key#"></a>key<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#key" target="_blank" rel="noopener">#</a></h3><p>Unique identifier with a group of children to help React figure out which items have changed, have been added or removed from the list. It’s related to the “lists and keys” functionality of React described <a href="https://reactjs.org/docs/lists-and-keys.html#keys" target="_blank" rel="noopener">here</a>.</p>
+<p>You can find the complete structure of a fiber node <a href="https://github.com/facebook/react/blob/6e4f7c788603dac7fccd227a4852c110b072fe16/packages/react-reconciler/src/ReactFiber.js#L78" target="_blank" rel="noopener">here</a>. I’ve omitted a bunch of fields in the explanation above. Particularly, I skipped the pointers <code>child</code>, <code>sibling</code> and <code>return</code> that make up a tree data structure which I <a href="https://indepth.dev/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-to-walk-the-components-tree/" target="_blank" rel="noopener">described in my previous article</a>. And a category of fields like <code>expirationTime</code>, <code>childExpirationTime</code> and <code>mode</code> that are specific to <code>Scheduler</code>.</p>
+<h2 id="General-algorithm"><a href="#General-algorithm" class="headerlink" title="General algorithm#"></a>General algorithm<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#general-algorithm" target="_blank" rel="noopener">#</a></h2><p>React performs work in two main phases: <strong><em>\</em>render**</strong> and <strong><em>\</em>commit**</strong>.</p>
+<p>During the first <code>render</code> phase React applies updates to components scheduled through <code>setState</code> or <code>React.render</code> and figures out what needs to be updated in the UI. If it’s the initial render, React creates a new fiber node for each element returned from the <code>render</code> method. In the following updates, fibers for existing React elements are re-used and updated. <strong><em>\</em>The result of the phase is a tree of fiber nodes marked with side-effects.**</strong> The effects describe the work that needs to be done during the following <code>commit</code> phase.During this phase React takes a fiber tree marked with effects and applies them to instances. It goes over the list of effects and performs DOM updates and other changes visible to a user.</p>
+<p><strong><em>\</em>It’s important to understand that the work during the first**</strong> <code>render</code> <strong><em>\</em>phase can be performed asynchronously.**</strong> React can process one or more fiber nodes depending on the available time, then stop to stash the work done and yield to some event. It then continues from where it left off. Sometimes though, it may need to discard the work done and start from the top again.These pauses are made possible by the fact that the work performed during this phase doesn’t lead to any user-visible changes, like DOM updates. <strong><em>\</em>In contrast, the following**</strong> <code>commit</code> <strong><em>\</em>phase is always synchronous**</strong>. This is because the work performed during this stage leads to changes visible to the user, e.g. DOM updates. That’s why React needs to do them in a single pass.</p>
+<p>Calling lifecycle methods is one type of work performed by React. Some methods are called during the <code>render</code> phase and others during the <code>commit</code> phase. Here’s the list of lifecycles called when working through the first <code>render</code> phase:</p>
+<ul>
+<li>[UNSAFE_]componentWillMount (deprecated)</li>
+<li>[UNSAFE_]componentWillReceiveProps (deprecated)</li>
+<li>getDerivedStateFromProps</li>
+<li>shouldComponentUpdate</li>
+<li>[UNSAFE_]componentWillUpdate (deprecated)</li>
+<li>render</li>
+</ul>
+<p>As you can see, some legacy lifecycle methods that are executed during the <code>render</code> phase are marked as <code>UNSAFE</code> from the version 16.3. They are now called legacy lifecycles in the docs. They will be deprecated in future 16.x releases and their counterparts without the <code>UNSAFE</code> prefix will be removed in 17.0. You can read more about these changes and the suggested migration path <a href="https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html" target="_blank" rel="noopener">here</a>.</p>
+<p>Are you curious about the reason for this?</p>
+<p>Well, we’ve just learned that because the <code>render</code> phase doesn’t produce side-effects like DOM updates, React can process updates asynchronously to components asynchronously (potentially even doing it in multiple threads).However, the lifecycles marked with <code>UNSAFE</code> have often been misunderstood and subtly misused. Developers tended to put the code with side-effects inside these methods which may cause problems with the new async rendering approach. Although only their counterparts without the <code>UNSAFE</code> prefix will be removed, they are still likely to cause issues in the upcoming Concurrent Mode (which you can opt out of).</p>
+<p>Here’s the list of lifecycle methods executed during the second <code>commit</code> phase:</p>
+<ul>
+<li>getSnapshotBeforeUpdate</li>
+<li>componentDidMount</li>
+<li>componentDidUpdate</li>
+<li>componentWillUnmount</li>
+</ul>
+<p>Because these methods execute in the synchronous <code>commit</code> phase, they may contain side effects and touch the DOM.</p>
+<p>Okay, so now we have the background to take a look at generalized algorithm used to walk the tree and perform work. Let’s dive in.</p>
+<h3 id="Render-phase"><a href="#Render-phase" class="headerlink" title="Render phase#"></a>Render phase<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#render-phase" target="_blank" rel="noopener">#</a></h3><p>The reconciliation algorithm always starts from the topmost <code>HostRoot</code> fiber node using the <a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactFiberScheduler.js#L1132" target="_blank" rel="noopener">renderRoot</a> function. However, React bails out of (skips) already processed fiber nodes until it finds the node with unfinished work.For example, if you call <code>setState</code> deep in the components tree, React will start from the top but quickly skip over the parents until it gets to the component that had its <code>setState</code> method called.</p>
+<h3 id="Main-steps-of-the-work-loop"><a href="#Main-steps-of-the-work-loop" class="headerlink" title="Main steps of the work loop#"></a>Main steps of the work loop<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#main-steps-of-the-work-loop" target="_blank" rel="noopener">#</a></h3><p>All fiber nodes are processed <a href="https://github.com/facebook/react/blob/f765f022534958bcf49120bf23bc1aa665e8f651/packages/react-reconciler/src/ReactFiberScheduler.js#L1136" target="_blank" rel="noopener">in the work loop</a>. Here is the implementation of the synchronous part of the loop:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">workLoop</span>(<span class="params">isYieldy</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!isYieldy) &#123;</span><br><span class="line">    <span class="keyword">while</span> (nextUnitOfWork !== <span class="literal">null</span>) &#123;</span><br><span class="line">      nextUnitOfWork = performUnitOfWork(nextUnitOfWork);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;...&#125;</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>In the code above, the <code>nextUnitOfWork</code> holds a reference to the fiber node from the <code>workInProgress</code> tree that has some work to do. As React traverses the tree of Fibers, it uses this variable to know if there’s any other fiber node with unfinished work. After the current fiber is processed, the variable will either contain the reference to the next fiber node in a tree or <code>null</code>. In that case React exits the work loop and is ready to commit the changes.</p>
+<p>There are 4 main functions that are used to traverse the tree and initiate or complete the work:</p>
+<ul>
+<li><a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactFiberScheduler.js#L1056" target="_blank" rel="noopener">performUnitOfWork</a></li>
+<li><a href="https://github.com/facebook/react/blob/cbbc2b6c4d0d8519145560bd8183ecde55168b12/packages/react-reconciler/src/ReactFiberBeginWork.js#L1489" target="_blank" rel="noopener">beginWork</a></li>
+<li><a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactFiberScheduler.js#L879" target="_blank" rel="noopener">completeUnitOfWork</a></li>
+<li><a href="https://github.com/facebook/react/blob/cbbc2b6c4d0d8519145560bd8183ecde55168b12/packages/react-reconciler/src/ReactFiberCompleteWork.js#L532" target="_blank" rel="noopener">completeWork</a></li>
+</ul>
+<p>To demonstrate how they are used, take a look at the following animation of traversing a fiber tree. I’ve used the simplified implementation of these functions for the demo. Each function takes a fiber node to process and as React goes down the tree you can see the currently active fiber node changes. You can clearly see on the video how the algorithm goes from one branch to the other. It first completes the work for children before moving to parents.</p>
+<p><img src="https://admin.indepth.dev/content/images/2019/08/tmp2.gif" alt="img"></p>
+<blockquote>
+<p>Note that straight vertical connections denote siblings, whereas bent connections denote children, e.g. <code>b1</code> doesn’t have children, while <code>b2</code> has one child <code>c1</code>.</p>
+</blockquote>
+<p><a href="https://vimeo.com/302222454" target="_blank" rel="noopener">Here’s the link to the video</a> where you can pause the playback and inspect the current node and the state of functions. Conceptually, you can think of “begin” as “stepping into” a component, and “complete” as “stepping out” of it. You can also <a href="https://stackblitz.com/edit/js-ntqfil?file=index.js" target="_blank" rel="noopener">play with the example and the implementation here</a> as I explain what these functions do.</p>
+<p>Let’s start with the first two functions <code>performUnitOfWork</code> and <code>beginWork</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">performUnitOfWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> next = beginWork(workInProgress);</span><br><span class="line">    <span class="keyword">if</span> (next === <span class="literal">null</span>) &#123;</span><br><span class="line">        next = completeUnitOfWork(workInProgress);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">beginWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'work performed for '</span> + workInProgress.name);</span><br><span class="line">    <span class="keyword">return</span> workInProgress.child;</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The function <code>performUnitOfWork</code> receives a fiber node from the <code>workInProgress</code> tree and starts the work by calling <code>beginWork</code> function. This is the function that will start all the activities that need to be performed for a fiber. For the purposes of this demonstration, we simply log the name of the fiber to denote that the work has been done. <strong><em>\</em>The function**</strong> <code>beginWork</code> <strong><em>\</em>always returns a pointer to the next child to process in the loop or**</strong> <code>null</code><strong><em>\</em>.**</strong></p>
+<p>If there’s a next child, it will be assigned to the variable <code>nextUnitOfWork</code> in the <code>workLoop</code> function. However, if there’s no child, React knows that it reached the end of the branch and so it can complete the current node. <strong><em>\</em>Once the node is completed, it’ll need to perform work for siblings and backtrack to the parent after that.**</strong> This is done in the <code>completeUnitOfWork</code> function:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">completeUnitOfWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> returnFiber = workInProgress.return;</span><br><span class="line">        <span class="keyword">let</span> siblingFiber = workInProgress.sibling;</span><br><span class="line"></span><br><span class="line">        nextUnitOfWork = completeWork(workInProgress);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (siblingFiber !== <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// If there is a sibling, return it</span></span><br><span class="line">            <span class="comment">// to perform work for this sibling</span></span><br><span class="line">            <span class="keyword">return</span> siblingFiber;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (returnFiber !== <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// If there's no more work in this returnFiber,</span></span><br><span class="line">            <span class="comment">// continue the loop to complete the parent.</span></span><br><span class="line">            workInProgress = returnFiber;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// We've reached the root.</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">completeWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'work completed for '</span> + workInProgress.name);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>You can see that the gist of the function is a big <code>while</code> loop. React gets into this function when a <code>workInProgress</code> node has no children. After completing the work for the current fiber, it checks if there’s a sibling. If found, React exits the function and returns the pointer to the sibling. It will be assigned to the <code>nextUnitOfWork</code> variable and React will perform the work for the branch starting with this sibling. It’s important to understand that at this point React has only completed work for the preceding siblings. It hasn’t completed work for the parent node. <strong><em>\</em>Only once all branches starting with child nodes are completed does it complete the work for the parent node and backtracks.**</strong></p>
+<p>As you can see from the implementation, both and <code>completeUnitOfWork</code> are used mostly for iteration purposes, whereas the main activities take place in the <code>beginWork</code> and <code>completeWork</code> functions. In the following articles in the series we’ll learn what happens for the <code>ClickCounter</code> component and the <code>span</code> node as React steps into <code>beginWork</code> and <code>completeWork</code> functions.</p>
+<h2 id="Commit-phase"><a href="#Commit-phase" class="headerlink" title="Commit phase#"></a>Commit phase<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#commit-phase" target="_blank" rel="noopener">#</a></h2><p>The phase begins with the function <a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactFiberScheduler.js#L2306" target="_blank" rel="noopener">completeRoot</a>. This is where React updates the DOM and calls pre and post mutation lifecycle methods.</p>
+<p>When React gets to this phase, it has 2 trees and the effects list. The first tree represents the state currently rendered on the screen. Then there’s an alternate tree built during the <code>render</code> phase. It’s called <code>finishedWork</code> or <code>workInProgress</code> in the sources and represents the state that needs to be reflected on the screen. This alternate tree is linked similarly to the current tree through the <code>child</code> and <code>sibling</code> pointers.</p>
+<p>And then, there’s an effects list — a subset of nodes from the <code>finishedWork</code> tree linked through the <code>nextEffect</code> pointer. Remember that the effect list is the <strong>result</strong> of running the <code>render</code> phase. The whole point of rendering was to determine which nodes need to be inserted, updated, or deleted, and which components need to have their lifecycle methods called. And that’s what the effect list tells us. <strong><em>\</em>And it’s exactly the set of nodes that’s iterated during the commit phase.**</strong></p>
+<blockquote>
+<p>For debugging purposes, the <code>current</code> tree can be accessed through the <code>current</code> property of the fiber root. The <code>finishedWork</code> tree can be accessed through the <code>alternate</code> property of the <code>HostFiber</code> node in the current tree.</p>
+</blockquote>
+<p>The main function that runs during the commit phase is <a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactFiberScheduler.js#L523" target="_blank" rel="noopener">commitRoot</a>. Basically, it does the following:</p>
+<ul>
+<li>Calls the <code>getSnapshotBeforeUpdate</code> lifecycle method on nodes tagged with the <code>Snapshot</code> effect</li>
+<li>Calls the <code>componentWillUnmount</code> lifecycle method on nodes tagged with the <code>Deletion</code> effect</li>
+<li>Performs all the DOM insertions, updates and deletions</li>
+<li>Sets the <code>finishedWork</code> tree as current</li>
+<li>Calls <code>componentDidMount</code> lifecycle method on nodes tagged with the <code>Placement</code> effect</li>
+<li>Calls <code>componentDidUpdate</code> lifecycle method on nodes tagged with the <code>Update</code> effect</li>
+</ul>
+<p>After calling the pre-mutation method <code>getSnapshotBeforeUpdate</code>, React commits all the side-effects within a tree. It does it in two passes. The first pass performs all DOM (host) insertions, updates, deletions and ref unmounts. Then React assigns the <code>finishedWork</code> tree to the <code>FiberRoot</code> marking the <code>workInProgress</code> tree as the <code>current</code> tree. This is done after the first pass of the commit phase, so that the previous tree is still current during <code>componentWillUnmount</code>, but before the second pass, so that the finished work is current during <code>componentDidMount***\*/\****Update</code>. In the second pass React calls all other lifecycle methods and ref callbacks. These methods are executed as a separate pass so that all placements, updates, and deletions in the entire tree have already been invoked.</p>
+<p>Here’s the gist of the function that runs the steps described above:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">commitRoot</span>(<span class="params">root, finishedWork</span>) </span>&#123;</span><br><span class="line">    commitBeforeMutationLifecycles()</span><br><span class="line">    commitAllHostEffects();</span><br><span class="line">    root.current = finishedWork;</span><br><span class="line">    commitAllLifeCycles();</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Each of those sub-functions implements a loop that iterates over the list of effects and checks the type of effects. When it finds the effect pertaining to the function’s purpose, it applies it.</p>
+<h3 id="Pre-mutation-lifecycle-methods"><a href="#Pre-mutation-lifecycle-methods" class="headerlink" title="Pre-mutation lifecycle methods#"></a>Pre-mutation lifecycle methods<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#pre-mutation-lifecycle-methods" target="_blank" rel="noopener">#</a></h3><p>Here is, for example, the code that iterates over an effects tree and checks if a node has the <code>Snapshot</code> effect:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">commitBeforeMutationLifecycles</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (nextEffect !== <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> effectTag = nextEffect.effectTag;</span><br><span class="line">        <span class="keyword">if</span> (effectTag &amp; Snapshot) &#123;</span><br><span class="line">            <span class="keyword">const</span> current = nextEffect.alternate;</span><br><span class="line">            commitBeforeMutationLifeCycles(current, nextEffect);</span><br><span class="line">        &#125;</span><br><span class="line">        nextEffect = nextEffect.nextEffect;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>For a class component, this effect means calling the <code>getSnapshotBeforeUpdate</code> lifecycle method.</p>
+<h3 id="DOM-updates"><a href="#DOM-updates" class="headerlink" title="DOM updates#"></a>DOM updates<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#dom-updates" target="_blank" rel="noopener">#</a></h3><p><a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactFiberScheduler.js#L376" target="_blank" rel="noopener">commitAllHostEffects</a> is the function where React performs DOM updates. The function basically defines the type of operation that needs to be done for a node and executes it:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">commitAllHostEffects</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (primaryEffectTag) &#123;</span><br><span class="line">        <span class="keyword">case</span> Placement: &#123;</span><br><span class="line">            commitPlacement(nextEffect);</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> PlacementAndUpdate: &#123;</span><br><span class="line">            commitPlacement(nextEffect);</span><br><span class="line">            commitWork(current, nextEffect);</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> Update: &#123;</span><br><span class="line">            commitWork(current, nextEffect);</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> Deletion: &#123;</span><br><span class="line">            commitDeletion(nextEffect);</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&lt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>It’s interesting that React calls the <code>componentWillUnmount</code> method as part of the deletion process in the <code>commitDeletion</code> function.</p>
+<h3 id="Post-mutation-lifecycle-methods"><a href="#Post-mutation-lifecycle-methods" class="headerlink" title="Post-mutation lifecycle methods#"></a>Post-mutation lifecycle methods<a href="https://indepth.dev/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react/#post-mutation-lifecycle-methods" target="_blank" rel="noopener">#</a></h3><p><a href="https://github.com/facebook/react/blob/95a313ec0b957f71798a69d8e83408f40e76765b/packages/react-reconciler/src/ReactFiberScheduler.js#L465" target="_blank" rel="noopener">commitAllLifecycles</a> is the function where React calls all remaining lifecycle methods <code>componentDidUpdate</code> and <code>componentDidMount</code>.</p>
+<hr>
+<p>We’re finally done. Let me know what you think about the article or ask questions in the comments. <strong><em>\</em>Check out the next article in the series <a href="https://indepth.dev/in-depth-explanation-of-state-and-props-update-in-react/" target="_blank" rel="noopener">In-depth explanation of state and props update in React</a>.**</strong> I have many more articles in the works providing in-depth explanation for scheduler, children reconciliation process and how effects list is built. I also have plans to create a video where I’ll show how to debug the application using this article as a basis.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/" title>https://uestc66.github.io/2020/07/24/Web前端/Inside Fiber: in-depth overview of the new reconciliation algorithm in React/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/24/Web前端/浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏/" rel="next" title="浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏">
+                <i class="fa fa-chevron-left"></i> 浏览器指纹：原来我们一直被互联网巨头监视，隐私在网上裸奔、无处可藏
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/30/Web前端/管中窥豹各种沙盒技术/" rel="prev" title="管中窥豹各种沙盒技术">
+                管中窥豹各种沙盒技术 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Inside-Fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-React"><span class="nav-number">1.</span> <span class="nav-text">Inside Fiber: in-depth overview of the new reconciliation algorithm in React</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Setting-the-background"><span class="nav-number">1.1.</span> <span class="nav-text">Setting the background#</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#From-React-Elements-to-Fiber-nodes"><span class="nav-number">1.2.</span> <span class="nav-text">From React Elements to Fiber nodes#</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#React-Elements"><span class="nav-number">1.2.1.</span> <span class="nav-text">React Elements#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber-nodes"><span class="nav-number">1.2.2.</span> <span class="nav-text">Fiber nodes#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Current-and-work-in-progress-trees"><span class="nav-number">1.2.3.</span> <span class="nav-text">Current and work in progress trees#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Side-effects"><span class="nav-number">1.2.4.</span> <span class="nav-text">Side-effects#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Effects-list"><span class="nav-number">1.2.5.</span> <span class="nav-text">Effects list#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Root-of-the-fiber-tree"><span class="nav-number">1.2.6.</span> <span class="nav-text">Root of the fiber tree#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber-node-structure"><span class="nav-number">1.2.7.</span> <span class="nav-text">Fiber node structure#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stateNode"><span class="nav-number">1.2.8.</span> <span class="nav-text">stateNode#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">1.2.9.</span> <span class="nav-text">type#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tag"><span class="nav-number">1.2.10.</span> <span class="nav-text">tag#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#updateQueue"><span class="nav-number">1.2.11.</span> <span class="nav-text">updateQueue#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memoizedState"><span class="nav-number">1.2.12.</span> <span class="nav-text">memoizedState#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memoizedProps"><span class="nav-number">1.2.13.</span> <span class="nav-text">memoizedProps#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pendingProps"><span class="nav-number">1.2.14.</span> <span class="nav-text">pendingProps#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#key"><span class="nav-number">1.2.15.</span> <span class="nav-text">key#</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#General-algorithm"><span class="nav-number">1.3.</span> <span class="nav-text">General algorithm#</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Render-phase"><span class="nav-number">1.3.1.</span> <span class="nav-text">Render phase#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Main-steps-of-the-work-loop"><span class="nav-number">1.3.2.</span> <span class="nav-text">Main steps of the work loop#</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Commit-phase"><span class="nav-number">1.4.</span> <span class="nav-text">Commit phase#</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pre-mutation-lifecycle-methods"><span class="nav-number">1.4.1.</span> <span class="nav-text">Pre-mutation lifecycle methods#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM-updates"><span class="nav-number">1.4.2.</span> <span class="nav-text">DOM updates#</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Post-mutation-lifecycle-methods"><span class="nav-number">1.4.3.</span> <span class="nav-text">Post-mutation lifecycle methods#</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
