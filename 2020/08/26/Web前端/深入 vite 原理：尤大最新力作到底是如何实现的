@@ -90,7 +90,7 @@
 <meta name="description" content="转载自网络，原文链接：https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w NO.1 vite 是什么 vite —— 一个由 vue 作者尤雨溪开发的 web 开发工具，它具有以下特点：  快速的冷启动 即时的模块热更新 真正的按需编译  从作者在微博上的发言：  Vite，一个基于浏览器原生 ES imports 的开发服务器。利用浏览器去解析 i">
 <meta name="keywords" content="Web前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深入理解JS执行上下文的点点滴滴">
+<meta property="og:title" content="深入 vite 原理：尤大最新力作到底是如何实现的?">
 <meta property="og:url" content="https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的">
 <meta property="og:site_name" content="jerry.zmf&#39;s blog">
 <meta property="og:description" content="转载自网络，原文链接：https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w NO.1 vite 是什么 vite —— 一个由 vue 作者尤雨溪开发的 web 开发工具，它具有以下特点：  快速的冷启动 即时的模块热更新 真正的按需编译  从作者在微博上的发言：  Vite，一个基于浏览器原生 ES imports 的开发服务器。利用浏览器去解析 i">
@@ -100,9 +100,9 @@
 <meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
 <meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QTNzZR6KeDicVkcLCAFvrsnkc8icsXzdgneTwUUPPuicZib3009NCcQxmThJb58hXPYcQDdibX6noicCatH2RLfN6CMw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
-<meta property="og:updated_time" content="2020-08-26T14:54:58.632Z">
+<meta property="og:updated_time" content="2020-08-26T15:16:15.671Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="深入理解JS执行上下文的点点滴滴">
+<meta name="twitter:title" content="深入 vite 原理：尤大最新力作到底是如何实现的?">
 <meta name="twitter:description" content="转载自网络，原文链接：https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w NO.1 vite 是什么 vite —— 一个由 vue 作者尤雨溪开发的 web 开发工具，它具有以下特点：  快速的冷启动 即时的模块热更新 真正的按需编译  从作者在微博上的发言：  Vite，一个基于浏览器原生 ES imports 的开发服务器。利用浏览器去解析 i">
 <meta name="twitter:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
 
@@ -140,7 +140,7 @@
 
 
 
-  <title>深入理解JS执行上下文的点点滴滴 | jerry.zmf's blog</title>
+  <title>深入 vite 原理：尤大最新力作到底是如何实现的? | jerry.zmf's blog</title>
   
 
 
@@ -340,7 +340,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">深入理解JS执行上下文的点点滴滴</h1>
+          <h1 class="post-title" itemprop="name headline">深入 vite 原理：尤大最新力作到底是如何实现的?</h1>
         
 
         <div class="post-meta">
@@ -661,7 +661,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/" title="深入理解JS执行上下文的点点滴滴">https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/</a>
+    <a href="https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/" title="深入 vite 原理：尤大最新力作到底是如何实现的?">https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
