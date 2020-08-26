@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="true">
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="RdqHn7VpTr">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+  <meta name="keywords" content="Web前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自网络，原文链接：https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w NO.1 vite 是什么 vite —— 一个由 vue 作者尤雨溪开发的 web 开发工具，它具有以下特点：  快速的冷启动 即时的模块热更新 真正的按需编译  从作者在微博上的发言：  Vite，一个基于浏览器原生 ES imports 的开发服务器。利用浏览器去解析 i">
+<meta name="keywords" content="Web前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JS执行上下文的点点滴滴">
+<meta property="og:url" content="https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的">
+<meta property="og:site_name" content="jerry.zmf&#39;s blog">
+<meta property="og:description" content="转载自网络，原文链接：https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w NO.1 vite 是什么 vite —— 一个由 vue 作者尤雨溪开发的 web 开发工具，它具有以下特点：  快速的冷启动 即时的模块热更新 真正的按需编译  从作者在微博上的发言：  Vite，一个基于浏览器原生 ES imports 的开发服务器。利用浏览器去解析 i">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QTNzZR6KeDicVkcLCAFvrsnkc8icsXzdgnRejrTZAWdB1v7p6ED8JmibHlmXaQKPRbQFkrT73jfPBUfNwnZiaQg6Jw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/QTNzZR6KeDicVkcLCAFvrsnkc8icsXzdgneTwUUPPuicZib3009NCcQxmThJb58hXPYcQDdibX6noicCatH2RLfN6CMw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:updated_time" content="2020-08-26T14:54:58.632Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JS执行上下文的点点滴滴">
+<meta name="twitter:description" content="转载自网络，原文链接：https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w NO.1 vite 是什么 vite —— 一个由 vue 作者尤雨溪开发的 web 开发工具，它具有以下特点：  快速的冷启动 即时的模块热更新 真正的按需编译  从作者在微博上的发言：  Vite，一个基于浏览器原生 ES imports 的开发服务器。利用浏览器去解析 i">
+<meta name="twitter:image" content="https://uestc66.github.io/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的">
+
+
+
+
+
+  <title>深入理解JS执行上下文的点点滴滴 | jerry.zmf's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+<div>
+
+</div>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/uestc66"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jerry.zmf's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心有光芒，必有远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gateway">
+          <a href="/gateway/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            门户
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jerry.zmf">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jerry.zmf's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解JS执行上下文的点点滴滴</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-26T22:54:14+08:00">
+                2020-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font color="#00BFFF" size="2">转载自网络，原文链接：<a href="https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/ZviWkdYnmFbekKA0LNz92w</a></font></p>
+<p>NO.1</p>
+<p>vite 是什么</p>
+<p>vite —— 一个由 vue 作者尤雨溪开发的 web 开发工具，它具有以下特点：</p>
+<ol>
+<li>快速的冷启动</li>
+<li>即时的模块热更新</li>
+<li>真正的按需编译</li>
+</ol>
+<p>从作者在微博上的发言：</p>
+<blockquote>
+<p>Vite，一个基于浏览器原生 ES imports 的开发服务器。利用浏览器去解析 imports，在服务器端按需编译返回，完全跳过了打包这个概念，服务器随起随用。同时不仅有 Vue 文件支持，还搞定了热更新，而且热更新的速度不会随着模块增多而变慢。针对生产环境则可以把同一份代码用 rollup 打。虽然现在还比较粗糙，但这个方向我觉得是有潜力的，做得好可以彻底解决改一行代码等半天热更新的问题。</p>
+</blockquote>
+<p>中可以看出 vite 主要特点是基于浏览器 native 的 ES module (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import</a>) 来开发，省略打包这个步骤，因为需要什么资源直接在浏览器里引入即可。</p>
+<p>基于浏览器 ES module 来开发 web 应用也不是什么新鲜事，snowpack 也基于此，不过目前此项目社区中并没有流行起来，vite 的出现也许会让这种开发方式再火一阵子。</p>
+<p>有趣的是 vite 算是革了 webpack 的命了（生产环境用 rollup），所以 webpack 的开发者直接喊大哥了…</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="image.png"></p>
+<p>作者注：本文完成于 vite 早期时候，vite 部分功能和原理有更新。</p>
+<p>NO.2</p>
+<p>vite 的使用方式</p>
+<p>同常见的开发工具一样，vite 提供了用 npm 或者 yarn 一建生成项目结构的方式，使用 yarn 在终端执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ yarn create vite-app &lt;project-name&gt;</span><br><span class="line">$ cd &lt;project-name&gt;</span><br><span class="line">$ yarn</span><br><span class="line">$ yarn dev</span><br></pre></td></tr></table></figure>
+
+<p>即可初始化一个 vite 项目（默认应用模板为 vue3.x），生成的项目结构十分简洁：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|____node_modules</span><br><span class="line">|____App.vue // 应用入口</span><br><span class="line">|____index.html // 页面入口</span><br><span class="line">|____vite.config.js // 配置文件</span><br><span class="line">|____package.json</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>yarn dev</code> 即可启动应用 。</p>
+<p>NO.3</p>
+<p>vite 启动链路</p>
+<h3 id><a href="#" class="headerlink" title=" "></a> </h3><p>命令解析</p>
+<p>这部分代码在 src/node/cli.ts 里，主要内容是借助 minimist —— 一个轻量级的命令解析工具解析 npm scripts，解析的函数是 <code>resolveOptions</code> ，精简后的代码片段如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function resolveOptions() &#123;</span><br><span class="line">    // command 可以是 dev/build/optimize</span><br><span class="line">    if (argv._[0]) &#123;</span><br><span class="line">        argv.command = argv._[0];</span><br><span class="line">    &#125;</span><br><span class="line">    return argv;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拿到 options 后，会根据 <code>options.command</code> 的值判断是执行在开发环境需要的 runServe 命令或生产环境需要的 runBuild 命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if (!options.command || options.command === &apos;serve&apos;) &#123;</span><br><span class="line">    runServe(options)</span><br><span class="line"> &#125; else if (options.command === &apos;build&apos;) &#123;</span><br><span class="line">    runBuild(options)</span><br><span class="line"> &#125; else if (options.command === &apos;optimize&apos;) &#123;</span><br><span class="line">    runOptimize(options)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>runServe</code> 方法中，执行 server 模块的创建开发服务器方法，同样在 <code>runBuild</code> 中执行 build 模块的构建方法。</p>
+<p>最新的版本中还增加了 optimize 命令的支持，关于 optimize 做了什么，我们下文再说。</p>
+<p>server</p>
+<p>这部分代码在 src/node/server/index.ts 里，主要暴露一个 <code>createServer</code> 方法。</p>
+<p>vite 使用 koa 作 web server，使用 clmloader 创建了一个监听文件改动的 watcher，同时实现了一个插件机制，将 koa-app 和 watcher 以及其他必要工具组合成一个 context 对象注入到每个 plugin 中。</p>
+<p>context 组成如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QTNzZR6KeDicVkcLCAFvrsnkc8icsXzdgnRejrTZAWdB1v7p6ED8JmibHlmXaQKPRbQFkrT73jfPBUfNwnZiaQg6Jw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>plugin 依次从 context 里获取上面这些组成部分，有的 plugin 在 koa 实例添加了几个 middleware，有的借助 watcher 实现对文件的改动监听，这种插件机制带来的好处是整个应用结构清晰，同时每个插件处理不同的事情，职责更分明，</p>
+<p>plugin</p>
+<p>上文我们说到 plugin，那么有哪些 plugin 呢？它们分别是：</p>
+<ul>
+<li>用户注入的 plugins —— 自定义 plugin</li>
+<li>hmrPlugin —— 处理 hmr</li>
+<li>htmlRewritePlugin —— 重写 html 内的 script 内容</li>
+<li>moduleRewritePlugin —— 重写模块中的 import 导入</li>
+<li>moduleResolvePlugin ——获取模块内容</li>
+<li>vuePlugin —— 处理 vue 单文件组件</li>
+<li>esbuildPlugin —— 使用 esbuild 处理资源</li>
+<li>assetPathPlugin —— 处理静态资源</li>
+<li>serveStaticPlugin —— 托管静态资源</li>
+<li>cssPlugin —— 处理 css/less/sass 等引用</li>
+<li>…</li>
+</ul>
+<p>我们来看 plugin 的实现方式，开发一个用来拦截 json 文件 plugin 可以这么实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">interface ServerPluginContext &#123;</span><br><span class="line">  root: string</span><br><span class="line">  app: Koa</span><br><span class="line">  server: Server</span><br><span class="line">  watcher: HMRWatcher</span><br><span class="line">  resolver: InternalResolver</span><br><span class="line">  config: ServerConfig</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type ServerPlugin = （ctx:ServerPluginContext）=&gt; void;</span><br><span class="line"></span><br><span class="line">const JsonInterceptPlugin:ServerPlugin = (&#123;app&#125;)=&gt;&#123;</span><br><span class="line">    app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">      await next()</span><br><span class="line">      if (ctx.path.endsWith(&apos;.json&apos;) &amp;&amp; ctx.body) &#123;</span><br><span class="line">        ctx.type = &apos;js&apos;</span><br><span class="line">        ctx.body = `export default json`</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>vite 背后的原理都在 plugin 里，这里不再一一解释每个 plugin 的作用，会放在下文背后的原理中一并讨论。</p>
+<p>build</p>
+<p>这部分代码在 node/build/index.ts 中，build 目录的结构虽然与 server 相似，同样导出一个 build 方法，同样也有许多 plugin，不过这些 plugin 与 server 中的用途不一样，因为 build 使用了 rollup ，所以这些 plugin 也是为 rollup 打包的 plugin ，本文就不再多提。</p>
+<p>NO.4</p>
+<p>vite 运行原理</p>
+<h3 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h3><p>ES module</p>
+<p>要了解 vite 的运行原理，首先要知道什么是 ES module，目前流览器对其的支持如下：</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="image.png"></p>
+<p>主流的浏览器（IE11除外）均已经支持，其最大的特点是在浏览器端使用 <code>export</code> <code>import</code> 的方式导入和导出模块，在 script 标签里设置 <code>type=&quot;module&quot;</code> ，然后使用模块内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;module&quot;&gt;</span><br><span class="line">  import &#123; bar &#125; from &apos;./bar.js‘</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>当 html 里嵌入上面的 script 标签时候，浏览器会发起 http 请求，请求 htttp server 托管的 bar.js ，在 bar.js 里，我们用 named export 导出 <code>bar</code> 变量，在上面的 script 中能获取到 bar 的定义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// bar.js </span><br><span class="line">export const bar = &apos;bar&apos;;</span><br></pre></td></tr></table></figure>
+
+<p>在 vite 中的作用</p>
+<p>打开运行中的 vite 项目，访问 view-source 可以发现 html 里有段这样的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;module&quot;&gt;</span><br><span class="line">    import &#123; createApp &#125; from &apos;/@modules/vue&apos;</span><br><span class="line">    import App from &apos;/App.vue&apos;</span><br><span class="line">    createApp(App).mount(&apos;#app&apos;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>从这段代码中，我们能 get 到以下几点信息：</p>
+<ul>
+<li>从 <code>http://localhost:3000/@modules/vue</code> 中获取 <code>createApp</code> 这个方法</li>
+<li>从 <code>http://localhost:3000/App.vue</code> 中获取应用入口</li>
+<li>使用 <code>createApp</code> 创建应用并挂载节点</li>
+</ul>
+<p><code>createApp</code> 是 vue3.X 的 api，只需知道这是创建了 vue 应用即可，vite 利用 ES module，把 “构建 vue 应用” 这个本来需要通过 webpack 打包后才能执行的代码直接放在浏览器里执行，这么做是为了：</p>
+<ol>
+<li>去掉打包步骤</li>
+<li>实现按需加载</li>
+</ol>
+<h4 id="-2"><a href="#-2" class="headerlink" title=" "></a> </h4><h4 id="去掉打包步骤"><a href="#去掉打包步骤" class="headerlink" title="去掉打包步骤"></a><strong>去掉打包步骤</strong></h4><p>打包的概念是开发者利用打包工具将应用各个模块集合在一起形成 bundle，以一定规则读取模块的代码——以便在不支持模块化的浏览器里使用。</p>
+<p>为了在浏览器里加载各模块，打包工具会借助胶水代码用来组装各模块，比如 webpack 使用 <code>map</code> 存放模块 id 和路径，使用 <code>__webpack_require__</code> 方法获取模块导出。</p>
+<p>vite 利用浏览器原生支持模块化导入这一特性，省略了对模块的组装，也就不需要生成 bundle，所以打包这一步就可以省略了。</p>
+<h4 id="实现按需打包"><a href="#实现按需打包" class="headerlink" title="实现按需打包"></a><strong>实现按需打包</strong></h4><p>前面说到，webpack 之类的打包工具会将各模块提前打包进 bundle 里，但打包的过程是静态的——不管某个模块的代码是否执行到，这个模块都要打包到 bundle 里，这样的坏处就是随着项目越来越大打包后的 bundle 也越来越大。</p>
+<p>开发者为了减少 bundle 大小，会使用动态引入 <code>import()</code> 的方式异步的加载模块（ 被引入模块依然需要提前打包)，又或者使用 tree shaking 等方式尽力的去掉未引用的模块，然而这些方式都不如 vite 的优雅，vite 可以只在需要某个模块的时候动态（借助 <code>import()</code> ）的引入它，而不需要提前打包，虽然只能用在开发环境，不过这就够了。</p>
+<p>vite 如何处理 ESM</p>
+<p>既然 vite 使用 ESM 在浏览器里使用模块，那么这一步究竟是怎么做的？</p>
+<p>上文提到过，在浏览器里使用 ES module 是使用 http 请求拿到模块，所以 vite 必须提供一个 web server 去代理这些模块，上文中提到的 <code>koa</code> 就是负责这个事情，vite 通过对请求路径的劫持获取资源的内容返回给浏览器，不过 vite 对于模块导入做了特殊处理。</p>
+<h4 id="modules-是什么？"><a href="#modules-是什么？" class="headerlink" title="@modules 是什么？"></a><strong>@modules 是什么？</strong></h4><p>通过工程下的 index.html 和开发环境下的 html 源文件对比，发现 script 标签里的内容发生了改变，由</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;module&quot;&gt;</span><br><span class="line">    import &#123; createApp &#125; from &apos;vue&apos;</span><br><span class="line">    import App from &apos;/App.vue&apos;</span><br><span class="line">    createApp(App).mount(&apos;#app&apos;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>变成了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;module&quot;&gt;</span><br><span class="line">    import &#123; createApp &#125; from &apos;/@modules/vue&apos;</span><br><span class="line">    import App from &apos;/App.vue&apos;</span><br><span class="line">    createApp(App).mount(&apos;#app&apos;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">vite 对 import 都做了一层处理，其过程如下：</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在 koa 中间件里获取请求 body</li>
+<li>通过 es-module-lexer 解析资源 ast 拿到 import 的内容</li>
+<li>判断 import 的资源是否是绝对路径，绝对视为 npm 模块</li>
+<li>返回处理后的资源路径：<code>&quot;vue&quot; =&gt; &quot;/@modules/vue&quot;</code></li>
+</ol>
+<p>这部分代码在 serverPluginModuleRewrite 这个 plugin 中，</p>
+<h4 id="为什么需要-modules？"><a href="#为什么需要-modules？" class="headerlink" title="为什么需要 @modules？"></a><strong>为什么需要 @modules？</strong></h4><p>**<br>**</p>
+<p>如果我们在模块里写下以下代码的时候，浏览器中的 esm 是不可能获取到导入的模块内容的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import vue from &apos;vue&apos;</span><br></pre></td></tr></table></figure>
+
+<p>因为 <code>vue</code> 这个模块安装在 node_modules 里，以往使用 webpack，webpack遇到上面的代码，会帮我们做以下几件事：</p>
+<ul>
+<li>获取这段代码的内容</li>
+<li>解析成 AST</li>
+<li>遍历 AST 拿到 <code>import</code> 语句中的包的名称</li>
+<li>使用 enhanced-resolve 拿到包的实际地址进行打包，</li>
+</ul>
+<p>但是浏览器中 ESM 无法直接访问项目下的 node_modules，所以 vite 对所有 import 都做了处理，用带有 <strong>@modules</strong> 的前缀重写它们。</p>
+<p>从另外一个角度来看这是非常比较巧妙的做法，把文件路径的 rewrite 都写在同一个 plugin 里，这样后续如果加入更多逻辑，改动起来不会影响其他 plugin，其他 plugin 拿到资源路径都是 <strong>@modules</strong> ，比如说后续可能加入 alias 的配置：就像 webpack alias 一样：可以将项目里的本地文件配置成绝对路径的引用。</p>
+<h4 id="怎么返回模块内容"><a href="#怎么返回模块内容" class="headerlink" title="怎么返回模块内容"></a><strong>怎么返回模块内容</strong></h4><p>**<br>**</p>
+<p>在下一个 koa middleware 中，用正则匹配到路径上带有 <strong>@modules</strong> 的资源，再通过 <code>require(&#39;xxx&#39;)</code> 拿到 包的导出返回给浏览器。</p>
+<p>以往使用 webpack 之类的打包工具，它们除了将模块组装到一起形成 bundle，还可以让使用了不同模块规范的包互相引用，比如：</p>
+<blockquote>
+<ul>
+<li>ES module (esm) 导入 cjs</li>
+<li>CommonJS (cjs) 导入 esm</li>
+<li>dynamic import 导入 esm</li>
+<li>dynamic import 导入 cjs</li>
+</ul>
+</blockquote>
+<p>关于 es module 的坑可以看这篇文章(<a href="https://zhuanlan.zhihu.com/p/40733281)。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40733281)。</a></p>
+<p>起初在 vite 还只是为 vue3.x 设计的时候，对 vue esm 包是经过特殊处理的，比如：需要 <code>@vue/runtime-dom</code> 这个包的内容，不能直接通过 <code>require(&#39;``@vue/runtime-dom&#39;</code>）得到，而需要通过 <code>require(&#39;@vue/runtime-dom/dist/runtime-dom.esm-bundler.js&#39;</code> 的方式，这样可以使得 vite 拿到符合 esm 模块标准的 vue 包。</p>
+<p>目前社区中大部分模块都没有设置默认导出 esm，而是导出了 cjs 的包，既然 vue3.0 需要额外处理才能拿到 esm 的包内容，那么其他日常使用的 npm 包是不是也同样需要支持？答案是肯定的，目前在 vite 项目里直接使用 lodash 还是会报错的。</p>
+<p><img src="/.io//gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="image.png"></p>
+<p>不过 vite 在最近的更新中，加入了 <code>optimize</code> 命令，这个命令专门为解决模块引用的坑而开发，例如我们要在 vite 中使用 lodash，只需要在 <strong>vite.config.js</strong> （vite 配置文件）中，配置 <code>optimizeDeps</code> 对象，在 <code>include</code> 数组中添加 lodash。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// vite.config.js</span><br><span class="line">module.exports = &#123;</span><br><span class="line">  optimizeDeps: &#123;</span><br><span class="line">    include: [&quot;lodash&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">这样 vite 在执行 runOptimize 的时候中会使用 roolup 对 lodash 包重新编译，将编译成符合 esm 模块规范的新的包放入 node_modules 下的 .vite_opt_cache 中，然后配合 resolver 对 lodash 的导入进行处理：使用编译后的包内容代替原来 lodash 的包的内容，这样就解决了 vite 中不能使用 cjs 包的问题，这部分代码在  depOptimizer.ts 里。</span><br></pre></td></tr></table></figure>
+
+<p>不过这里还有个问题，由于在 depOptimizer.ts 中，vite 只会处理在项目下 package.json 里的 <code>dependencies</code> 里声明好的包进行处理，所以无法在项目里使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import pick from &apos;lodash/pick&apos;</span><br></pre></td></tr></table></figure>
+
+<p>的方式单使用 pick 方法，而要使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import lodash from &apos;lodash&apos;</span><br><span class="line"></span><br><span class="line">lodash.pick()</span><br></pre></td></tr></table></figure>
+
+<p>的方式，这可能在生产环境下使用某些包的时候对 bundle 的体积有影响。</p>
+<p>返回模块的内容的代码在：serverPluginModuleResolve.ts 这个 plugin 中。</p>
+<p>vite 如何编译模块</p>
+<p>最初 vite 为 vue3.x 开发，所以这里的编译指的是编译 vue 单文件组件，其他 es 模块可以直接导入内容。</p>
+<h4 id="SFC"><a href="#SFC" class="headerlink" title="SFC"></a><strong>SFC</strong></h4><p>**<br>**</p>
+<p>vue 单文件组件（简称 SFC） 是 vue 的一个亮点，前端届对 SFC 褒贬不一，个人看来，SFC 是利大于弊的，虽然 SFC 带来了额外的开发工作量，比如为了解析 template 要写模板解析器，还要在 SFC 中解析出逻辑和样式，在 vscode 里要写 vscode 插件，在 webpack 里要写 vue-loader，但是对于使用方来说可以在一个文件里可以同时写 template、js、style，省了各文件互相跳转。</p>
+<p>与 vue-loader 相似，vite 在解析 vue 文件的时候也要分别处理多次，我们打开浏览器的 network，可以看到：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/QTNzZR6KeDicVkcLCAFvrsnkc8icsXzdgneTwUUPPuicZib3009NCcQxmThJb58hXPYcQDdibX6noicCatH2RLfN6CMw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="image.png"></p>
+<p>1 个请求的 query 中什么都没有，另 2 个请求分别通过在 query 里指定了 type 为 style 和 template。</p>
+<p>先来看看如何将一个 SFC 变成多个请求，我们从第一次请求开始分析，简化后的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function vuePlugin(&#123;app&#125;)&#123;</span><br><span class="line">  app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">    if (!ctx.path.endsWith(&apos;.vue&apos;) &amp;&amp; !ctx.vue) &#123;</span><br><span class="line">      return next()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const query = ctx.query</span><br><span class="line">    // 获取文件名称</span><br><span class="line">    let filename = resolver.requestToFile(publicPath)</span><br><span class="line"></span><br><span class="line">    // 解析器解析 SFC</span><br><span class="line">    const descriptor = await parseSFC(root, filename, ctx.body)</span><br><span class="line">    if (!descriptor) &#123;</span><br><span class="line">      ctx.status = 404</span><br><span class="line">      return</span><br><span class="line">    &#125;</span><br><span class="line">    // 第一次请求 .vue</span><br><span class="line">    if (!query.type) &#123;</span><br><span class="line">      if (descriptor.script &amp;&amp; descriptor.script.src) &#123;</span><br><span class="line">        filename = await resolveSrcImport(descriptor.script, ctx, resolver)</span><br><span class="line">      &#125;</span><br><span class="line">      ctx.type = &apos;js&apos;</span><br><span class="line">      // body 返回解析后的代码</span><br><span class="line">      ctx.body = await compileSFCMain(descriptor, filename, publicPath)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 compileSFCMain 中是一段长长的 generate 代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">function compileSFCMain(descriptor, filePath: string, publicPath: string) &#123;</span><br><span class="line">  let code = &apos;&apos;</span><br><span class="line">  if (descriptor.script) &#123;</span><br><span class="line">    let content = descriptor.script.content</span><br><span class="line">    code += content.replace(`export default`, &apos;const __script =&apos;)</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    code += `const __script = &#123;&#125;`</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (descriptor.styles) &#123;</span><br><span class="line">    code += `\nimport &#123; updateStyle &#125; from &quot;$&#123;hmrClientId&#125;&quot;\n`</span><br><span class="line">    descriptor.styles.forEach((s, i) =&gt; &#123;</span><br><span class="line">      const styleRequest = publicPath + `?type=style&amp;index=$&#123;i&#125;`</span><br><span class="line">      code += `\nupdateStyle(&quot;$&#123;id&#125;-$&#123;i&#125;&quot;, $&#123;JSON.stringify(styleRequest)&#125;)`</span><br><span class="line">    &#125;)</span><br><span class="line">    if (hasScoped) &#123;</span><br><span class="line">      code += `\n__script.__scopeId = &quot;data-v-$&#123;id&#125;&quot;`</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (descriptor.template) &#123;</span><br><span class="line">    code += `\nimport &#123; render as __render &#125; from $&#123;JSON.stringify(</span><br><span class="line">      publicPath + `?type=template`</span><br><span class="line">    )&#125;`</span><br><span class="line">    code += `\n__script.render = __render`</span><br><span class="line">  &#125;</span><br><span class="line">  code += `\n__script.__hmrId = $&#123;JSON.stringify(publicPath)&#125;`</span><br><span class="line">  code += `\n__script.__file = $&#123;JSON.stringify(filePath)&#125;`</span><br><span class="line">  code += `\nexport default __script`</span><br><span class="line">  return code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接看 generate 后的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import &#123; updateStyle &#125; from &quot;/vite/hmr&quot;</span><br><span class="line">updateStyle(&quot;c44b8200-0&quot;, &quot;/App.vue?type=style&amp;index=0&quot;)</span><br><span class="line">__script.__scopeId = &quot;data-v-c44b8200&quot;</span><br><span class="line">import &#123; render as __render &#125; from &quot;/App.vue?type=template&quot;</span><br><span class="line">__script.render = __render</span><br><span class="line">__script.__hmrId = &quot;/App.vue&quot;</span><br><span class="line">__script.__file = &quot;/Users/muou/work/playground/vite-app/App.vue&quot;</span><br><span class="line">export default __script</span><br></pre></td></tr></table></figure>
+
+<p>出现了 <code>vite/hmr</code> 的导入，<code>vite/hmr</code> 具体内容我们下文再分析，从这段代码中可以看到，对于 style vite 使用 <code>updateStyle</code> 这个方法处理，<code>updateStyle</code> 内容非常简单，这里就不贴代码了，就做了 1 件事：通过创建 style 元素，设置了它的 innerHtml 为 css 内容。</p>
+<p>这两种方式都会使得浏览器发起 http 请求，这样就能被 koa 中间件捕获到了，所以就形成了上文我们看到的：对一个 .vue 文件处理三次的情景。</p>
+<p>这部分代码在：serverPluginVue 这个 plugin 里。</p>
+<h4 id="css"><a href="#css" class="headerlink" title="css"></a><strong>css</strong></h4><p>**<br>**</p>
+<p>如果在 vite 项目里引入一个 sass 文件会怎么样？</p>
+<p>最初 vite 只是为 vue 项目开发，所以并没有对 css 预编译的支持，不过随着后续的几次大更新，在 vite 项目里使用 sass/less 等也可以跟使用 webpack 的时候一样优雅了，只需要安装对应的 css 预处理器即可。</p>
+<p>在 cssPlugin 中，通过正则：<code>/(.+).(less|sass|scss|styl|stylus)$/</code> 判断路径是否需要 css 预编译，如果命中正则，就借助 cssUtils 里的方法借助 postcss 对要导入的 css 文件编译。</p>
+<p>vite 热更新的实现</p>
+<p>上文中出现了 vite/hmr ，这就是 vite 处理热更新的关键，在 serverPluginHmr plugin 中，对于 <code>path</code> 等于  <code>vite/hmr</code> 做了一次判断：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line"> if (ctx.path === &apos;/vite/hmr&apos;) &#123;</span><br><span class="line">     ctx.type = &apos;js&apos;</span><br><span class="line">     ctx.status = 200</span><br><span class="line">     ctx.body = hmrClient</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>hmrClient</strong> 是 vite 热更新的客户端代码，需要在浏览器里执行，这里先来说说通用的热更新实现，热更新一般需要四个部分：</p>
+<ol>
+<li><p>首先需要 web 框架支持模块的 rerender/reload</p>
+</li>
+<li><p>通过 watcher 监听文件改动</p>
+</li>
+<li><p>通过 server 端编译资源，并推送新模块内容给 client 。</p>
+</li>
+<li><p>client 收到新的模块内容，执行 rerender/reload</p>
+</li>
+</ol>
+<p>vite 也不例外同样有这四个部分，其中客户端代码在：client.ts 里，服务端代码在 serverPluginHmr 里，对于 vue 组件的更新，通过 vue3.x 中的 <code>HMRRuntime</code> 处理的。</p>
+<h4 id="client-端"><a href="#client-端" class="headerlink" title="client 端"></a><strong>client 端</strong></h4><p>**<br>**</p>
+<p>在 client 端， <code>WebSocket</code> 监听了一些更新的类型，然后分别处理，它们是：</p>
+<ul>
+<li><strong>vue-reload</strong> —— vue 组件更新：通过 import 导入新的 vue 组件，然后执行 <code>HMRRuntime.reload</code></li>
+<li><strong>vue-rerender</strong> —— vue template 更新：通过 import 导入新的 template ，然后执行 <code>HMRRuntime.rerender</code></li>
+<li><strong>vue-style-update</strong> —— vue style 更新：直接插入新的 stylesheet</li>
+<li><strong>style-update</strong> —— css 更新：document 插入新的 stylesheet</li>
+<li><strong>style-remove</strong> —— css 移除：document 删除 stylesheet</li>
+<li><strong>js-update</strong> —— js 更新：直接执行</li>
+<li><strong>full-reload</strong> —— 页面 roload：使用 <code>window.reload</code> 刷新页面</li>
+</ul>
+<h4 id="-3"><a href="#-3" class="headerlink" title="** **"></a>** **</h4><h4 id="server-端"><a href="#server-端" class="headerlink" title="server 端"></a><strong>server 端</strong></h4><p>**<br>**</p>
+<p>在 server 端，通过 watcher 监听页面改动，根据文件类型判断是 js Reload 还是 Vue Reload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">watcher.on(&apos;change&apos;, async (file) =&gt; &#123;</span><br><span class="line">   const timestamp = Date.now()</span><br><span class="line">   if (file.endsWith(&apos;.vue&apos;)) &#123;</span><br><span class="line">     handleVueReload(file, timestamp)</span><br><span class="line">   &#125; else if (</span><br><span class="line">     file.endsWith(&apos;.module.css&apos;) ||</span><br><span class="line">     !(file.endsWith(&apos;.css&apos;) || cssTransforms.some((t) =&gt; t.test(file, &#123;&#125;)))</span><br><span class="line">   ) &#123;</span><br><span class="line">     // everything except plain .css are considered HMR dependencies.</span><br><span class="line">     // plain css has its own HMR logic in ./serverPluginCss.ts.</span><br><span class="line">     handleJSReload(file, timestamp)</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在 handleVueReload 方法里，会使用解析器拿到当前文件的 template/script/style ，并且与缓存里的上一次解析的结果进行比较，如果 template 发生改变就执行 vue-rerender，如果 style 发生改变就执行 vue-style-update，简化后的逻辑如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">async function handleVueReload(</span><br><span class="line">    file</span><br><span class="line">    timestamp,</span><br><span class="line">    content</span><br><span class="line">  ) &#123;</span><br><span class="line">    // 获取缓存</span><br><span class="line">    const cacheEntry = vueCache.get(file）</span><br><span class="line"></span><br><span class="line">    // 解析 vue 文件                                 </span><br><span class="line">    const descriptor = await parseSFC(root, file, content)</span><br><span class="line">    if (!descriptor) &#123;</span><br><span class="line">      // read failed</span><br><span class="line">      return</span><br><span class="line">    &#125;</span><br><span class="line">    // 拿到上一次解析结果</span><br><span class="line">    const prevDescriptor = cacheEntry &amp;&amp; cacheEntry.descriptor</span><br><span class="line">    </span><br><span class="line">    // 设置刷新变量</span><br><span class="line">    let needReload = false // script 改变标记</span><br><span class="line">    let needCssModuleReload = false // css 改变标记</span><br><span class="line">    let needRerender = false // template 改变标记</span><br><span class="line"></span><br><span class="line">    // 判断 script 是否相同</span><br><span class="line">    if (!isEqual(descriptor.script, prevDescriptor.script)) &#123;</span><br><span class="line">      needReload = true</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     // 判断 template 是否相同</span><br><span class="line">    if (!isEqual(descriptor.template, prevDescriptor.template)) &#123;</span><br><span class="line">      needRerender = true</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    // 通过 send 发送 socket</span><br><span class="line">    if (needRerender)&#123;</span><br><span class="line">      send(&#123;</span><br><span class="line">        type: &apos;vue-rerender&apos;,</span><br><span class="line">        path: publicPath,</span><br><span class="line">        timestamp</span><br><span class="line">      &#125;)  </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>handleJSReload</code> 方法则是根据文件路径引用，判断被哪个 vue 组件所依赖，如果未找到 vue 组件依赖，则判断页面需要刷新，否则走组件更新逻辑，这里就不贴代码了。</p>
+<p>整体代码在 client.ts 和 serverPluginHmr.ts 里。</p>
+<p>NO.5</p>
+<p>结语</p>
+<p>本文分析了 vite 的启动链路以及背后的部分原理，虽然在短时间内 vite 不会替代 webpack，但是能够看到社区中多了一种方案还是很兴奋的，这也是我写下这篇文章的原因。</p>
+<p>vite 更新的实在太快了，佩服尤大的勤奋和开源精神，短短一个月就加入了诸如 css 预编译/react支持/通用 hmr 的支持，由于篇幅有限本文不再一一介绍这些新特性，这些新的特性等待读者朋友们自行去探讨了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    jerry.zmf
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/" title="深入理解JS执行上下文的点点滴滴">https://uestc66.github.io/2020/08/26/Web前端/深入 vite 原理：尤大最新力作到底是如何实现的?/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+
+    
+      <div>
+          
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web前端/" rel="tag"><i class="fa fa-tag"></i> Web前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/26/Web前端/90行代码，15个元素实现无限滚动/" rel="next" title="90行代码，15个元素实现无限滚动">
+                <i class="fa fa-chevron-left"></i> 90行代码，15个元素实现无限滚动
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.alicdn.com/tfs/TB1fUIudbr1gK0jSZR0XXbP8XXa-479-479.jpg_mco0.jpg" alt="jerry.zmf">
+            
+              <p class="site-author-name" itemprop="name">jerry.zmf</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/uestc66" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/jerry-8-34-77/" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-gratipay"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="zhengmingfeng66@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text"> </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">2.</span> <span class="nav-text"> </span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-2"><span class="nav-number">2.1.</span> <span class="nav-text"> </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去掉打包步骤"><span class="nav-number">2.2.</span> <span class="nav-text">去掉打包步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现按需打包"><span class="nav-number">2.3.</span> <span class="nav-text">实现按需打包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#modules-是什么？"><span class="nav-number">2.4.</span> <span class="nav-text">@modules 是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么需要-modules？"><span class="nav-number">2.5.</span> <span class="nav-text">为什么需要 @modules？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么返回模块内容"><span class="nav-number">2.6.</span> <span class="nav-text">怎么返回模块内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SFC"><span class="nav-number">2.7.</span> <span class="nav-text">SFC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#css"><span class="nav-number">2.8.</span> <span class="nav-text">css</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#client-端"><span class="nav-number">2.9.</span> <span class="nav-text">client 端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-3"><span class="nav-number">2.10.</span> <span class="nav-text">** **</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#server-端"><span class="nav-number">2.11.</span> <span class="nav-text">server 端</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jerry.zmf</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv">
+      本站访客数<i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </i></span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'd3fAtsswhuE41kGfGd3OT3M7-gzGzoHsz',
+        appKey: 'Kc4nsTUGGdxKAqgTnRtQMIwD',
+        placeholder: 'Leave a comment',
+        avatar:'/images/head_icon.jpg',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
