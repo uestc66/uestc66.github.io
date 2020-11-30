@@ -706,6 +706,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2020/11/30/Web前端/如何打造一支业务前台的数据工程团队/" rel="prev" title="如何打造一支业务前台的数据工程团队">
+                如何打造一支业务前台的数据工程团队 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -786,7 +790,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
